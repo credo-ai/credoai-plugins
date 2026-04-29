@@ -50,16 +50,16 @@ detect-secrets scan > .secrets.baseline
 
 ## Tooling
 
-| Tool               | Scope                             | Purpose                                                                  |
-| ------------------ | --------------------------------- | ------------------------------------------------------------------------ |
-| `prettier`         | `*.md`                            | Canonical Markdown formatter for the repo                                |
-| `yamllint`         | `*.yaml`, `*.yml`                 | YAML linting (config: `.yamllint.yaml`)                                  |
-| `yamlfmt`          | `*.yaml`, `*.yml`                 | YAML formatting (config: `.yamlfmt`)                                     |
+| Tool               | Scope                             | Purpose                                                                                                             |
+| ------------------ | --------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `prettier`         | `*.md`                            | Canonical Markdown formatter for the repo                                                                           |
+| `yamllint`         | `*.yaml`, `*.yml`                 | YAML linting (config: `.yamllint.yaml`)                                                                             |
+| `yamlfmt`          | `*.yaml`, `*.yml`                 | YAML formatting (config: `.yamlfmt`)                                                                                |
 | `check-jsonschema` | `plugin.json`, `marketplace.json` | Validates plugin and marketplace manifests against the upstream [SchemaStore](https://www.schemastore.org/) schemas |
-| `actionlint`       | `.github/workflows/*`             | Lints GitHub Actions workflows                                           |
-| `detect-secrets`   | repo-wide                         | Catches accidentally committed secrets                                   |
-| `shellcheck`       | `*.sh`, `*.bash`                  | Shell script linting                                                     |
-| `pre-commit-hooks` | repo-wide                         | Whitespace, EOF, JSON/YAML/TOML well-formedness, merge-conflict markers  |
+| `actionlint`       | `.github/workflows/*`             | Lints GitHub Actions workflows                                                                                      |
+| `detect-secrets`   | repo-wide                         | Catches accidentally committed secrets                                                                              |
+| `shellcheck`       | `*.sh`, `*.bash`                  | Shell script linting                                                                                                |
+| `pre-commit-hooks` | repo-wide                         | Whitespace, EOF, JSON/YAML/TOML well-formedness, merge-conflict markers                                             |
 
 All hooks are run by `pre-commit` on staged files at commit time; CI runs the same set against the full tree.
 
