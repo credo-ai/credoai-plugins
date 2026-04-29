@@ -46,11 +46,11 @@ repos:
   - id: check-jsonschema
     name: Validate plugin.json files
     files: '\.claude-plugin/plugin\.json$'
-    args: [--schemafile, schemas/plugin.schema.json]
+    args: [--schemafile, 'https://www.schemastore.org/claude-code-plugin-manifest.json']
   - id: check-jsonschema
     name: Validate marketplace.json
     files: '\.claude-plugin/marketplace\.json$'
-    args: [--schemafile, schemas/marketplace.schema.json]
+    args: [--schemafile, 'https://www.schemastore.org/claude-code-marketplace.json']
 
 # GitHub Actions linting
 - repo: https://github.com/rhysd/actionlint
