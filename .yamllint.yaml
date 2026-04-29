@@ -1,0 +1,39 @@
+# yamllint configuration for consistent YAML formatting
+# See https://yamllint.readthedocs.io/en/stable/configuration.html
+
+extends: default
+rules:
+  # Line length - allow longer lines for GitHub Actions
+  line-length:
+    max: 120
+    level: warning
+  # Indentation - ensure consistent spacing
+  indentation:
+    spaces: 2
+    indent-sequences: false  # List items should NOT be indented
+    check-multi-line-strings: false
+  # Comments - allow flexibility in comment placement
+  comments:
+    min-spaces-from-content: 1
+  # Document start - don't require --- at start
+  document-start: disable
+  # Truthy values - allow yes/no, on/off, etc.
+  truthy:
+    allowed-values: ['true', 'false', 'yes', 'no', 'on', 'off']
+    check-keys: false
+  # Empty lines - allow some flexibility
+  empty-lines:
+    max: 2
+    max-start: 0
+    max-end: 1
+  # Brackets - consistent spacing in inline collections
+  brackets:
+    min-spaces-inside: 0
+    max-spaces-inside: 1
+  # Braces - consistent spacing in inline mappings
+  braces:
+    min-spaces-inside: 0
+    max-spaces-inside: 1
+# File patterns to ignore
+ignore: |
+  **/.venv/**

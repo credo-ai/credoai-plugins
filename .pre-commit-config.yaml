@@ -1,0 +1,78 @@
+# Pre-commit configuration for the CredoAI Claude Code plugin marketplace
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+
+repos:
+# Standard file checks
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v5.0.0
+  hooks:
+  - id: check-added-large-files
+  - id: check-json
+  - id: check-yaml
+    args: [--unsafe]
+  - id: check-toml
+  - id: check-merge-conflict
+  - id: check-case-conflict
+  - id: check-executables-have-shebangs
+  - id: check-shebang-scripts-are-executable
+  - id: end-of-file-fixer
+  - id: trailing-whitespace
+
+# Markdown formatting -- prettier is the canonical Markdown formatter for this repo
+- repo: https://github.com/rbubley/mirrors-prettier
+  rev: v3.6.2
+  hooks:
+  - id: prettier
+    types: [markdown]
+
+# YAML linting
+- repo: https://github.com/adrienverge/yamllint
+  rev: v1.37.0
+  hooks:
+  - id: yamllint
+    args: [-c, .yamllint.yaml]
+
+# YAML formatting
+- repo: https://github.com/google/yamlfmt
+  rev: v0.16.0
+  hooks:
+  - id: yamlfmt
+
+# JSON Schema validation for plugin and marketplace manifests
+- repo: https://github.com/python-jsonschema/check-jsonschema
+  rev: 0.29.4
+  hooks:
+  - id: check-jsonschema
+    name: Validate plugin.json files
+    files: '\.claude-plugin/plugin\.json$'
+    args: [--schemafile, schemas/plugin.schema.json]
+  - id: check-jsonschema
+    name: Validate marketplace.json
+    files: '\.claude-plugin/marketplace\.json$'
+    args: [--schemafile, schemas/marketplace.schema.json]
+
+# GitHub Actions linting
+- repo: https://github.com/rhysd/actionlint
+  rev: v1.7.7
+  hooks:
+  - id: actionlint
+
+# Secret detection
+- repo: https://github.com/Yelp/detect-secrets
+  rev: v1.5.0
+  hooks:
+  - id: detect-secrets
+    args: [--baseline, .secrets.baseline]
+    exclude: ^\.secrets\.baseline$
+
+# Shell script linting
+- repo: https://github.com/shellcheck-py/shellcheck-py
+  rev: v0.10.0.1
+  hooks:
+  - id: shellcheck
+    files: \.(sh|bash)$
+
+# Configuration
+default_install_hook_types: [pre-commit]
+default_stages: [pre-commit]

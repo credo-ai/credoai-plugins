@@ -1,0 +1,11 @@
+version: 2
+updates:
+- package-ecosystem: "github-actions"
+  directory: "/"
+  schedule:
+    interval: "weekly"
+    day: "saturday"
+    time: "03:33"
+    timezone: "Etc/GMT"
+  commit-message:
+    prefix: "chore(github-actions)"

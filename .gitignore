@@ -1,0 +1,10 @@
+.DS_Store
+.vscode/
+.claude
+
+.env
+.local.env
+
+node_modules/
+
+.secrets.baseline.bak

@@ -1,0 +1,4 @@
+prettier 3.8.3
+yamllint 1.38.0
+yamlfmt 0.21.0
+pre-commit 4.4.0

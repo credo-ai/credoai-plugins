@@ -1,0 +1,4 @@
+min_version = "2025.6.0"
+
+[env]
+_.file = ['.env', '.local.env']
