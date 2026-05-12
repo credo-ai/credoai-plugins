@@ -21,7 +21,10 @@ The repo is intentionally **content-only**: nearly every file is Markdown or JSO
 │       ├── .mcp.json           # MCP server configuration (optional)
 │       ├── commands/           # Slash commands (optional)
 │       ├── agents/             # Agent definitions (optional)
-│       ├── skills/              # Skill definitions (optional)
+│       ├── skills/             # Skill definitions (optional)
+│       │   └── <skill-name>/
+│       │       ├── SKILL.md    # Skill instructions (required)
+│       │       └── assets/     # Bundled files: logos, templates, fixtures (optional)
 │       └── README.md
 ├── schemas/                    # JSON Schemas used by check-jsonschema
 └── .github/workflows/          # CI: marketplace + frontmatter validation
@@ -95,6 +98,13 @@ To add a new plugin:
 4. Register the plugin in `.claude-plugin/marketplace.json`.
 5. Run `pre-commit run --all-files` and address any findings.
 6. Open a PR against `main`.
+
+To update an existing plugin or skill:
+
+1. Edit the relevant file — e.g., `plugins/<plugin-name>/skills/<skill-name>/SKILL.md` for a skill change.
+2. Bump the `version` in `plugins/<plugin-name>/.claude-plugin/plugin.json`. This is the source of truth — `claude update` reads it to decide whether to ship a new version. If `version` is also present in the matching `.claude-plugin/marketplace.json` entry, update it too so the two stay in sync, but `plugin.json` wins on conflict ([docs](https://code.claude.com/docs/en/plugins-reference)).
+3. Run `pre-commit run --all-files` and address any findings.
+4. Open a PR against `main`. Changes go live for all users on the next `claude update`.
 
 For more on plugin shape, see the [Claude Code plugin documentation](https://code.claude.com/docs/en/plugins).
 

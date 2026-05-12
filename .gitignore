@@ -2,6 +2,9 @@
 .vscode/
 .claude
 
+# Local-only working docs (plans, specs, design notes) — not part of the published marketplace
+internal-docs/
+
 .env
 .local.env
 
