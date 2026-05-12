@@ -7,7 +7,7 @@ description: Use when asked for AI governance analysis, risk assessment, complia
 
 ## Overview
 
-Fetch governance data from the Governance Hub MCP, then apply LLM reasoning to score risks and prioritize controls for the specific deployment context described. The catalog returns semantically matched risks, controls, and policy requirements — this skill adds the judgment layer: how bad is each risk *here*, and which controls to tackle first.
+Fetch governance data from the Governance Hub MCP, then apply LLM reasoning to score risks and prioritize controls for the specific deployment context described. The catalog returns semantically matched risks, controls, and policy requirements — this skill adds the judgment layer: how bad is each risk _here_, and which controls to tackle first.
 
 **MCP connection:** This project's Claude Code session connects to the Governance Hub MCP (staging). Confirm with `get_catalog_overview` before querying.
 
@@ -20,6 +20,7 @@ cat ./docs/credoai/posture.md 2>/dev/null || cat ~/.claude/credoai/posture.md 2>
 ```
 
 If posture exists at either scope, use it to:
+
 - **Bias scoring toward risk appetite** — Conservative posture pushes borderline scores up a tier (e.g. medium → high); Speed-focused posture pushes borderline scores down only when the rationale is strong; Balanced is neutral
 - **Apply non-negotiables as forced constraints** — if a non-negotiable is violated by the described system, that risk is Critical regardless of severity/likelihood product
 - **Prioritize regulatory baseline controls first** — controls tied to the org's declared regulations go in "Do now" even if not strictly mandatory for this specific system
@@ -58,6 +59,7 @@ digraph governance_scoring {
 ## Context to Gather First
 
 Before querying, establish (ask if not provided):
+
 - **What does the system do?** (classifier, recommender, generative, agentic, optimization)
 - **Who are the affected users?** (employees, customers, vulnerable populations, general public)
 - **What domain?** (healthcare, finance, HR, critical infrastructure, general)
@@ -69,36 +71,36 @@ More context = more accurate scores. Generic descriptions produce generic scores
 
 ### Risk: Severity (1–5)
 
-Impact if this risk materializes *in this specific context*:
+Impact if this risk materializes _in this specific context_:
 
-| Score | Meaning |
-|-------|---------|
-| 5 | Irreversible harm, broad population affected, criminal/regulatory liability |
-| 4 | Significant harm, legal exposure, difficult to reverse |
-| 3 | Moderate harm, reputational risk, correctable with effort |
-| 2 | Minor harm, easily corrected |
-| 1 | Theoretical in this context; minimal real-world impact |
+| Score | Meaning                                                                     |
+| ----- | --------------------------------------------------------------------------- |
+| 5     | Irreversible harm, broad population affected, criminal/regulatory liability |
+| 4     | Significant harm, legal exposure, difficult to reverse                      |
+| 3     | Moderate harm, reputational risk, correctable with effort                   |
+| 2     | Minor harm, easily corrected                                                |
+| 1     | Theoretical in this context; minimal real-world impact                      |
 
 ### Risk: Likelihood (1–5)
 
 Probability given the specific deployment context:
 
-| Score | Meaning |
-|-------|---------|
-| 5 | Highly probable in normal operation |
-| 4 | Likely under common conditions |
-| 3 | Possible; requires specific circumstances |
-| 2 | Unlikely but plausible |
-| 1 | Very unlikely given this context |
+| Score | Meaning                                   |
+| ----- | ----------------------------------------- |
+| 5     | Highly probable in normal operation       |
+| 4     | Likely under common conditions            |
+| 3     | Possible; requires specific circumstances |
+| 2     | Unlikely but plausible                    |
+| 1     | Very unlikely given this context          |
 
 ### Priority Tier (Severity × Likelihood)
 
-| Range | Tier | Action |
-|-------|------|--------|
-| 20–25 | **Critical** | Address before deployment |
-| 12–19 | **High** | Address within first sprint |
-| 6–11 | **Medium** | Address within 90 days |
-| 1–5 | **Low** | Monitor; revisit quarterly |
+| Range | Tier         | Action                      |
+| ----- | ------------ | --------------------------- |
+| 20–25 | **Critical** | Address before deployment   |
+| 12–19 | **High**     | Address within first sprint |
+| 6–11  | **Medium**   | Address within 90 days      |
+| 1–5   | **Low**      | Monitor; revisit quarterly  |
 
 ### Control Prioritization Order
 
@@ -128,6 +130,7 @@ After saving, **do not print the full brief to the conversation.** Keep the chat
 3. Ask the user to review the file and confirm it looks right.
 
 Example:
+
 > Wrote the governance plan to `docs/credoai/aigov_plans/2026-04-25-hireassist.md`. Overall posture is High — two Critical risks (disparate impact, lack of human review) drive the priority list, with EU AI Act high-risk obligations as the binding constraint. Please look it over and make sure it seems correct.
 
 The full structured brief lives in the file. The conversation is for orientation, not duplication.
@@ -173,7 +176,7 @@ Show Critical + High tiers in full. Summarize Medium/Low as a count.
 
 ## Taxonomy Fidelity + Contextualization
 
-This is the core value of the governance plan. The catalog provides structure — which risk scenarios exist, which controls address them, which policy requirements apply. Your job is to make that structure *mean something* for this specific system.
+This is the core value of the governance plan. The catalog provides structure — which risk scenarios exist, which controls address them, which policy requirements apply. Your job is to make that structure _mean something_ for this specific system.
 
 **Use exact catalog names, then contextualize:**
 
@@ -193,7 +196,7 @@ For HireAssist, this means: [specific action — e.g., "run SHAP on the resume s
 
 **Let the technical foundation shape feasibility.** A vendor black-box model can't implement SHAP explainability — the control becomes "request explanation documentation from the vendor." A fine-tuned LLM has different data lineage obligations than a scoring model trained on structured HR data. A fully autonomous system needs different oversight controls than an advisory one. These distinctions must show up in the contextual descriptions.
 
-**The catalog relationships are load-bearing.** The mapping of which controls address which risks comes from `policy_requirement_ids` and `mitigated_risk_count` in the catalog — trust those relationships. The contextual rationale explains *why* a given control addresses a given risk *here*, not whether the relationship exists.
+**The catalog relationships are load-bearing.** The mapping of which controls address which risks comes from `policy_requirement_ids` and `mitigated_risk_count` in the catalog — trust those relationships. The contextual rationale explains _why_ a given control addresses a given risk _here_, not whether the relationship exists.
 
 ## Common Mistakes
 

@@ -23,6 +23,7 @@ aigov-intake  →  aigov-plan  →  aigov-plan-viz  →  aigov-share
 Each skill produces output that feeds the next; they don't programmatically invoke each other — the user or Claude orchestrates the chain.
 
 Artifact flow:
+
 - `aigov-plan` → `./docs/credoai/aigov_plans/`
 - `aigov-evidence` → `./docs/credoai/aigov_evidence/`
 - `aigov-audit` → `./docs/credoai/aigov_audits/`
@@ -34,20 +35,23 @@ Both viz outputs (plan-viz and audit-viz) are publishable via `aigov-share` — 
 
 Written by `aigov-onboarding`, read by every downstream skill. Lives in **two possible locations**:
 
-| Scope | Path | Purpose |
-|-------|------|---------|
-| Global | `~/.claude/credoai/` | User-level defaults across every directory |
-| Local | `./docs/credoai/` | Overrides for the current working directory (no git/project structure required) |
+| Scope  | Path                 | Purpose                                                                         |
+| ------ | -------------------- | ------------------------------------------------------------------------------- |
+| Global | `~/.claude/credoai/` | User-level defaults across every directory                                      |
+| Local  | `./docs/credoai/`    | Overrides for the current working directory (no git/project structure required) |
 
 Files (in either scope):
+
 - `org.md` — organization name, user role
 - `tools.md` — tool inventory + interaction protocol (MCP / CLI / API / manual paste / file upload / screenshot / not accessible)
 - `posture.md` — regulatory baseline, risk appetite, non-negotiables
 
 Always global only:
+
 - `email.md` — governance hub publishing email (tied to person, not directory; legacy fallback at `~/.claude/governance-hub-email.md`)
 
 **Lookup precedence:** every downstream skill checks **local first**, then falls back to **global**:
+
 ```bash
 cat ./docs/credoai/<file>.md 2>/dev/null || cat ~/.claude/credoai/<file>.md 2>/dev/null
 ```
@@ -59,11 +63,13 @@ Downstream skills read these files at start and continue gracefully if they're m
 ## MCP Server
 
 `aigov-plan` calls three tools when the `governance-hub` MCP is connected:
+
 - `get_catalog_overview` — confirm connection, check vector search availability
 - `governance_query(query_text)` — semantic/keyword search for risks, controls, policy requirements
 - `get_entities(result_ids)` — fetch full records for top matches (required before scoring — truncated descriptions produce wrong scores)
 
 **MCP config** (Claude Code `settings.json`):
+
 ```json
 {
   "mcpServers": {
@@ -80,12 +86,14 @@ Contact engineering@credo.ai for access credentials.
 ## Key Design Constraints
 
 ### Scoring (aigov-plan)
+
 - Severity × Likelihood (each 1–5), score = product; tiers: Critical 20–25, High 12–19, Medium 6–11, Low 1–5
 - Scores are context-specific — same risk scores differently in different deployments
 - Never use semantic match scores as severity scores
 - Always use exact catalog names from Credo AI Governance Intelligence; never paraphrase
 
 ### HTML Output (aigov-plan-viz, aigov-audit-viz)
+
 - Single self-contained file: Tailwind CSS via CDN (layout utilities only), vanilla JS — no build step
 - **Design tokens** are the source of truth — `aigov-plan-viz/assets/credo-design-tokens.css` (a copy of the canonical `colors_and_type.css` from the Credo AI Design System bundle) is read at gen time and inlined inside `<style>` tags. Both viz skills use the same asset (audit-viz globs to plan-viz/assets). Tokens cover: full color palette (brand purple system, full greyscale 50–900, status palette with light/dark variants), product type ladder (Inter), spacing (4pt grid), radii (6/8/12/16/24/999), and soft purple-tinted shadows. Direct Tailwind defaults (`bg-purple-500`, `rounded-full`, etc.) are NOT brand-correct — always go through tokens.
 - Typography is split: Inter (`var(--font-sans)`) for body/UI/data; Instrument Sans (`var(--font-marketing)`) only for the hero system name in the dark header banner.
@@ -95,6 +103,7 @@ Contact engineering@credo.ai for access credentials.
 - Output filenames: `<system-name>-aigov-plan.html` and `<system-name>-aigov-audit.html` (lowercase, spaces→hyphens, strip special chars).
 
 ### Publishing (aigov-share)
+
 - Email stored globally at `~/.claude/credoai/email.md` (legacy fallback: `~/.claude/governance-hub-email.md`) — ask once, never again
 - Backend: `https://backend-development-736b.up.railway.app/api/published-plans`
 - Frontend: `https://frontend-development-3133.up.railway.app/view/{id}`
@@ -102,6 +111,7 @@ Contact engineering@credo.ai for access credentials.
 - 403 "email not found" → direct user to `https://govportal.lab.credoai.net` to sign up
 
 ### Evidence (aigov-evidence)
+
 - Two-pass: bulk gathering (with pointer hints from `tools.md`) → first-pass categorization → per-control deep dive on Partial/Missing only
 - Categorization: Adequate / Partial / Missing along Sufficiency, Recency, Scope, Verifiability
 - Rigor: Lenient (1) / Standard (2) / Audit-ready (3); default derived from posture (Conservative→3, Balanced→2, Speed-focused→1)
@@ -110,6 +120,7 @@ Contact engineering@credo.ai for access credentials.
 - Re-runs preserve Adequate items and re-evaluate Partial/Missing as new evidence arrives
 
 ### Audit (aigov-audit + aigov-audit-viz)
+
 - Inputs: latest plan + latest evidence register; refuses to run without both
 - Re-queries MCP for canonical requirement details — catalog evolves; the plan may be stale
 - Per-control effectiveness: Effective / Partially Effective / Ineffective / Not Implemented / Implemented but Unverifiable

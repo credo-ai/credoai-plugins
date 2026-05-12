@@ -65,8 +65,8 @@ Embed in the document head:
 
 ```html
 <style>
-{{tokens_css}}
-/* viz-specific overrides go below the canonical tokens */
+  {{tokens_css}}
+  /* viz-specific overrides go below the canonical tokens */
 </style>
 ```
 
@@ -82,24 +82,30 @@ The design system splits type by surface: **Inter** is the product face (used in
 Both fonts are imported by `credo-design-tokens.css`. Apply globally:
 
 ```css
-body { font-family: var(--font-sans); color: var(--grey-800); background: var(--ghost-white); }
-.font-marketing { font-family: var(--font-marketing); }
+body {
+  font-family: var(--font-sans);
+  color: var(--grey-800);
+  background: var(--ghost-white);
+}
+.font-marketing {
+  font-family: var(--font-marketing);
+}
 ```
 
 **Product type ladder** (from `colors_and_type.css`, derived from the platform Figma):
 
-| Token | Size | Weight | Use |
-|-------|------|--------|-----|
-| `--fs-display` | 40px | 700 / -0.02em | Hero system name |
-| `--fs-h1` | 32px | 700 / -0.01em | Page-level titles |
-| `--fs-h2` | 24px | 700 | Section headings |
-| `--fs-h3` | 18px | 700 | Card titles |
-| `--fs-h4` | 16px | 600 | Sub-headers, tile labels |
-| `--fs-body-lg` | 15px | 400 | Default body |
-| `--fs-body` | 14px | 400 | Table cells, dense body |
-| `--fs-body-sm` | 13px | 500 / +0.012em | Button + input labels |
-| `--fs-sm` | 12px | 400 | Hint, metadata |
-| `--fs-overline` | 10px | 700 / +0.08em uppercase | Eyebrows, group labels |
+| Token           | Size | Weight                  | Use                      |
+| --------------- | ---- | ----------------------- | ------------------------ |
+| `--fs-display`  | 40px | 700 / -0.02em           | Hero system name         |
+| `--fs-h1`       | 32px | 700 / -0.01em           | Page-level titles        |
+| `--fs-h2`       | 24px | 700                     | Section headings         |
+| `--fs-h3`       | 18px | 700                     | Card titles              |
+| `--fs-h4`       | 16px | 600                     | Sub-headers, tile labels |
+| `--fs-body-lg`  | 15px | 400                     | Default body             |
+| `--fs-body`     | 14px | 400                     | Table cells, dense body  |
+| `--fs-body-sm`  | 13px | 500 / +0.012em          | Button + input labels    |
+| `--fs-sm`       | 12px | 400                     | Hint, metadata           |
+| `--fs-overline` | 10px | 700 / +0.08em uppercase | Eyebrows, group labels   |
 
 Use weight (not color) for emphasis. **No italics** for decorative emphasis — bold instead. Body text colors are `--grey-800` on light surfaces and `--white` on dark.
 
@@ -111,18 +117,18 @@ Every color in the dashboard must reference a token from `credo-design-tokens.cs
 
 **Brand purple system** (the dashboard's signature surface):
 
-| Token | Hex | Use |
-|-------|-----|-----|
-| `--credo-purple` | `#7B04CA` | Primary brand, active states, link, section heading text, "Effective"/"Compliant" border |
-| `--credo-purple-hover` | `#41006B` | Hover/pressed primary |
-| `--purple-lighter` | `#E2CBFB` | Hover bg tint |
-| `--purple-lightest` | `#F1EBFF` | Subtle bg, primary-tone pill bg |
-| `--purple-darkest` | `#1F0045` | Deep accents |
-| `--russ-violet` | `#31084B` | Secondary dark surface |
-| `#260838` (Dark Purple) | — | Header banner background, "Critical"/"Non-Compliant"/"Not Implemented" fill |
-| `--lavender` | `#F2DEFF` | Card hover, table-header bg, "Effectively Mitigated" fill |
-| `--ghost-white` | `#FBF9FF` | Page background |
-| `--mimi-pink` | `#FFD5E5` | Header gradient terminus only |
+| Token                   | Hex       | Use                                                                                      |
+| ----------------------- | --------- | ---------------------------------------------------------------------------------------- |
+| `--credo-purple`        | `#7B04CA` | Primary brand, active states, link, section heading text, "Effective"/"Compliant" border |
+| `--credo-purple-hover`  | `#41006B` | Hover/pressed primary                                                                    |
+| `--purple-lighter`      | `#E2CBFB` | Hover bg tint                                                                            |
+| `--purple-lightest`     | `#F1EBFF` | Subtle bg, primary-tone pill bg                                                          |
+| `--purple-darkest`      | `#1F0045` | Deep accents                                                                             |
+| `--russ-violet`         | `#31084B` | Secondary dark surface                                                                   |
+| `#260838` (Dark Purple) | —         | Header banner background, "Critical"/"Non-Compliant"/"Not Implemented" fill              |
+| `--lavender`            | `#F2DEFF` | Card hover, table-header bg, "Effectively Mitigated" fill                                |
+| `--ghost-white`         | `#FBF9FF` | Page background                                                                          |
+| `--mimi-pink`           | `#FFD5E5` | Header gradient terminus only                                                            |
 
 **Greyscale** (the workhorse for body, borders, dividers — adopt the full ladder):
 
@@ -130,12 +136,12 @@ Every color in the dashboard must reference a token from `credo-design-tokens.cs
 
 **Status palette** (canonical — adopted unchanged from the platform UI kit). Use these for compliance status, control effectiveness, info/warning callouts. Each has light/dark variants for fill+text combos:
 
-| State | Fill bg | Fill text | Solid bg | Solid text |
-|-------|---------|-----------|----------|------------|
-| Info | `--info-light` `#EAEEFE` | `--info` `#3B58BF` | `--info` | `#FFFFFF` |
-| Success | `--success-light` `#E9F6F2` | `--success-dark` `#298567` | `--success` `#40CDA0` | `#FFFFFF` |
-| Warning | `--warning-light` `#FFF8E7` | `--warning-dark` `#8F6D1D` | `--warning` `#FFC333` | `#161616` |
-| Error | `--error-light` `#FAEEEA` | `--error-dark` `#993F21` | `--error` `#CD552C` | `#FFFFFF` |
+| State   | Fill bg                     | Fill text                  | Solid bg              | Solid text |
+| ------- | --------------------------- | -------------------------- | --------------------- | ---------- |
+| Info    | `--info-light` `#EAEEFE`    | `--info` `#3B58BF`         | `--info`              | `#FFFFFF`  |
+| Success | `--success-light` `#E9F6F2` | `--success-dark` `#298567` | `--success` `#40CDA0` | `#FFFFFF`  |
+| Warning | `--warning-light` `#FFF8E7` | `--warning-dark` `#8F6D1D` | `--warning` `#FFC333` | `#161616`  |
+| Error   | `--error-light` `#FAEEEA`   | `--error-dark` `#993F21`   | `--error` `#CD552C`   | `#FFFFFF`  |
 
 Status pills default to the **fill** combo (light bg + dark text). Reserve **solid** for active filter pills or status banners.
 
@@ -145,12 +151,12 @@ The dashboard keeps the brand-monochrome purple matrix (a deliberate Credo aesth
 
 Darkest = most critical. Use inline styles.
 
-| Tier | Pill bg | Pill text | Matrix cell bg |
-|------|---------|-----------|----------------|
-| Critical | `#260838` | `#FFFFFF` | `--lavender` `#F2DEFF` |
-| High | `--credo-purple` `#7B04CA` | `#FFFFFF` | `#E7C9FA` |
-| Medium | `#C9B6FF` (Soft Blue) | `#161616` | `--mimi-blush` `#FCF2FA` |
-| Low | `#E7C9FA` (Pale Lavender) | `#161616` | `--ghost-white` |
+| Tier     | Pill bg                    | Pill text | Matrix cell bg           |
+| -------- | -------------------------- | --------- | ------------------------ |
+| Critical | `#260838`                  | `#FFFFFF` | `--lavender` `#F2DEFF`   |
+| High     | `--credo-purple` `#7B04CA` | `#FFFFFF` | `#E7C9FA`                |
+| Medium   | `#C9B6FF` (Soft Blue)      | `#161616` | `--mimi-blush` `#FCF2FA` |
+| Low      | `#E7C9FA` (Pale Lavender)  | `#161616` | `--ghost-white`          |
 
 ### Logo
 
@@ -192,6 +198,7 @@ Embed in the header: `<img src="data:image/png;base64,{logo_b64}" alt="Credo AI"
 ### Header design
 
 Dark background (`#260838`), full width:
+
 - Top-left: Credo AI logo (height 36px)
 - Below: hero system name in **Instrument Sans** (`var(--font-marketing)`), `--fs-display` (40px) / 600, color `--white`. This is the one place in the dashboard where the marketing typeface appears — it carries the brand voice.
 - Row of pill badges: deployment status, autonomy, domain, jurisdiction. Header pills are the one place we use the marketing pill shape — `--r-pill` (999px), `rgba(255,255,255,0.15)` bg, white text, 12px font, padding `4px 12px`. Each badge gets a leading Feather icon (e.g. `globe`, `cpu`, `flag`, `award`) at 14px.
@@ -209,19 +216,21 @@ Dark background (`#260838`), full width:
 These match the platform UI kit's `Primitives.jsx` exactly. Reuse them everywhere:
 
 **Pill** (`--r-sm` 6px, Inter 11px / 600 / +0.012em, padding `2px 8px`, leading icon optional at 12px):
+
 - `neutral` — `bg #EBEBF2 / fg #4D4D5B`
 - `primary` — `bg #F1EBFF / fg #41006B`
-- `info`    — `bg #EAEEFE / fg #3B58BF`
+- `info` — `bg #EAEEFE / fg #3B58BF`
 - `success` — `bg #E9F6F2 / fg #298567`
 - `warning` — `bg #FFF8E7 / fg #8F6D1D`
-- `error`   — `bg #FAEEEA / fg #993F21`
-- `ghost`   — `bg transparent / fg #4D4D5B / 1px border #E7E7EE`
+- `error` — `bg #FAEEEA / fg #993F21`
+- `ghost` — `bg transparent / fg #4D4D5B / 1px border #E7E7EE`
 
 **Button** (rectangle, `--r-sm` 6px, Inter 13/20 Medium, +0.012em, height 36px md):
-- `primary`   — `bg #7B04CA / fg #FFFFFF`, hover `#41006B`
+
+- `primary` — `bg #7B04CA / fg #FFFFFF`, hover `#41006B`
 - `secondary` — `bg #FFFFFF / fg #7B04CA / 1px border #7B04CA`, hover bg `#F1EBFF`
-- `tertiary`  — `bg transparent / fg #7B04CA`, hover bg `#F1EBFF`
-- `ghost`     — `bg transparent / fg #4D4D5B / 1px border #E0E0E5`, hover bg `#F8F8FA`
+- `tertiary` — `bg transparent / fg #7B04CA`, hover bg `#F1EBFF`
+- `ghost` — `bg transparent / fg #4D4D5B / 1px border #E0E0E5`, hover bg `#F8F8FA`
 
 **Card** — `--white` bg, `1px solid #E7E7EE`, `--r-lg` 12px, `--shadow-sm`, padding 24px (16-20px for compact list items).
 
@@ -233,12 +242,15 @@ The brand uses **Feather Icons** (1.5–2px stroke, square endpoints, non-rounde
 <script src="https://unpkg.com/feather-icons"></script>
 <i data-feather="alert-triangle" style="width:16px;height:16px"></i>
 ...
-<script>feather.replace({ 'stroke-width': 2 });</script>
+<script>
+  feather.replace({ "stroke-width": 2 });
+</script>
 ```
 
 Re-call `feather.replace()` after dynamic content insertion. Sizes: 12 / 14 / 16 / 20 / 24 px (no fractional). Color icons by setting `color:` on the parent — `feather.replace()` produces `stroke="currentColor"`. Use `--credo-purple` for active-state icons; `--grey-700` for inline meta icons; white on dark surfaces.
 
 Curated icon vocabulary for the plan dashboard:
+
 - Header badges: `globe` (jurisdiction), `cpu` (autonomy), `flag` (deployment status), `award` (domain)
 - Risk view: `alert-triangle` (gaps callout), `bar-chart-2` (matrix), `chevron-down` (expand row)
 - Compliance: `check-circle` (Compliant), `alert-circle` (Partial), `x-circle` (Non-Compliant), `book-open` (regulation source)
@@ -267,20 +279,22 @@ Derive the control→risk reverse lookup at runtime (no new data required):
 
 ```javascript
 const riskControls = {};
-[...DATA.controls.doNow, ...DATA.controls.doNext, ...DATA.controls.quickWins]
-  .forEach(c => (c.mitigates || []).forEach(r => {
+[...DATA.controls.doNow, ...DATA.controls.doNext, ...DATA.controls.quickWins].forEach((c) =>
+  (c.mitigates || []).forEach((r) => {
     riskControls[r] = riskControls[r] || [];
     riskControls[r].push({ label: c.label, lane: detectLane(c) });
-  }));
+  }),
+);
 
 function detectLane(c) {
-  if (DATA.controls.doNow.some(x => x.label === c.label))   return 'doNow';
-  if (DATA.controls.doNext.some(x => x.label === c.label))  return 'doNext';
-  return 'quickWins';
+  if (DATA.controls.doNow.some((x) => x.label === c.label)) return "doNow";
+  if (DATA.controls.doNext.some((x) => x.label === c.label)) return "doNext";
+  return "quickWins";
 }
 ```
 
 Lane is used to color "Addressed by" chips in the Risk View:
+
 - `doNow` → Critical tier colors (`#260838` bg, white text)
 - `doNext` → High tier colors (`#7B04CA` bg, white text)
 - `quickWins` → Medium tier colors (`#C9B6FF` bg, `#161616` text)
@@ -319,6 +333,7 @@ One card per unique `source` value in `DATA.compliance`. Sort cards alphabetical
 Items with an empty or missing `source` go into a card labelled "General Obligations", sorted last.
 
 Within each card, render each obligation as:
+
 - `<input type="checkbox">` — ephemeral interactive state (no persistence)
 - Obligation text, `color: #161616`
 
@@ -329,6 +344,7 @@ No control or risk cross-references in this section — current data does not in
 Three equal-width swim lane columns side by side (use CSS grid: `grid-template-columns: 1fr 1fr 1fr`). On narrow viewports, stack vertically.
 
 Column headers:
+
 - "Do Now" — `background: #260838; color: #FFFFFF`
 - "Do Next" — `background: #7B04CA; color: #FFFFFF`
 - "Quick Wins" — `background: #C9B6FF; color: #161616`
@@ -350,6 +366,7 @@ Each control card (`background: #FFFFFF; border: 1px solid var(--grey-200); bord
 Render only risks that appear in `DATA.gaps`. For each gap, look up the full risk entry in `DATA.risks` by name.
 
 Each gap item is a card (`background: var(--ghost-white); border: 1px solid var(--grey-200); border-radius: var(--r-lg); padding: 16px`). Lead with a Feather `alert-triangle` icon at 16px in the gap's tier color:
+
 - Risk name bold
 - Tier badge (use tier colors)
 - Rationale text (`color: #161616; font-size: 0.875rem`) — from `DATA.risks` entry. If the risk name is not found in `DATA.risks`, show name and tier badge only.
@@ -358,16 +375,16 @@ If `DATA.gaps` is empty, render a single card with text "No governance gaps iden
 
 ## Interactivity
 
-| Interaction | Behavior |
-|-------------|----------|
-| Hover risk badge in matrix | Tooltip: name, type, rationale |
-| Click risk badge in matrix | Highlight matching row in risk table (expand it) |
-| Expand risk table row | Show rationale + "Addressed by" chips |
-| Click control chip on risk row | Smooth-scroll to control card in Action View; 1.2s highlight pulse |
-| Click risk chip on control card | Smooth-scroll to risk row in Risk View; expand it |
-| Compliance checkboxes | Ephemeral interactive state |
-| Click risk table column header | Sort ascending; click again for descending |
-| Sticky nav link | Smooth-scroll to section; IntersectionObserver highlights active link |
+| Interaction                     | Behavior                                                              |
+| ------------------------------- | --------------------------------------------------------------------- |
+| Hover risk badge in matrix      | Tooltip: name, type, rationale                                        |
+| Click risk badge in matrix      | Highlight matching row in risk table (expand it)                      |
+| Expand risk table row           | Show rationale + "Addressed by" chips                                 |
+| Click control chip on risk row  | Smooth-scroll to control card in Action View; 1.2s highlight pulse    |
+| Click risk chip on control card | Smooth-scroll to risk row in Risk View; expand it                     |
+| Compliance checkboxes           | Ephemeral interactive state                                           |
+| Click risk table column header  | Sort ascending; click again for descending                            |
+| Sticky nav link                 | Smooth-scroll to section; IntersectionObserver highlights active link |
 
 ## Parsing the governance brief
 
@@ -379,7 +396,7 @@ The brief arrives as Markdown. Extract:
   - For Do Now lines: `- [label] — satisfies [policy text]; mitigates: [risks]` — extract `label`, `policyRequirement`, and `mitigates` array.
   - For Do Next lines: `mitigates: [risks]` — extract `mitigates` array.
   - For Quick Wins lines: `mitigates: [risks]; [note text]` — extract `mitigates` array and `note`.
-- **Compliance obligations**: each bullet as a string; extract `source` from parentheses or after a dash at the end of the line (e.g., "You must document model training data *(EU AI Act Art. 10)*" → source "EU AI Act Art. 10"). If no source marker, leave `source` empty.
+- **Compliance obligations**: each bullet as a string; extract `source` from parentheses or after a dash at the end of the line (e.g., "You must document model training data _(EU AI Act Art. 10)_" → source "EU AI Act Art. 10"). If no source marker, leave `source` empty.
 - **Governance gaps**: risk names listed under the Governance Gaps heading
 
 ## File output
@@ -393,6 +410,7 @@ docs/credoai/aigov_plan_viz/<system-name>-aigov-plan.html
 Slug: lowercase system name, spaces → hyphens, strip special chars.
 
 Create the directory if it doesn't exist. After saving, tell the user the path and suggest:
+
 ```
 open docs/credoai/aigov_plan_viz/<system-name>-aigov-plan.html
 ```

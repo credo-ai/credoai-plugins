@@ -9,13 +9,14 @@ description: Use after evidence has been gathered (via aigov-evidence) when the 
 
 Evidence collection asks "do we have proof of these controls?" An audit asks "given this proof, how effective are we, and what risk remains?". This skill:
 
-1. Re-queries the Governance Hub MCP for canonical requirement details — what each control is *supposed* to look like when fully implemented, and what each policy obligation actually demands
+1. Re-queries the Governance Hub MCP for canonical requirement details — what each control is _supposed_ to look like when fully implemented, and what each policy obligation actually demands
 2. Evaluates the gathered evidence against those canonical requirements (not just against itself)
 3. Computes **residual risk** per risk (the post-control risk that actually remains)
 4. Computes **compliance posture** per obligation
 5. Produces a structured Audit Report — the deliverable a regulator, executive, or board would want to see
 
 The audit is grounded in three sources:
+
 - The **governance plan** (risks, controls, obligations identified for this system)
 - The **evidence register** (what's actually been gathered and how it was categorized)
 - The **MCP catalog** (canonical, current definitions of each control and obligation)
@@ -28,6 +29,7 @@ This skill requires both a governance plan and an evidence register. It looks fo
 2. **Evidence**: most recent in `./docs/credoai/aigov_evidence/` matching the same system
 
 If either is missing, pause and suggest the missing prior step:
+
 - No plan → `aigov-intake` then `aigov-plan`
 - No evidence → `aigov-evidence`
 
@@ -36,6 +38,7 @@ Without an evidence register, the audit can't evaluate anything — refuse to pr
 ## MCP requirement
 
 This skill is materially worse without the MCP — it can still produce an audit using only the evidence and the plan's existing control text, but it loses the ability to detect:
+
 - Catalog updates since the plan was written (new requirements added, criteria sharpened)
 - Effectiveness criteria not captured in the original plan summaries
 - Cross-references between obligations the plan didn't surface
@@ -98,26 +101,27 @@ Track which catalog entries differ materially from the plan's summary text — t
 
 For each control in the plan, evaluate evidence against the canonical requirement (or plan text if MCP unavailable). Produce one of:
 
-| Effectiveness rating | Meaning |
-|----------------------|---------|
-| **Effective** | Evidence demonstrates the control is implemented at the level the requirement demands; meets criteria across sufficiency, recency, scope, verifiability |
-| **Partially Effective** | Evidence shows the control is in place but with material gaps — some criteria met, others not |
-| **Ineffective** | Evidence is aspirational, stale, or covers too narrow a scope to support reliance |
-| **Not Implemented** | Evidence register has this as Missing; no implementation to evaluate |
-| **Implemented but Unverifiable** | Implementation has happened but evidence isn't independently verifiable (e.g., vendor attestation without third-party audit) |
+| Effectiveness rating             | Meaning                                                                                                                                                 |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Effective**                    | Evidence demonstrates the control is implemented at the level the requirement demands; meets criteria across sufficiency, recency, scope, verifiability |
+| **Partially Effective**          | Evidence shows the control is in place but with material gaps — some criteria met, others not                                                           |
+| **Ineffective**                  | Evidence is aspirational, stale, or covers too narrow a scope to support reliance                                                                       |
+| **Not Implemented**              | Evidence register has this as Missing; no implementation to evaluate                                                                                    |
+| **Implemented but Unverifiable** | Implementation has happened but evidence isn't independently verifiable (e.g., vendor attestation without third-party audit)                            |
 
 The evaluation must reference:
+
 - The canonical requirement source (catalog entry name + fetched content, or plan text)
 - The specific evidence pieces from the register
 - The reasoning that connects them
 
 Apply rigor calibration the same way `aigov-evidence` does:
 
-| Posture | Default audit rigor |
-|---------|--------------------|
-| Conservative | Strict (auditor mindset — high bar) |
-| Balanced | Standard |
-| Speed-focused | Pragmatic (good-faith threshold) |
+| Posture       | Default audit rigor                 |
+| ------------- | ----------------------------------- |
+| Conservative  | Strict (auditor mindset — high bar) |
+| Balanced      | Standard                            |
+| Speed-focused | Pragmatic (good-faith threshold)    |
 
 Confirm or override with `AskUserQuestion`:
 
@@ -140,15 +144,15 @@ For every risk in the plan, compute residual risk based on the effectiveness of 
 3. Look up the effectiveness rating from Step 3 for each of those controls
 4. Reason about residual risk along three dimensions:
 
-   | Dimension | Question |
-   |-----------|----------|
+   | Dimension            | Question                                                                                                |
+   | -------------------- | ------------------------------------------------------------------------------------------------------- |
    | Likelihood reduction | Do the controls (at their current effectiveness) actually reduce the chance of this risk materializing? |
-   | Severity reduction | If the risk does materialize, do the controls limit blast radius? |
-   | Detection | If something does go wrong, will we know quickly? |
+   | Severity reduction   | If the risk does materialize, do the controls limit blast radius?                                       |
+   | Detection            | If something does go wrong, will we know quickly?                                                       |
 
 5. Assign a residual tier: **Critical / High / Medium / Low / Effectively Mitigated**
 
-   *"Effectively Mitigated"* means the residual risk is low enough that further work isn't priority — distinguished from *"Low"* which still warrants monitoring.
+   _"Effectively Mitigated"_ means the residual risk is low enough that further work isn't priority — distinguished from _"Low"_ which still warrants monitoring.
 
 6. **Floor:** A non-negotiable from posture being violated keeps residual at Critical regardless of control effectiveness — controls can't override organizational red lines.
 
@@ -158,12 +162,12 @@ For each risk, the report shows: initial tier, contributing controls + their eff
 
 For every obligation/policy requirement in the plan, evaluate:
 
-| Status | Meaning |
-|--------|---------|
-| **Compliant** | Evidence demonstrates the obligation is met; controls satisfying it are Effective |
-| **Partially Compliant** | Some satisfying controls are in place but gaps remain |
-| **Non-Compliant** | Required controls are Not Implemented or Ineffective |
-| **Not Applicable** | The obligation doesn't apply to this system based on its actual deployment context |
+| Status                  | Meaning                                                                            |
+| ----------------------- | ---------------------------------------------------------------------------------- |
+| **Compliant**           | Evidence demonstrates the obligation is met; controls satisfying it are Effective  |
+| **Partially Compliant** | Some satisfying controls are in place but gaps remain                              |
+| **Non-Compliant**       | Required controls are Not Implemented or Ineffective                               |
+| **Not Applicable**      | The obligation doesn't apply to this system based on its actual deployment context |
 
 Group obligations by source regulation in the report. Sum the per-source counts: e.g., "EU AI Act: 3 of 5 obligations Compliant, 2 Partially Compliant, 0 Non-Compliant".
 
@@ -184,6 +188,7 @@ For each drift item, recommend whether it warrants re-running `aigov-plan` (sign
 Synthesize 3–5 prioritized actions across the audit findings. Each action ties to specific risks/obligations and suggests an owner type (engineering / compliance / procurement / leadership).
 
 Sort by:
+
 1. Address Non-Compliance with mandatory regulations
 2. Reduce Critical/High residual risks
 3. Close gaps in controls flagged Ineffective
@@ -217,21 +222,22 @@ Slug: lowercase system name from the plan, spaces → hyphens, strip special cha
 
 ### Residual Risk Assessment
 
-| Risk | Initial tier | Contributing controls (effectiveness) | Residual tier | Rationale |
-|------|--------------|---------------------------------------|---------------|-----------|
-| [Exact catalog risk name] | Critical | [Control A] (Effective), [Control B] (Partially Effective) | High | Controls reduce likelihood but blast radius unchanged |
+| Risk                      | Initial tier | Contributing controls (effectiveness)                      | Residual tier | Rationale                                             |
+| ------------------------- | ------------ | ---------------------------------------------------------- | ------------- | ----------------------------------------------------- |
+| [Exact catalog risk name] | Critical     | [Control A] (Effective), [Control B] (Partially Effective) | High          | Controls reduce likelihood but blast radius unchanged |
 
 Show every Critical and High initial-tier risk in full. Summarize Medium/Low.
 
 ### Compliance Posture
 
 #### [Source regulation, e.g. EU AI Act]
+
 - {{N}} obligations Compliant / {{M}} Partial / {{K}} Non-Compliant
 
-| Obligation | Status | Satisfying controls (effectiveness) | Notes |
-|------------|--------|-------------------------------------|-------|
-| [Exact obligation text] | Compliant | [Control A] (Effective) | Covers all production models |
-| ... | ... | ... | ... |
+| Obligation              | Status    | Satisfying controls (effectiveness) | Notes                        |
+| ----------------------- | --------- | ----------------------------------- | ---------------------------- |
+| [Exact obligation text] | Compliant | [Control A] (Effective)             | Covers all production models |
+| ...                     | ...       | ...                                 | ...                          |
 
 Repeat per source regulation.
 
@@ -240,6 +246,7 @@ Repeat per source regulation.
 #### Effective
 
 ##### [Exact catalog control name]
+
 **Requirement:** [1–2 sentence summary of the canonical requirement from MCP, or plan text]
 **Evidence:** [reference to evidence-register entry]
 **Reasoning:** [why this evidence demonstrates the requirement is met at the chosen rigor level]
@@ -249,6 +256,7 @@ Repeat per source regulation.
 #### Partially Effective
 
 ##### [Exact catalog control name]
+
 **Requirement:** [...]
 **Evidence:** [...]
 **Gap:** [specific dimension(s) — sufficiency, recency, scope, verifiability]
@@ -259,6 +267,7 @@ Repeat per source regulation.
 #### Ineffective
 
 ##### [Exact catalog control name]
+
 **Requirement:** [...]
 **Evidence:** [what was provided]
 **Why ineffective:** [reasoning — typically aspirational, stale, or out of scope]
@@ -269,6 +278,7 @@ Repeat per source regulation.
 #### Not Implemented
 
 ##### [Exact catalog control name]
+
 **Requirement:** [...]
 **Status:** No evidence in register
 **Risks affected:** [list]
@@ -279,6 +289,7 @@ Repeat per source regulation.
 #### Implemented but Unverifiable
 
 ##### [Exact catalog control name]
+
 **Requirement:** [...]
 **Evidence:** [what exists]
 **Verification gap:** [what would make this verifiable — e.g., third-party attestation, observable logs]
@@ -286,10 +297,11 @@ Repeat per source regulation.
 ---
 
 ### Catalog Drift
-*(Only if MCP was used)*
 
-| Item | Type | Impact | Recommendation |
-|------|------|--------|----------------|
+_(Only if MCP was used)_
+
+| Item               | Type                         | Impact         | Recommendation              |
+| ------------------ | ---------------------------- | -------------- | --------------------------- |
 | [Requirement name] | New / Sharpened / Deprecated | [What changed] | Re-run plan / note in audit |
 
 If no drift detected: "No material drift since the governance plan was written."
@@ -310,7 +322,8 @@ If MCP unavailable: "Catalog drift not assessed — MCP unavailable. Re-run audi
 - Next recommended audit: [today + 90 days, or sooner if Critical residuals exist]
 
 ---
-*This audit is an LLM-generated assessment grounded in the cited plan, evidence register, and catalog data. It is not a certified third-party audit. Use it to inform your governance work; engage qualified auditors for regulatory submissions.*
+
+_This audit is an LLM-generated assessment grounded in the cited plan, evidence register, and catalog data. It is not a certified third-party audit. Use it to inform your governance work; engage qualified auditors for regulatory submissions._
 ```
 
 After saving, tell the user:
@@ -318,6 +331,7 @@ After saving, tell the user:
 > "Audit complete. Saved to `./docs/credoai/aigov_audits/<filename>.md`.
 >
 > **Headline findings:**
+>
 > - {{Residual risk summary — N Critical, M High, etc.}}
 > - {{Compliance summary — N regulations fully compliant, M with gaps}}
 > - {{Top recommendation}}
@@ -338,7 +352,7 @@ Comparison mode is valuable for tracking governance maturity over time — flag 
 
 ## Common mistakes
 
-**Treating the evidence register as the audit.** The evidence register categorizes what's gathered. The audit evaluates what it *means* — does the evidence make the control effective? Don't just transcribe Adequate/Partial/Missing into Effective/Partially Effective/Ineffective. They're not the same: evidence can be Adequate (recent, well-scoped) but the underlying control can still be only Partially Effective if the requirement demands more than the control covers.
+**Treating the evidence register as the audit.** The evidence register categorizes what's gathered. The audit evaluates what it _means_ — does the evidence make the control effective? Don't just transcribe Adequate/Partial/Missing into Effective/Partially Effective/Ineffective. They're not the same: evidence can be Adequate (recent, well-scoped) but the underlying control can still be only Partially Effective if the requirement demands more than the control covers.
 
 **Skipping the MCP re-query.** The plan was written at a point in time. Catalog requirements evolve. Re-fetching matters — both for accuracy and for the catalog drift section. If MCP is available, always re-query.
 
@@ -346,7 +360,7 @@ Comparison mode is valuable for tracking governance maturity over time — flag 
 
 **Ignoring posture's non-negotiables.** A non-negotiable being violated keeps residual at Critical no matter how Effective the surrounding controls are. Don't let strong controls launder a hard organizational constraint that's been broken.
 
-**Generating audits that are mainly summaries.** An audit's value is the *reasoning* — why this evidence makes this control effective, why this gap matters. A summary that just lists Effective/Ineffective counts is not an audit; it's a dashboard.
+**Generating audits that are mainly summaries.** An audit's value is the _reasoning_ — why this evidence makes this control effective, why this gap matters. A summary that just lists Effective/Ineffective counts is not an audit; it's a dashboard.
 
 **Failing to connect non-compliance to residual risk.** Non-compliant obligations usually mean elevated residual risk. The report should make these linkages explicit, not leave them in separate sections.
 

@@ -26,16 +26,16 @@ Or browse interactively with `/plugin > Discover`.
 
 End-to-end AI governance pipeline powered by Credo AI Governance Intelligence — guided intake, risk-scored governance plans, evidence collection, formal audits, and interactive HTML dashboards.
 
-| Skill | What it does | Requires MCP? |
-| --- | --- | --- |
-| `aigov-onboarding` | One-time setup capturing org identity, tool inventory + interaction protocol, and governance posture | No |
-| `aigov-intake` | Guided interview producing a structured Governance Context Brief | No |
-| `aigov-plan` | Risk-scored governance plan with control roadmap, grounded in the Harmonized Controls Framework | Yes — for catalog-grounded mapping |
-| `aigov-plan-viz` | Self-contained, branded HTML dashboard for the plan (risk matrix, control swim lanes, compliance checklist) | No |
-| `aigov-evidence` | Two-pass evidence collection that categorizes each control as Adequate / Partial / Missing | No |
-| `aigov-audit` | Formal audit report with per-control effectiveness, residual risk, compliance posture, and catalog drift | Yes — for canonical requirement details |
-| `aigov-audit-viz` | Executive/regulator-ready HTML dashboard for the audit (initial vs residual matrices, compliance scoreboard) | No |
-| `aigov-share` | Publishes any plan or audit dashboard to the Governance Insights Hub and returns a shareable URL | No |
+| Skill              | What it does                                                                                                 | Requires MCP?                           |
+| ------------------ | ------------------------------------------------------------------------------------------------------------ | --------------------------------------- |
+| `aigov-onboarding` | One-time setup capturing org identity, tool inventory + interaction protocol, and governance posture         | No                                      |
+| `aigov-intake`     | Guided interview producing a structured Governance Context Brief                                             | No                                      |
+| `aigov-plan`       | Risk-scored governance plan with control roadmap, grounded in the Harmonized Controls Framework              | Yes — for catalog-grounded mapping      |
+| `aigov-plan-viz`   | Self-contained, branded HTML dashboard for the plan (risk matrix, control swim lanes, compliance checklist)  | No                                      |
+| `aigov-evidence`   | Two-pass evidence collection that categorizes each control as Adequate / Partial / Missing                   | No                                      |
+| `aigov-audit`      | Formal audit report with per-control effectiveness, residual risk, compliance posture, and catalog drift     | Yes — for canonical requirement details |
+| `aigov-audit-viz`  | Executive/regulator-ready HTML dashboard for the audit (initial vs residual matrices, compliance scoreboard) | No                                      |
+| `aigov-share`      | Publishes any plan or audit dashboard to the Governance Insights Hub and returns a shareable URL             | No                                      |
 
 Skills work standalone; `aigov-plan` and `aigov-audit` produce their richest output when the **Governance Intelligence Pro MCP** is connected, which grounds risk and control mapping in the live Credo AI catalog. Contact [engineering@credo.ai](mailto:engineering@credo.ai) for MCP access.
 

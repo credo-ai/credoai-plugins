@@ -11,17 +11,19 @@ Capture once, reuse everywhere. This skill establishes persistent governance con
 
 The captured config lives in two possible scopes:
 
-| Scope | Location | Use for |
-|-------|----------|---------|
-| **Global** | `~/.claude/credoai/` | Defaults that apply across every directory you work in — your org, your usual tools, your baseline posture |
-| **Local** | `<current working directory>/docs/credoai/` | Overrides for the current working directory — useful when work in this folder has different posture, tools, or identity than your defaults. The folder doesn't need to be a git repo or any specific project structure |
+| Scope      | Location                                    | Use for                                                                                                                                                                                                                |
+| ---------- | ------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Global** | `~/.claude/credoai/`                        | Defaults that apply across every directory you work in — your org, your usual tools, your baseline posture                                                                                                             |
+| **Local**  | `<current working directory>/docs/credoai/` | Overrides for the current working directory — useful when work in this folder has different posture, tools, or identity than your defaults. The folder doesn't need to be a git repo or any specific project structure |
 
 Files (in either scope):
+
 - `org.md` — organization name and user role
 - `tools.md` — what systems hold governance evidence, and how Claude interacts with each
 - `posture.md` — regulatory baseline, risk appetite, non-negotiables
 
 Always global only:
+
 - `email.md` — governance hub publishing email (tied to a person, not a directory; migrated from `~/.claude/governance-hub-email.md` if present)
 
 **Lookup precedence:** every downstream skill checks **local first**, then falls back to **global**. Mix-and-match works — a directory can override `posture.md` only and still inherit global `tools.md`.
@@ -91,6 +93,7 @@ ls -la ~/.claude/credoai/ 2>/dev/null
 ```
 
 For each of `org.md`, `tools.md`, `posture.md`, note whether it exists in:
+
 - **Local** scope (`<current working directory>/docs/credoai/`)
 - **Global** scope (`~/.claude/credoai/`)
 
@@ -115,6 +118,7 @@ Then branch — show the full **First-time welcome** if nothing exists; show the
 Always offer the choice. Tailor based on existing state:
 
 **Case A — nothing captured anywhere:**
+
 > "Where should I save this onboarding?
 >
 > 1. **Global** (`~/.claude/credoai/`) — applies everywhere you use the governance skills, regardless of which directory you're in. Recommended for most cases.
@@ -123,6 +127,7 @@ Always offer the choice. Tailor based on existing state:
 > If you're not sure, pick global — you can always re-run onboarding later in a specific directory to add overrides."
 
 **Case B — global config exists, no local config in this directory:**
+
 > "I see you've already onboarded globally — your defaults are in `~/.claude/credoai/`. For this directory (`<CWD>`), what would you like?
 >
 > 1. **Inherit global** — use the global config as-is (no changes needed; exit)
@@ -130,6 +135,7 @@ Always offer the choice. Tailor based on existing state:
 > 3. **Update global config** — your global defaults need a refresh"
 
 **Case C — local config exists in this directory:**
+
 > "This directory has its own governance config in `<CWD>/docs/credoai/`. What would you like?
 >
 > 1. Update this directory's config
@@ -154,11 +160,12 @@ Show this only when the Step 1 scan finds **nothing in either scope**. The brief
 > 6. **`aigov-audit-viz`** — renders the audit as an HTML dashboard for executives, regulators, or board reviews (initial vs. residual risk, compliance scoreboard, drift callouts)
 > 7. **`aigov-share`** — the final showcase step: publish either your plan or your audit dashboard to the Credo AI Governance Hub so stakeholders can view it via a shareable link
 >
-> All of them are backed by **Credo AI Governance Intelligence** — a living catalog of AI risks, mitigation controls, and policy requirements curated by our governance team and grounded in regulations like the EU AI Act, NIST AI RMF, ISO 42001, and industry standards. Instead of reinventing governance for every system you ship, you map to an expert-maintained taxonomy and get context-specific risk scoring, prioritized controls, and actionable compliance obligations for *your* deployment.
+> All of them are backed by **Credo AI Governance Intelligence** — a living catalog of AI risks, mitigation controls, and policy requirements curated by our governance team and grounded in regulations like the EU AI Act, NIST AI RMF, ISO 42001, and industry standards. Instead of reinventing governance for every system you ship, you map to an expert-maintained taxonomy and get context-specific risk scoring, prioritized controls, and actionable compliance obligations for _your_ deployment.
 >
 > ---
 >
 > **What we'll do now (about 5 minutes):**
+>
 > 1. Decide whether to save this setup globally or only in the current directory
 > 2. Get your name and organization
 > 3. Map out the tools where your governance information lives — and how you'd like me to interact with each
@@ -181,12 +188,14 @@ When some files exist in the chosen scope but not all:
 > Looks like you've already completed part of onboarding (in **{{scope}}** scope):
 >
 > {{bulleted list of completed sections, each with a 1-line summary from the existing file — e.g.:}}
+>
 > - ✓ Identity — {{Organization Name}} ({{User role}})
 > - ✓ Tool inventory — {{N}} tools listed
 >
 > Still to go:
 >
 > {{bulleted list of missing sections}}
+>
 > - Governance posture (regulations, risk appetite, non-negotiables)
 >
 > This should only take a minute or two. If you'd rather review and change what's already captured, say "review" instead — otherwise I'll just do the missing sections.
@@ -212,16 +221,16 @@ Frame it — emphasize this is about **how you and Claude will work together**, 
 
 Walk through categories one at a time with `AskUserQuestion` (don't bundle — options differ):
 
-| Category | Common tools |
-|----------|--------------|
-| Model experiment tracking | Weights & Biases, MLflow, Neptune, SageMaker |
-| Data catalog / lineage | Atlan, DataHub, Collibra, Custom, Spreadsheet |
-| Documentation / policies | Confluence, Notion, SharePoint, Google Drive |
-| Issue tracking | Jira, Linear, GitHub Issues, Asana |
-| Code / PRs | GitHub, GitLab, Bitbucket |
-| Incident management | PagerDuty, Opsgenie, Jira |
-| Vendor / contract docs | SharePoint, Google Drive, DocuSign |
-| Monitoring / dashboards | Grafana, Datadog, New Relic, Custom |
+| Category                  | Common tools                                  |
+| ------------------------- | --------------------------------------------- |
+| Model experiment tracking | Weights & Biases, MLflow, Neptune, SageMaker  |
+| Data catalog / lineage    | Atlan, DataHub, Collibra, Custom, Spreadsheet |
+| Documentation / policies  | Confluence, Notion, SharePoint, Google Drive  |
+| Issue tracking            | Jira, Linear, GitHub Issues, Asana            |
+| Code / PRs                | GitHub, GitLab, Bitbucket                     |
+| Incident management       | PagerDuty, Opsgenie, Jira                     |
+| Vendor / contract docs    | SharePoint, Google Drive, DocuSign            |
+| Monitoring / dashboards   | Grafana, Datadog, New Relic, Custom           |
 
 Each category accepts "None / we don't use any of these" as a valid answer.
 
@@ -237,7 +246,7 @@ Each category accepts "None / we don't use any of these" as a valid answer.
 
 Accept combinations — e.g. "MCP for queries, file upload for full exports". Capture the primary mode and any secondary note.
 
-If the user picks **CLI**, ask one follow-up: the CLI command name, so Claude can `which <cmd>` later. For **API**, note that credentials should be supplied at use time (not stored in config). For **not accessible**, still record the tool so downstream skills know the info *exists* but can't be fetched.
+If the user picks **CLI**, ask one follow-up: the CLI command name, so Claude can `which <cmd>` later. For **API**, note that credentials should be supplied at use time (not stored in config). For **not accessible**, still record the tool so downstream skills know the info _exists_ but can't be fetched.
 
 **Immediately after capture, write `tools.md`** to the chosen scope's directory before moving on.
 
@@ -252,6 +261,7 @@ Frame it:
 **Regulatory baseline** — `AskUserQuestion` with options: EU AI Act, NIST AI RMF, ISO 42001, ISO 27001, SOC 2, HIPAA, GDPR, FDA (SaMD), Financial services (FFIEC/OCC), Internal only, Other. Accept multiple by asking "anything else?" after each selection until user says no.
 
 **Risk appetite** — `AskUserQuestion` with numbered choices:
+
 1. **Conservative** — we prioritize trust; any customer-facing AI is high-risk until proven otherwise
 2. **Balanced** — we weigh risk against velocity case-by-case
 3. **Speed-focused** — we move fast on internal tools, careful on external
@@ -267,6 +277,7 @@ Frame it:
 Email always lives globally — runs independently of scope choice.
 
 Check `~/.claude/governance-hub-email.md`. If it exists:
+
 1. Read its contents
 2. Write `~/.claude/credoai/email.md` with the same content
 3. Delete the old file
@@ -277,6 +288,7 @@ If neither exists, do NOT ask for email here — `aigov-share` prompts on first 
 ## File formats
 
 **`org.md`:**
+
 ```markdown
 ---
 updated: YYYY-MM-DD
@@ -288,23 +300,26 @@ scope: global | local
 ```
 
 **`tools.md`:**
+
 ```markdown
 ---
 updated: YYYY-MM-DD
 scope: global | local
 ---
 
-| Tool | Category | Interaction mode | Details |
-|------|----------|------------------|---------|
+| Tool     | Category     | Interaction mode                                                           | Details                                                             |
+| -------- | ------------ | -------------------------------------------------------------------------- | ------------------------------------------------------------------- |
 | {{tool}} | {{category}} | MCP / CLI / API / Manual paste / File upload / Screenshot / Not accessible | {{CLI command, API notes, or "user will paste X when asked", etc.}} |
 ```
 
 The **Interaction mode** tells every downstream skill how to request info:
+
 - **MCP / CLI / API** → Claude attempts the fetch itself; asks the user only on failure
 - **Manual paste / File upload / Screenshot** → Claude phrases a direct request ("Please paste your latest W&B eval metrics") with enough specificity that the user knows exactly what to provide
 - **Not accessible** → Claude notes in output that this source exists but couldn't be verified
 
 **`posture.md`:**
+
 ```markdown
 ---
 updated: YYYY-MM-DD
@@ -312,12 +327,15 @@ scope: global | local
 ---
 
 ## Regulatory baseline
+
 - {{regulation}}
 
 ## Risk appetite
+
 **{{Conservative / Balanced / Speed-focused}}** — {{description}}
 
 ## Non-negotiables
+
 - {{constraint}}
 ```
 
@@ -328,6 +346,7 @@ The `scope:` field in the frontmatter records where the file lives — useful wh
 After all relevant sections are captured, summarize the final state, including which scope was used and what's inherited from the other scope (if applicable):
 
 > "Onboarding complete. {{scope}} config saved to `{{path}}`:
+>
 > - `org.md` — {{org name}}, {{user role}}
 > - `tools.md` — {{N}} tools listed (mix of interaction modes)
 > - `posture.md` — {{regulatory summary}}, {{risk appetite}}
@@ -364,13 +383,13 @@ read_config(name) {
 
 If neither exists, the skill continues without the config (don't block on onboarding being run).
 
-| Skill | Reads | Uses for |
-|-------|-------|----------|
-| `aigov-intake` | `org.md`, `posture.md` | Skip jurisdiction/domain questions if posture already specifies; apply non-negotiables as default context |
-| `aigov-plan` | `posture.md` | Bias risk scoring toward risk appetite; inject non-negotiables into rationale |
-| `aigov-plan-viz` | `org.md` | Organization name in footer |
-| `aigov-share` | `~/.claude/credoai/email.md` only | Publishing email (always global, never local) |
-| `aigov-evidence` | `tools.md`, `posture.md` | Phrase evidence requests per tool's interaction mode; calibrate rigor against risk appetite |
+| Skill            | Reads                             | Uses for                                                                                                  |
+| ---------------- | --------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `aigov-intake`   | `org.md`, `posture.md`            | Skip jurisdiction/domain questions if posture already specifies; apply non-negotiables as default context |
+| `aigov-plan`     | `posture.md`                      | Bias risk scoring toward risk appetite; inject non-negotiables into rationale                             |
+| `aigov-plan-viz` | `org.md`                          | Organization name in footer                                                                               |
+| `aigov-share`    | `~/.claude/credoai/email.md` only | Publishing email (always global, never local)                                                             |
+| `aigov-evidence` | `tools.md`, `posture.md`          | Phrase evidence requests per tool's interaction mode; calibrate rigor against risk appetite               |
 
 When a skill reads config, it should mention which scope it pulled from in its output (e.g., a small note in the rationale: "scored using local posture (`./docs/credoai/posture.md`)") — that traceability matters for audits and for users who forgot they had local overrides.
 

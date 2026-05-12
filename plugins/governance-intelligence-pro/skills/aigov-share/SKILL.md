@@ -7,6 +7,7 @@ allowed-tools: Read, Bash, Glob, Write
 Publish a governance artifact HTML visualization (plan or audit) to the Governance Insights Hub so it's accessible via a permanent shareable URL associated with your account. Requires a Governance Hub account (govportal.lab.credoai.net).
 
 The skill auto-detects the artifact type from the source directory of the HTML file:
+
 - File under `aigov_plan_viz/` → `artifactType = "plan"`
 - File under `aigov_audit_viz/` → `artifactType = "audit"`
 - Anything else → `artifactType = "plan"` (back-compat default)
@@ -25,9 +26,11 @@ Before any flow, resolve the user's Governance Hub email:
    ```
 2. If either file exists and contains an email, use it silently.
 3. If neither exists, ask the user once:
+
    > "What's your Governance Hub email? (govportal.lab.credoai.net)"
 
    After they provide it, save it to the new location:
+
    ```bash
    mkdir -p ~/.claude/credoai
    echo "EMAIL" > ~/.claude/credoai/email.md
@@ -41,11 +44,11 @@ Before any flow, resolve the user's Governance Hub email:
 
 For every share/update, derive metadata from the source path before calling the API:
 
-| Field | How to derive |
-|-------|---------------|
-| `artifactType` | `"audit"` if the file path includes `/aigov_audit_viz/`; otherwise `"plan"` (covers `aigov_plan_viz/` and any other directory by default) |
-| `systemName` | Strip the trailing `-aigov-plan.html` or `-aigov-audit.html` suffix from the filename, replace hyphens with spaces, and Title Case the result. E.g. `retailassist-aigov-audit.html` → `"Retailassist"`. If the user provided a system name in the conversation, prefer that — it's more accurate than the slug. |
-| `artifactDate` | Today's date in `YYYY-MM-DD` (use `date +%Y-%m-%d`). For audits, prefer the audit date in the source markdown if available, but today's date is a safe fallback. |
+| Field          | How to derive                                                                                                                                                                                                                                                                                                   |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `artifactType` | `"audit"` if the file path includes `/aigov_audit_viz/`; otherwise `"plan"` (covers `aigov_plan_viz/` and any other directory by default)                                                                                                                                                                       |
+| `systemName`   | Strip the trailing `-aigov-plan.html` or `-aigov-audit.html` suffix from the filename, replace hyphens with spaces, and Title Case the result. E.g. `retailassist-aigov-audit.html` → `"Retailassist"`. If the user provided a system name in the conversation, prefer that — it's more accurate than the slug. |
+| `artifactDate` | Today's date in `YYYY-MM-DD` (use `date +%Y-%m-%d`). For audits, prefer the audit date in the source markdown if available, but today's date is a safe fallback.                                                                                                                                                |
 
 These three fields go in the JSON body alongside `html` and `email`. Send them on both POST (publish) and PUT (update). The backend treats every field as optional and defaults `artifactType` to `"plan"` server-side if omitted, but always send them for clarity.
 
@@ -77,6 +80,7 @@ Use when the user wants to publish a governance artifact visualization.
 5. **Read the file** using the Read tool. Verify it contains HTML.
 
 6. **Publish** with metadata in the JSON body:
+
    ```bash
    curl -sL -X POST https://backend-development-736b.up.railway.app/api/published-plans \
      -H "Content-Type: application/json" \
@@ -101,14 +105,16 @@ Use when the user wants to publish a governance artifact visualization.
    > This {{plan / audit}} is linked to your Governance Hub account at EMAIL.
 
 **If the request returns 403:**
-   > Your email (EMAIL) doesn't have a Governance Hub account. Sign up at https://govportal.lab.credoai.net first, then try again.
-   >
-   > To use a different email: delete `~/.claude/credoai/email.md` (or `~/.claude/governance-hub-email.md` if it's the legacy file) and run `/share` again.
+
+> Your email (EMAIL) doesn't have a Governance Hub account. Sign up at https://govportal.lab.credoai.net first, then try again.
+>
+> To use a different email: delete `~/.claude/credoai/email.md` (or `~/.claude/governance-hub-email.md` if it's the legacy file) and run `/share` again.
 
 **If the request fails (network error or blocked):**
-   > The request to the Governance Hub backend was blocked. This is a Claude settings issue.
-   >
-   > **Quick fix:** Settings → Capabilities → Code execution and file creation → set Domain allowlist to "All domains" → start a new chat and try again.
+
+> The request to the Governance Hub backend was blocked. This is a Claude settings issue.
+>
+> **Quick fix:** Settings → Capabilities → Code execution and file creation → set Domain allowlist to "All domains" → start a new chat and try again.
 
 ---
 
@@ -134,6 +140,7 @@ Use when the user wants to update an existing shared artifact.
 5. **Read the file** using the Read tool.
 
 6. **Update** with metadata so the listing reflects re-runs (e.g. a re-audited system gets a new `artifactDate`):
+
    ```bash
    curl -sL -X PUT https://backend-development-736b.up.railway.app/api/published-plans/ID \
      -H "Content-Type: application/json" \
@@ -164,6 +171,7 @@ Use when the user wants to remove a previously shared artifact.
 2. **Get the delete key** (same as UPDATE FLOW step 2).
 
 3. **Delete:**
+
    ```bash
    curl -sL -X DELETE https://backend-development-736b.up.railway.app/api/published-plans/ID \
      -H "Content-Type: application/json" \

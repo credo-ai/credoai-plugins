@@ -72,12 +72,12 @@ If posture is missing, ask the user the rigor question (Step 2) explicitly — d
 
 Default the rigor level based on posture:
 
-| Posture | Default rigor |
-|---------|---------------|
-| Conservative | Audit-ready (3) |
-| Balanced | Standard (2) |
-| Speed-focused | Lenient (1) |
-| (no posture) | Standard (2) |
+| Posture       | Default rigor   |
+| ------------- | --------------- |
+| Conservative  | Audit-ready (3) |
+| Balanced      | Standard (2)    |
+| Speed-focused | Lenient (1)     |
+| (no posture)  | Standard (2)    |
 
 Confirm the default — or let the user pick — using `AskUserQuestion`:
 
@@ -91,12 +91,12 @@ Confirm the default — or let the user pick — using `AskUserQuestion`:
 
 Carry the rigor level through every evaluation. The level shifts the bar:
 
-| Sufficiency check | Lenient | Standard | Audit-ready |
-|-------------------|---------|----------|-------------|
-| Policy doc only ("we have a policy that says we'll do X") | Adequate | Partial — need operational evidence | Missing — policies aren't implementation |
-| Single point-in-time test result | Adequate | Adequate if recent | Partial — needs continuous verification |
-| Evidence covers 80% of population | Adequate | Adequate with note | Partial — gap in coverage matters |
-| Vendor attestation without independent verification | Adequate | Partial — note that this is unverified | Partial / Missing — depends on materiality |
+| Sufficiency check                                         | Lenient  | Standard                               | Audit-ready                                |
+| --------------------------------------------------------- | -------- | -------------------------------------- | ------------------------------------------ |
+| Policy doc only ("we have a policy that says we'll do X") | Adequate | Partial — need operational evidence    | Missing — policies aren't implementation   |
+| Single point-in-time test result                          | Adequate | Adequate if recent                     | Partial — needs continuous verification    |
+| Evidence covers 80% of population                         | Adequate | Adequate with note                     | Partial — gap in coverage matters          |
+| Vendor attestation without independent verification       | Adequate | Partial — note that this is unverified | Partial / Missing — depends on materiality |
 
 ## Step 3 — Bulk gathering with pointer hints
 
@@ -108,15 +108,15 @@ Frame the request, then provide tool-specific pointers:
 
 Generate **pointer hints** by mapping plan controls to tool inventory categories:
 
-| Control type | Likely tool category | Pointer phrasing |
-|--------------|---------------------|------------------|
-| Bias / fairness evaluation | Model experiment tracking | "Eval metrics across demographic slices in your {{tool}} — most recent run for the model in scope" |
-| Data lineage / provenance | Data catalog | "Lineage view from {{tool}} for the training data used by this model" |
-| Documentation / policies | Documentation tools | "Whatever's in {{tool}} for AI policy, data governance, model cards" |
-| Incident / change history | Incident management + Issue tracking | "Recent incidents tagged AI/ML in {{tool}}; PRs touching the model in {{code tool}}" |
-| Vendor / third-party | Vendor docs | "SOC 2 reports, DPAs, model cards from your model vendor in {{tool}}" |
-| Monitoring / drift | Monitoring | "Production dashboards in {{tool}} for the model" |
-| Human review / oversight | Issue tracking + Documentation | "Workflow showing human review step — could be a runbook in {{tool}} or a JIRA workflow" |
+| Control type               | Likely tool category                 | Pointer phrasing                                                                                   |
+| -------------------------- | ------------------------------------ | -------------------------------------------------------------------------------------------------- |
+| Bias / fairness evaluation | Model experiment tracking            | "Eval metrics across demographic slices in your {{tool}} — most recent run for the model in scope" |
+| Data lineage / provenance  | Data catalog                         | "Lineage view from {{tool}} for the training data used by this model"                              |
+| Documentation / policies   | Documentation tools                  | "Whatever's in {{tool}} for AI policy, data governance, model cards"                               |
+| Incident / change history  | Incident management + Issue tracking | "Recent incidents tagged AI/ML in {{tool}}; PRs touching the model in {{code tool}}"               |
+| Vendor / third-party       | Vendor docs                          | "SOC 2 reports, DPAs, model cards from your model vendor in {{tool}}"                              |
+| Monitoring / drift         | Monitoring                           | "Production dashboards in {{tool}} for the model"                                                  |
+| Human review / oversight   | Issue tracking + Documentation       | "Workflow showing human review step — could be a runbook in {{tool}} or a JIRA workflow"           |
 
 For each pointer, **adapt the request based on the interaction mode** in `tools.md`:
 
@@ -134,11 +134,11 @@ Once the user signals they're done with the bulk dump, do a comprehensive evalua
 
 For each control, decide:
 
-| Categorization | Meaning |
-|----------------|---------|
-| **Adequate** | Evidence demonstrates the control is implemented; meets the bar set by the rigor level |
-| **Partial** | Some evidence exists but it's insufficient — gap is identifiable |
-| **Missing** | No evidence provided; gap is total |
+| Categorization | Meaning                                                                                |
+| -------------- | -------------------------------------------------------------------------------------- |
+| **Adequate**   | Evidence demonstrates the control is implemented; meets the bar set by the rigor level |
+| **Partial**    | Some evidence exists but it's insufficient — gap is identifiable                       |
+| **Missing**    | No evidence provided; gap is total                                                     |
 
 Apply four sufficiency dimensions per piece of evidence:
 
@@ -213,6 +213,7 @@ Create the directory if needed.
 **Date:** YYYY-MM-DD
 
 ### Summary
+
 - Adequate: N controls
 - Partial: M controls
 - Missing: K controls
@@ -222,7 +223,9 @@ Create the directory if needed.
 #### Adequate
 
 ##### [Exact control name]
+
 **Evidence:**
+
 - [Description of artifact, source, what it shows]
 - [Multiple bullets if multiple artifacts contribute]
 
@@ -233,13 +236,17 @@ Create the directory if needed.
 #### Partial
 
 ##### [Exact control name]
+
 **Evidence provided:**
+
 - [What was supplied]
 
 **Gap:**
+
 - [What's specifically missing — sufficiency, recency, scope, or verifiability]
 
 **To close:**
+
 - [Concrete action: "Re-run eval with demographic slicing"; "Get most recent vendor attestation"; etc.]
 
 ---
@@ -247,9 +254,11 @@ Create the directory if needed.
 #### Missing
 
 ##### [Exact control name]
+
 **Why it matters:** [1 sentence — pull from the plan's rationale]
 
 **Suggested evidence to gather:**
+
 - [Specific artifact and likely source/owner]
 
 **Owner / next step:** [If known from conversation; otherwise leave blank]
@@ -257,12 +266,14 @@ Create the directory if needed.
 ---
 
 ### Recommended next actions
+
 1. [Highest-priority action across all gaps — e.g., "Procurement: chase {{vendor}} SOC 2 by end of quarter"]
 2. [...]
 3. [...]
 
 ---
-*Evidence assessed at [Lenient / Standard / Audit-ready] rigor against [governance plan reference]. Categorizations reflect LLM evaluation of the evidence provided in this conversation, not a certified audit.*
+
+_Evidence assessed at [Lenient / Standard / Audit-ready] rigor against [governance plan reference]. Categorizations reflect LLM evaluation of the evidence provided in this conversation, not a certified audit._
 ```
 
 After saving, tell the user the path and suggest:
@@ -293,7 +304,7 @@ Continuing from there: read the prior register, skip the bulk dump, and jump dir
 
 **Conflating recency.** "We did a fairness audit in 2022" doesn't cover a model retrained in 2025. Always check the date of the artifact against the date of the system state being assessed.
 
-**Skipping pointer hints.** Telling the user "share whatever you have" without telling them *where to look* burns their time. Always generate hints from `tools.md` when it exists.
+**Skipping pointer hints.** Telling the user "share whatever you have" without telling them _where to look_ burns their time. Always generate hints from `tools.md` when it exists.
 
 **Pulling when you should ask.** If `tools.md` says a tool is "Manual paste" mode, do NOT try to MCP-query it or run a CLI. Ask the user to paste, with specifics about what you need.
 

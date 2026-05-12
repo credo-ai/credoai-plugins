@@ -10,6 +10,7 @@ description: Use when the user wants to visualize a governance audit as an inter
 Transform a governance audit (the markdown produced by `aigov-audit`) into a beautiful, self-contained interactive HTML dashboard branded for Credo AI. This is the most external-facing artifact in the pipeline — what you'd show a regulator, board, or auditing customer.
 
 Single `.html` file, no server, no dependencies. Two audiences:
+
 - **Executives / board** want a 1-page posture summary with residual risk and compliance at a glance
 - **Compliance officers / auditors** want to drill into per-control effectiveness, evidence reasoning, and recommended actions
 
@@ -71,8 +72,8 @@ Embed in head:
 
 ```html
 <style>
-{{tokens_css}}
-/* viz-specific overrides go below the canonical tokens */
+  {{tokens_css}}
+  /* viz-specific overrides go below the canonical tokens */
 </style>
 ```
 
@@ -81,30 +82,37 @@ If the asset is missing, fall back to a minimal inline `:root` block covering va
 ### Typography — Inter for product, Instrument Sans for hero
 
 Two font systems split by surface:
+
 - **Body, tables, cards, pills, buttons, captions:** Inter (`var(--font-sans)`) — what every product surface uses
 - **Hero system name in the dark header banner only:** Instrument Sans (`var(--font-marketing)`) — the brand-marketing moment
 
 Apply globally:
 
 ```css
-body { font-family: var(--font-sans); color: var(--grey-800); background: var(--ghost-white); }
-.font-marketing { font-family: var(--font-marketing); }
+body {
+  font-family: var(--font-sans);
+  color: var(--grey-800);
+  background: var(--ghost-white);
+}
+.font-marketing {
+  font-family: var(--font-marketing);
+}
 ```
 
 **Product type ladder** (from `colors_and_type.css`):
 
-| Token | Size | Weight | Use |
-|-------|------|--------|-----|
-| `--fs-display` | 40px | 700 / -0.02em | Hero system name |
-| `--fs-h1` | 32px | 700 / -0.01em | Page-level titles |
-| `--fs-h2` | 24px | 700 | Section headings |
-| `--fs-h3` | 18px | 700 | Card titles, group headers |
-| `--fs-h4` | 16px | 600 | Sub-headers, posture-tile labels |
-| `--fs-body-lg` | 15px | 400 | Default body |
-| `--fs-body` | 14px | 400 | Table cells, dense body |
-| `--fs-body-sm` | 13px | 500 / +0.012em | Button + input labels |
-| `--fs-sm` | 12px | 400 | Hint, metadata, caption |
-| `--fs-overline` | 10px | 700 / +0.08em uppercase | Eyebrows, group labels |
+| Token           | Size | Weight                  | Use                              |
+| --------------- | ---- | ----------------------- | -------------------------------- |
+| `--fs-display`  | 40px | 700 / -0.02em           | Hero system name                 |
+| `--fs-h1`       | 32px | 700 / -0.01em           | Page-level titles                |
+| `--fs-h2`       | 24px | 700                     | Section headings                 |
+| `--fs-h3`       | 18px | 700                     | Card titles, group headers       |
+| `--fs-h4`       | 16px | 600                     | Sub-headers, posture-tile labels |
+| `--fs-body-lg`  | 15px | 400                     | Default body                     |
+| `--fs-body`     | 14px | 400                     | Table cells, dense body          |
+| `--fs-body-sm`  | 13px | 500 / +0.012em          | Button + input labels            |
+| `--fs-sm`       | 12px | 400                     | Hint, metadata, caption          |
+| `--fs-overline` | 10px | 700 / +0.08em uppercase | Eyebrows, group labels           |
 
 Use weight, not color, for emphasis. **No italics** for decorative emphasis. Body text is `--grey-800` on light, `--white` on dark.
 
@@ -116,28 +124,28 @@ Every color must reference a token from `credo-design-tokens.css` (or be derived
 
 **Brand purple system:**
 
-| Token | Hex | Use |
-|-------|-----|-----|
-| `--credo-purple` | `#7B04CA` | Primary brand, active states, section headings, "Effective"/"Compliant" border |
-| `--credo-purple-hover` | `#41006B` | Hover/pressed primary, primary-tone pill text |
-| `--purple-lighter` | `#E2CBFB` | Hover bg tint |
-| `--purple-lightest` | `#F1EBFF` | Subtle bg, primary-tone pill bg |
-| `--russ-violet` | `#31084B` | Secondary dark surface |
-| `#260838` (Dark Purple) | — | Header banner, "Critical"/"Non-Compliant"/"Not Implemented" fill |
-| `--lavender` | `#F2DEFF` | Card hover, table-header bg, "Effectively Mitigated" residual fill |
-| `--ghost-white` | `#FBF9FF` | Page background |
-| `--mimi-pink` | `#FFD5E5` | Header gradient terminus |
+| Token                   | Hex       | Use                                                                            |
+| ----------------------- | --------- | ------------------------------------------------------------------------------ |
+| `--credo-purple`        | `#7B04CA` | Primary brand, active states, section headings, "Effective"/"Compliant" border |
+| `--credo-purple-hover`  | `#41006B` | Hover/pressed primary, primary-tone pill text                                  |
+| `--purple-lighter`      | `#E2CBFB` | Hover bg tint                                                                  |
+| `--purple-lightest`     | `#F1EBFF` | Subtle bg, primary-tone pill bg                                                |
+| `--russ-violet`         | `#31084B` | Secondary dark surface                                                         |
+| `#260838` (Dark Purple) | —         | Header banner, "Critical"/"Non-Compliant"/"Not Implemented" fill               |
+| `--lavender`            | `#F2DEFF` | Card hover, table-header bg, "Effectively Mitigated" residual fill             |
+| `--ghost-white`         | `#FBF9FF` | Page background                                                                |
+| `--mimi-pink`           | `#FFD5E5` | Header gradient terminus                                                       |
 
 **Greyscale**: `--grey-50` → `--grey-900`. Use `--grey-200` for hairline borders and dividers, `--grey-700` for secondary text, `--grey-800` for body, `--grey-900` for headings.
 
-**Status palette** (canonical product status colors, adopted unchanged from the platform UI kit). Compliance status, control effectiveness, and info callouts use these — *not* the brand purple gradient. Each has light/dark variants:
+**Status palette** (canonical product status colors, adopted unchanged from the platform UI kit). Compliance status, control effectiveness, and info callouts use these — _not_ the brand purple gradient. Each has light/dark variants:
 
-| State | Fill bg | Fill text | Solid bg | Solid text |
-|-------|---------|-----------|----------|------------|
-| Info | `--info-light` `#EAEEFE` | `--info` `#3B58BF` | `--info` | `#FFFFFF` |
-| Success | `--success-light` `#E9F6F2` | `--success-dark` `#298567` | `--success` `#40CDA0` | `#FFFFFF` |
-| Warning | `--warning-light` `#FFF8E7` | `--warning-dark` `#8F6D1D` | `--warning` `#FFC333` | `#161616` |
-| Error | `--error-light` `#FAEEEA` | `--error-dark` `#993F21` | `--error` `#CD552C` | `#FFFFFF` |
+| State   | Fill bg                     | Fill text                  | Solid bg              | Solid text |
+| ------- | --------------------------- | -------------------------- | --------------------- | ---------- |
+| Info    | `--info-light` `#EAEEFE`    | `--info` `#3B58BF`         | `--info`              | `#FFFFFF`  |
+| Success | `--success-light` `#E9F6F2` | `--success-dark` `#298567` | `--success` `#40CDA0` | `#FFFFFF`  |
+| Warning | `--warning-light` `#FFF8E7` | `--warning-dark` `#8F6D1D` | `--warning` `#FFC333` | `#161616`  |
+| Error   | `--error-light` `#FAEEEA`   | `--error-dark` `#993F21`   | `--error` `#CD552C`   | `#FFFFFF`  |
 
 ### Status color mapping
 
@@ -150,42 +158,42 @@ Unified rule across both systems: **darker = problem, lighter = OK**.
 
 **Risk tier (brand-monochrome purple — matrices and risk pills):**
 
-| Tier | Pill bg | Pill text | Matrix cell bg |
-|------|---------|-----------|----------------|
-| Critical | `#260838` | `#FFFFFF` | `--lavender` `#F2DEFF` |
-| High | `--credo-purple` `#7B04CA` | `#FFFFFF` | `#E7C9FA` |
-| Medium | `#C9B6FF` (Soft Blue) | `#161616` | `--mimi-blush` `#FCF2FA` |
-| Low | `#E7C9FA` (Pale Lavender) | `#161616` | `--ghost-white` |
-| Effectively Mitigated (residual only) | `--lavender` `#F2DEFF` | `#161616` + Feather `check` icon at 12px in `--success-dark` | — |
+| Tier                                  | Pill bg                    | Pill text                                                    | Matrix cell bg           |
+| ------------------------------------- | -------------------------- | ------------------------------------------------------------ | ------------------------ |
+| Critical                              | `#260838`                  | `#FFFFFF`                                                    | `--lavender` `#F2DEFF`   |
+| High                                  | `--credo-purple` `#7B04CA` | `#FFFFFF`                                                    | `#E7C9FA`                |
+| Medium                                | `#C9B6FF` (Soft Blue)      | `#161616`                                                    | `--mimi-blush` `#FCF2FA` |
+| Low                                   | `#E7C9FA` (Pale Lavender)  | `#161616`                                                    | `--ghost-white`          |
+| Effectively Mitigated (residual only) | `--lavender` `#F2DEFF`     | `#161616` + Feather `check` icon at 12px in `--success-dark` | —                        |
 
 **Control effectiveness (canonical status palette):**
 
-| State | Pill recipe |
-|-------|-------------|
-| Effective | `success` fill (`bg #E9F6F2 / fg #298567`) |
-| Partially Effective | `warning` fill (`bg #FFF8E7 / fg #8F6D1D`) |
-| Ineffective | `error` fill (`bg #FAEEEA / fg #993F21`) |
-| Not Implemented | `error` solid (`bg #CD552C / fg #FFFFFF`) — solid signals "actively missing" |
+| State                        | Pill recipe                                                                                                      |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| Effective                    | `success` fill (`bg #E9F6F2 / fg #298567`)                                                                       |
+| Partially Effective          | `warning` fill (`bg #FFF8E7 / fg #8F6D1D`)                                                                       |
+| Ineffective                  | `error` fill (`bg #FAEEEA / fg #993F21`)                                                                         |
+| Not Implemented              | `error` solid (`bg #CD552C / fg #FFFFFF`) — solid signals "actively missing"                                     |
 | Implemented but Unverifiable | `ghost` outline (`bg transparent / fg #7B04CA / 1px dashed #7B04CA`) — dashed border signals "incomplete signal" |
 
 **Compliance status (canonical status palette):**
 
-| State | Pill recipe |
-|-------|-------------|
-| Compliant | `success` fill |
-| Partial | `warning` fill |
-| Non-Compliant | `error` solid |
+| State          | Pill recipe                                                      |
+| -------------- | ---------------------------------------------------------------- |
+| Compliant      | `success` fill                                                   |
+| Partial        | `warning` fill                                                   |
+| Non-Compliant  | `error` solid                                                    |
 | Not Applicable | `ghost` outline (`bg #FFFFFF / fg #4D4D5B / 1px dashed #E0E0E5`) |
 
 ### Movement indicators (Risk Delta)
 
 Use Feather icons next to risk movement entries (no Unicode triangles or arrows — Feather is the brand vocabulary):
 
-| Movement | Feather icon | Color |
-|----------|--------------|-------|
+| Movement                                | Feather icon                                    | Color                      |
+| --------------------------------------- | ----------------------------------------------- | -------------------------- |
 | Improved (residual tier < initial tier) | `arrow-down-right` (or `trending-down`) at 14px | `--success-dark` `#298567` |
-| Unchanged | `minus` at 14px | `--grey-600` `#9999A4` |
-| Worsened (residual tier > initial tier) | `arrow-up-right` (or `trending-up`) at 14px | `--error-dark` `#993F21` |
+| Unchanged                               | `minus` at 14px                                 | `--grey-600` `#9999A4`     |
+| Worsened (residual tier > initial tier) | `arrow-up-right` (or `trending-up`) at 14px     | `--error-dark` `#993F21`   |
 
 ### Logo
 
@@ -226,6 +234,7 @@ Embed: `<img src="data:image/png;base64,{logo_b64}" alt="Credo AI" style="height
 ### Header design
 
 Dark background (`#260838`), full width:
+
 - Top-left: Credo AI logo (height 36px)
 - Below: hero system name in **Instrument Sans** (`var(--font-marketing)`), `--fs-display` (40px) / 600, color `--white`
 - Row of pill badges: audit date, rigor level, posture, next-audit-date. Header pills are the marketing pill shape — `--r-pill` (999px), `rgba(255,255,255,0.15)` bg, white text, 12px font, padding `4px 12px`. Each leads with a Feather icon at 14px (`calendar`, `target`, `compass`, `repeat`).
@@ -243,19 +252,21 @@ Dark background (`#260838`), full width:
 Match the platform UI kit's `Primitives.jsx` exactly. Reuse everywhere:
 
 **Pill** (`--r-sm` 6px, Inter 11px / 600 / +0.012em, padding `2px 8px`, leading icon optional at 12px):
+
 - `neutral` — `bg #EBEBF2 / fg #4D4D5B`
 - `primary` — `bg #F1EBFF / fg #41006B`
-- `info`    — `bg #EAEEFE / fg #3B58BF`
+- `info` — `bg #EAEEFE / fg #3B58BF`
 - `success` — `bg #E9F6F2 / fg #298567`
 - `warning` — `bg #FFF8E7 / fg #8F6D1D`
-- `error`   — `bg #FAEEEA / fg #993F21`
-- `ghost`   — `bg transparent / fg #4D4D5B / 1px border #E7E7EE`
+- `error` — `bg #FAEEEA / fg #993F21`
+- `ghost` — `bg transparent / fg #4D4D5B / 1px border #E7E7EE`
 
 **Button** (rectangle, `--r-sm` 6px, Inter 13/20 Medium, +0.012em, height 36px md):
-- `primary`   — `bg #7B04CA / fg #FFFFFF`, hover `#41006B`
+
+- `primary` — `bg #7B04CA / fg #FFFFFF`, hover `#41006B`
 - `secondary` — `bg #FFFFFF / fg #7B04CA / 1px border #7B04CA`, hover bg `#F1EBFF`
-- `tertiary`  — `bg transparent / fg #7B04CA`, hover bg `#F1EBFF`
-- `ghost`     — `bg transparent / fg #4D4D5B / 1px border #E0E0E5`, hover bg `#F8F8FA`
+- `tertiary` — `bg transparent / fg #7B04CA`, hover bg `#F1EBFF`
+- `ghost` — `bg transparent / fg #4D4D5B / 1px border #E0E0E5`, hover bg `#F8F8FA`
 
 **Card** — `--white` bg, `1px solid #E7E7EE`, `--r-lg` 12px, `--shadow-sm`, padding 24px (16-20px for compact list items).
 
@@ -267,12 +278,15 @@ The brand uses **Feather Icons** (1.5–2px stroke, square endpoints, non-rounde
 <script src="https://unpkg.com/feather-icons"></script>
 <i data-feather="alert-triangle" style="width:16px;height:16px"></i>
 ...
-<script>feather.replace({ 'stroke-width': 2 });</script>
+<script>
+  feather.replace({ "stroke-width": 2 });
+</script>
 ```
 
 Re-call `feather.replace()` after dynamic content insertion. Sizes: 12 / 14 / 16 / 20 / 24 px. Color via `color:` on the parent (`feather.replace()` produces `stroke="currentColor"`).
 
 Curated icon vocabulary for the audit dashboard:
+
 - Header badges: `calendar` (audit date), `target` (rigor), `compass` (posture), `repeat` (next-audit)
 - Risk delta: `arrow-down-right` / `arrow-up-right` / `minus` (movement); `bar-chart-2` (matrix); `check-circle` (effectively mitigated marker)
 - Compliance: `check-circle` (Compliant), `alert-circle` (Partial), `x-circle` (Non-Compliant), `slash` (N/A), `book-open` (regulation source)
@@ -295,47 +309,74 @@ const DATA = {
     nextAuditDate: "YYYY-MM-DD",
     planRef: "path/to/plan.md",
     evidenceRef: "path/to/evidence.md",
-    catalogVersion: "..." // null if MCP was unavailable
+    catalogVersion: "...", // null if MCP was unavailable
   },
-  risks: [{
-    name: "...",         // exact catalog name
-    type: "...",
-    initial: { severity: 1-5, likelihood: 1-5, score: int, tier: "Critical|High|Medium|Low" },
-    residual: { tier: "Critical|High|Medium|Low|Effectively Mitigated", rationale: "..." },
-    contributingControls: [{ name: "...", effectiveness: "Effective|Partially Effective|Ineffective|Not Implemented|Implemented but Unverifiable" }]
-  }],
-  controls: [{
-    name: "...",         // exact catalog name
-    requirement: "...",  // canonical from MCP, or plan text
-    evidence: "...",     // reference to evidence-register entry
-    effectiveness: "Effective|Partially Effective|Ineffective|Not Implemented|Implemented but Unverifiable",
-    reasoning: "...",
-    gap: "...",          // optional, for Partial/Ineffective
-    remediation: "..."   // optional
-  }],
-  compliance: [{
-    obligation: "...",
-    source: "...",       // e.g., "EU AI Act"
-    status: "Compliant|Partial|Non-Compliant|Not Applicable",
-    satisfyingControls: [{ name: "...", effectiveness: "..." }],
-    notes: "..."
-  }],
-  drift: [{              // optional — empty if MCP unavailable or no drift
-    item: "...",
-    type: "New|Sharpened|Deprecated",
-    impact: "...",
-    recommendation: "..."
-  }],
-  recommendations: [{
-    priority: 1,
-    action: "...",
-    rationale: "...",
-    owner: "engineering|compliance|procurement|leadership"
-  }],
-  trend: null | {        // optional — only in comparison mode
-    audits: [{ date: "YYYY-MM-DD", residualCounts: { critical, high, medium, low, mitigated }, complianceCounts: { compliant, partial, nonCompliant } }],
-    riskMovement: [{ name: "...", history: [{ date, tier }] }]
-  }
+  risks: [
+    {
+      name: "...", // exact catalog name
+      type: "...",
+      initial: { severity: 1 - 5, likelihood: 1 - 5, score: int, tier: "Critical|High|Medium|Low" },
+      residual: { tier: "Critical|High|Medium|Low|Effectively Mitigated", rationale: "..." },
+      contributingControls: [
+        {
+          name: "...",
+          effectiveness:
+            "Effective|Partially Effective|Ineffective|Not Implemented|Implemented but Unverifiable",
+        },
+      ],
+    },
+  ],
+  controls: [
+    {
+      name: "...", // exact catalog name
+      requirement: "...", // canonical from MCP, or plan text
+      evidence: "...", // reference to evidence-register entry
+      effectiveness:
+        "Effective|Partially Effective|Ineffective|Not Implemented|Implemented but Unverifiable",
+      reasoning: "...",
+      gap: "...", // optional, for Partial/Ineffective
+      remediation: "...", // optional
+    },
+  ],
+  compliance: [
+    {
+      obligation: "...",
+      source: "...", // e.g., "EU AI Act"
+      status: "Compliant|Partial|Non-Compliant|Not Applicable",
+      satisfyingControls: [{ name: "...", effectiveness: "..." }],
+      notes: "...",
+    },
+  ],
+  drift: [
+    {
+      // optional — empty if MCP unavailable or no drift
+      item: "...",
+      type: "New|Sharpened|Deprecated",
+      impact: "...",
+      recommendation: "...",
+    },
+  ],
+  recommendations: [
+    {
+      priority: 1,
+      action: "...",
+      rationale: "...",
+      owner: "engineering|compliance|procurement|leadership",
+    },
+  ],
+  trend:
+    null |
+    {
+      // optional — only in comparison mode
+      audits: [
+        {
+          date: "YYYY-MM-DD",
+          residualCounts: { critical, high, medium, low, mitigated },
+          complianceCounts: { compliant, partial, nonCompliant },
+        },
+      ],
+      riskMovement: [{ name: "...", history: [{ date, tier }] }],
+    },
 };
 ```
 
@@ -348,12 +389,14 @@ The 1-page view. If a board member opens this and reads only Section 1, they sho
 **Residual risk posture strip** — five tiles for residual counts (Critical / High / Medium / Low / Effectively Mitigated). Color-coded by tier per the Status color mapping.
 
 **Risk delta callout** — text-only line below the strip:
+
 > "Since the plan: **{{X}} risks improved, {{Y}} unchanged, {{Z}} worsened.**"
-With each number colored per movement indicator (improved=French Violet, unchanged=gray, worsened=Dark Purple).
+> With each number colored per movement indicator (improved=French Violet, unchanged=gray, worsened=Dark Purple).
 
 **Compliance summary** — single-line aggregate per regulation:
+
 > "EU AI Act: 3 of 5 obligations Compliant, 2 Partial, 0 Non-Compliant"
-Each line followed by a small horizontal bar visualizing proportions (CSS-only stacked bar). Click jumps to Compliance Scoreboard.
+> Each line followed by a small horizontal bar visualizing proportions (CSS-only stacked bar). Click jumps to Compliance Scoreboard.
 
 **Top recommendations preview** — first 3 items from `DATA.recommendations` as a numbered list with owner-type badges. Below: text link "See all recommendations →" scrolls to Recommendations section.
 
@@ -362,6 +405,7 @@ Each line followed by a small horizontal bar visualizing proportions (CSS-only s
 ## Section 2: Risk Delta View
 
 **Two 5×5 matrices side by side.** Use CSS grid: `grid-template-columns: 1fr 1fr; gap: 24px`. Headers above each matrix:
+
 - "Initial Risk" (left) — uses `risks[].initial.tier`
 - "Residual Risk" (right) — uses `risks[].residual.tier`
 
@@ -371,9 +415,9 @@ Each matrix: severity X-axis (1–5 left to right), likelihood Y-axis (5–1 hig
 
 **Movement table** below the matrices, sorted by magnitude (biggest movement first):
 
-| Risk | Initial | Residual | Movement | Driver |
-|------|---------|----------|----------|--------|
-| [Risk name] | Critical | High | ▼ -1 tier (`#7B04CA`) | [shortened from `risks[].residual.rationale`] |
+| Risk        | Initial  | Residual | Movement              | Driver                                        |
+| ----------- | -------- | -------- | --------------------- | --------------------------------------------- |
+| [Risk name] | Critical | High     | ▼ -1 tier (`#7B04CA`) | [shortened from `risks[].residual.rationale`] |
 
 Click a risk row to scroll to the matching control entries in Section 4 (Control Effectiveness) — specifically the contributing controls that drove the movement.
 
@@ -384,12 +428,14 @@ One card per unique `source` value in `DATA.compliance`. Sort cards alphabetical
 Card header: source name in SemiBold + breakdown pills (e.g., "3 Compliant · 2 Partial · 0 Non-Compliant") with status colors per the unified mapping.
 
 **Stacked horizontal bar** under the header showing proportions visually (full status palette — match the pill recipes):
+
 - Compliant: `--success` `#40CDA0`
 - Partial: `--warning` `#FFC333`
 - Non-Compliant: `--error` `#CD552C`
 - N/A: outlined `--white` with dashed `--grey-400` border
 
 Below the bar, expandable list of obligations. Each row:
+
 - Status indicator (small filled circle, color per status)
 - Obligation text in `#161616`
 - Click row to expand → show satisfying controls (with their effectiveness chips, click-through to Section 4) and notes.
@@ -420,6 +466,7 @@ Sortable: by control name (alphabetical) or by effectiveness severity (default).
 Only render if `DATA.drift.length > 0`. Otherwise render a single line: "No material catalog drift since the governance plan was written."
 
 Render each drift item as a card:
+
 - Type badge (New / Sharpened / Deprecated) — same status color treatment
 - Item name in SemiBold
 - Impact text
@@ -452,17 +499,17 @@ If only one prior audit exists, render just the comparison delta (no chart): "Po
 
 ## Interactivity
 
-| Interaction | Behavior |
-|-------------|----------|
-| Hover risk pill in matrix | Tooltip: name, type, initial vs residual rationale |
-| Click risk pill in matrix | Highlight matching row in movement table; expand it |
-| Click row in movement table | Smooth-scroll to Section 4; highlight contributing controls (1.2s pulse) |
-| Click control card in Section 4 | Expand requirement/evidence/reasoning |
-| Click obligation row in Section 3 | Expand satisfying controls inline |
-| Click satisfying-control chip in Section 3 | Smooth-scroll to that control in Section 4; expand it |
-| Click recommendation card | Expand to show addressed risks/obligations |
-| Click filter pill in Section 4 | Filter visible controls |
-| Sticky nav link | Smooth-scroll to section; IntersectionObserver highlights active link |
+| Interaction                                | Behavior                                                                 |
+| ------------------------------------------ | ------------------------------------------------------------------------ |
+| Hover risk pill in matrix                  | Tooltip: name, type, initial vs residual rationale                       |
+| Click risk pill in matrix                  | Highlight matching row in movement table; expand it                      |
+| Click row in movement table                | Smooth-scroll to Section 4; highlight contributing controls (1.2s pulse) |
+| Click control card in Section 4            | Expand requirement/evidence/reasoning                                    |
+| Click obligation row in Section 3          | Expand satisfying controls inline                                        |
+| Click satisfying-control chip in Section 3 | Smooth-scroll to that control in Section 4; expand it                    |
+| Click recommendation card                  | Expand to show addressed risks/obligations                               |
+| Click filter pill in Section 4             | Filter visible controls                                                  |
+| Sticky nav link                            | Smooth-scroll to section; IntersectionObserver highlights active link    |
 
 ## PDF export
 
@@ -470,12 +517,30 @@ Add a `@media print` stylesheet so `window.print()` produces a clean multi-page 
 
 ```css
 @media print {
-  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-  @page { margin: 1.5cm; size: A4; }
-  #section-nav { display: none !important; }
-  .tooltip { display: none !important; }
-  .control-card-detail, .obligation-detail { display: block !important; }
-  .control-card, .obligation-row, .recommendation-card, .gap-item { page-break-inside: avoid; }
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  @page {
+    margin: 1.5cm;
+    size: A4;
+  }
+  #section-nav {
+    display: none !important;
+  }
+  .tooltip {
+    display: none !important;
+  }
+  .control-card-detail,
+  .obligation-detail {
+    display: block !important;
+  }
+  .control-card,
+  .obligation-row,
+  .recommendation-card,
+  .gap-item {
+    page-break-inside: avoid;
+  }
 }
 ```
 
@@ -515,7 +580,7 @@ Also remind them: this dashboard can be published to the Governance Hub via `aig
 
 ## Common mistakes
 
-**Treating residual the same as initial.** The whole point of this view is the *delta*. If your matrices look identical or your callout reads "0 risks improved", verify you're reading `risks[].residual.tier` — not just rendering the same data twice.
+**Treating residual the same as initial.** The whole point of this view is the _delta_. If your matrices look identical or your callout reads "0 risks improved", verify you're reading `risks[].residual.tier` — not just rendering the same data twice.
 
 **Hiding "Not Implemented" by sorting it last.** Worst-first ordering matters in audit contexts. Readers want to see problems immediately, not scroll past Effective controls to find them.
 
@@ -525,7 +590,7 @@ Also remind them: this dashboard can be published to the Governance Hub via `aig
 
 **Color soup.** Stick to the two-system mapping: monochrome purple for risk tier, canonical status palette (success/warning/error/info) for compliance + control effectiveness. Don't mix them. Don't introduce new status colors. The reader's mental model is "darker means more problematic" — preserve it across both systems.
 
-**Substituting Tailwind defaults.** Tailwind via CDN is loaded for layout utilities, but every color, type, radius, shadow, and spacing value must come from `credo-design-tokens.css` (or one of the recipes derived from it). `bg-purple-500` is *not* the brand purple. `rounded-full` is *not* the product pill radius (the product uses 6px). Stick to tokens.
+**Substituting Tailwind defaults.** Tailwind via CDN is loaded for layout utilities, but every color, type, radius, shadow, and spacing value must come from `credo-design-tokens.css` (or one of the recipes derived from it). `bg-purple-500` is _not_ the brand purple. `rounded-full` is _not_ the product pill radius (the product uses 6px). Stick to tokens.
 
 **Skipping Feather icons.** No emoji, no Unicode triangles (▲▼), no hand-rolled SVG iconography. The brand vocabulary is the Feather set — use it. Movement indicators, status icons, header badge prefixes all need real Feather glyphs.
 

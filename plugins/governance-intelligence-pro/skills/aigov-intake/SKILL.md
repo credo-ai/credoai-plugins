@@ -22,6 +22,7 @@ cat ./docs/credoai/posture.md 2>/dev/null || cat ~/.claude/credoai/posture.md 2>
 ```
 
 If either exists at either scope, use it to:
+
 - Skip questions already answered at the org level (e.g. if `posture.md` specifies a single jurisdiction, don't ask about jurisdiction)
 - Flag relevant non-negotiables in the synthesized brief (e.g. "This system makes hiring decisions — our non-negotiable 'human review required for employment decisions' applies here")
 - Reference the organization name in the brief
@@ -69,15 +70,15 @@ Then listen. Follow what they actually say, not a predetermined list.
 
 **After they respond, identify gaps in these areas:**
 
-| Area | Why it matters for scoring |
-|------|---------------------------|
-| What decisions the AI makes or informs | Determines harm severity |
-| Whether a human reviews outputs before action | Changes likelihood dramatically |
-| Who is affected — and are any vulnerable | Multiplies severity |
-| Domain (healthcare, finance, HR, etc.) | Unlocks domain-specific regulations |
-| Jurisdiction | Determines which laws apply |
-| Deployment status (pre-launch vs live) | Shapes urgency of findings |
-| How the system is built | Determines which controls are technically feasible and what vendor relationships introduce — a black-box third-party API has very different audit and remediation options than something built in-house |
+| Area                                          | Why it matters for scoring                                                                                                                                                                              |
+| --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| What decisions the AI makes or informs        | Determines harm severity                                                                                                                                                                                |
+| Whether a human reviews outputs before action | Changes likelihood dramatically                                                                                                                                                                         |
+| Who is affected — and are any vulnerable      | Multiplies severity                                                                                                                                                                                     |
+| Domain (healthcare, finance, HR, etc.)        | Unlocks domain-specific regulations                                                                                                                                                                     |
+| Jurisdiction                                  | Determines which laws apply                                                                                                                                                                             |
+| Deployment status (pre-launch vs live)        | Shapes urgency of findings                                                                                                                                                                              |
+| How the system is built                       | Determines which controls are technically feasible and what vendor relationships introduce — a black-box third-party API has very different audit and remediation options than something built in-house |
 
 **Probe style — use `AskUserQuestion` adaptively:**
 
@@ -90,14 +91,14 @@ Use `AskUserQuestion` whenever a gap has clear options. This is just a better UX
 
 **Structured options for common gaps:**
 
-| Gap | Question | Options |
-|-----|----------|---------|
-| Autonomy | "How autonomous is the system?" | Advisory (human reviews before acting) / Semi-autonomous (acts, human can override) / Fully autonomous |
-| Deployment status | "Where is this system right now?" | Pre-deployment / Live in production / Under redesign |
-| Domain | "What domain does this operate in?" | Healthcare / Finance / HR & hiring / Legal / Critical infrastructure / General purpose |
-| Jurisdiction | "Where does this system operate?" | EU / US (federal) / US (specific states) / Global / Unknown |
-| Vulnerable populations | "Does it affect any vulnerable groups?" | Yes — describe / No / Uncertain |
-| Technical foundation | Ask as a plain open-ended question — see below |
+| Gap                    | Question                                       | Options                                                                                                |
+| ---------------------- | ---------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| Autonomy               | "How autonomous is the system?"                | Advisory (human reviews before acting) / Semi-autonomous (acts, human can override) / Fully autonomous |
+| Deployment status      | "Where is this system right now?"              | Pre-deployment / Live in production / Under redesign                                                   |
+| Domain                 | "What domain does this operate in?"            | Healthcare / Finance / HR & hiring / Legal / Critical infrastructure / General purpose                 |
+| Jurisdiction           | "Where does this system operate?"              | EU / US (federal) / US (specific states) / Global / Unknown                                            |
+| Vulnerable populations | "Does it affect any vulnerable groups?"        | Yes — describe / No / Uncertain                                                                        |
+| Technical foundation   | Ask as a plain open-ended question — see below |
 
 **Asking about technical foundation — always use plain text, not `AskUserQuestion`:**
 
@@ -112,7 +113,7 @@ You can score severity meaningfully when you know: what it does, who it affects,
 
 ## Output: Governance Context Brief
 
-When you have enough, synthesize and ask: *"Does this capture it? Anything off or missing?"*
+When you have enough, synthesize and ask: _"Does this capture it? Anything off or missing?"_
 
 ```
 ## Governance Context Brief
