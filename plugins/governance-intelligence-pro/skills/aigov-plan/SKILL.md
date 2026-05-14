@@ -1,6 +1,6 @@
 ---
 name: aigov-plan
-description: Use when asked for AI governance analysis, risk assessment, compliance guidance, or control prioritization for a specific AI system or use case. Produces a full governance plan: context-specific risk scoring, prioritized control roadmap, and compliance obligations.
+description: Use when asked for AI governance analysis, risk assessment, compliance guidance, or control prioritization for a specific AI system or use case. Produces a full governance plan with context-specific risk scoring, a prioritized control roadmap, and compliance obligations.
 ---
 
 # Governance Plan
