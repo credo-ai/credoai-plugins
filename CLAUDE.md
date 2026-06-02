@@ -26,7 +26,6 @@ The repo is intentionally **content-only**: nearly every file is Markdown or JSO
 │       │       ├── SKILL.md    # Skill instructions (required)
 │       │       └── assets/     # Bundled files: logos, templates, fixtures (optional)
 │       └── README.md
-├── schemas/                    # JSON Schemas used by check-jsonschema
 └── .github/workflows/          # CI: marketplace + frontmatter validation
 ```
 
@@ -54,16 +53,16 @@ detect-secrets scan > .secrets.baseline
 
 ## Tooling
 
-| Tool               | Scope                             | Purpose                                                                  |
-| ------------------ | --------------------------------- | ------------------------------------------------------------------------ |
-| `prettier`         | `*.md`                            | Canonical Markdown formatter for the repo                                |
-| `yamllint`         | `*.yaml`, `*.yml`                 | YAML linting (config: `.yamllint.yaml`)                                  |
-| `yamlfmt`          | `*.yaml`, `*.yml`                 | YAML formatting (config: `.yamlfmt`)                                     |
-| `check-jsonschema` | `plugin.json`, `marketplace.json` | Validates plugin and marketplace manifests against schemas in `schemas/` |
-| `actionlint`       | `.github/workflows/*`             | Lints GitHub Actions workflows                                           |
-| `detect-secrets`   | repo-wide                         | Catches accidentally committed secrets                                   |
-| `shellcheck`       | `*.sh`, `*.bash`                  | Shell script linting                                                     |
-| `pre-commit-hooks` | repo-wide                         | Whitespace, EOF, JSON/YAML/TOML well-formedness, merge-conflict markers  |
+| Tool               | Scope                             | Purpose                                                                                                             |
+| ------------------ | --------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `prettier`         | `*.md`                            | Canonical Markdown formatter for the repo                                                                           |
+| `yamllint`         | `*.yaml`, `*.yml`                 | YAML linting (config: `.yamllint.yaml`)                                                                             |
+| `yamlfmt`          | `*.yaml`, `*.yml`                 | YAML formatting (config: `.yamlfmt`)                                                                                |
+| `check-jsonschema` | `plugin.json`, `marketplace.json` | Validates plugin and marketplace manifests against the upstream [SchemaStore](https://www.schemastore.org/) schemas |
+| `actionlint`       | `.github/workflows/*`             | Lints GitHub Actions workflows                                                                                      |
+| `detect-secrets`   | repo-wide                         | Catches accidentally committed secrets                                                                              |
+| `shellcheck`       | `*.sh`, `*.bash`                  | Shell script linting                                                                                                |
+| `pre-commit-hooks` | repo-wide                         | Whitespace, EOF, JSON/YAML/TOML well-formedness, merge-conflict markers                                             |
 
 All hooks are run by `pre-commit` on staged files at commit time; CI runs the same set against the full tree.
 
@@ -83,7 +82,7 @@ yamllint .
 yamlfmt -dstar '**/*.{yaml,yml}'
 
 # Validate a single plugin manifest
-check-jsonschema --schemafile schemas/plugin.schema.json plugins/<name>/.claude-plugin/plugin.json
+check-jsonschema --schemafile https://www.schemastore.org/claude-code-plugin-manifest.json plugins/<name>/.claude-plugin/plugin.json
 ```
 
 ## Plugin Authoring
@@ -112,7 +111,7 @@ For more on plugin shape, see the [Claude Code plugin documentation](https://cod
 
 - **Markdown formatting is owned by `prettier`.** Do not reintroduce `markdownlint`; the project deliberately converged on a single Markdown formatter.
 - **YAML uses both `yamllint` (lint) and `yamlfmt` (format).** Keep their rules aligned — if you change indentation in one, mirror it in the other.
-- **Schemas are the contract.** When adding fields to `plugin.json` or `marketplace.json`, update the corresponding file in `schemas/` first so CI catches drift. The schemas committed today are intentionally permissive starters; tighten as conventions firm up.
+- **Schemas come from upstream [SchemaStore](https://www.schemastore.org/).** `plugin.json` and `marketplace.json` are validated against `claude-code-plugin-manifest.json` and `claude-code-marketplace.json` from SchemaStore, which track the official Claude Code manifest shape. We don't vendor or override these — if a plugin needs a field the upstream schema doesn't know about, fix it upstream rather than forking locally.
 - **No application tooling.** This repo does not host Python, Node, or container builds — keep it that way. Contributions that pull in language runtimes or service infrastructure will be rejected.
 - **Pin tool versions in `.tool-versions`.** Don't introduce ad-hoc tool dependencies; if a new tool is needed, pin it via mise so every contributor and CI runs the same version.
 
