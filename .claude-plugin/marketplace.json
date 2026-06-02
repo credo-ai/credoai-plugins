@@ -1,0 +1,22 @@
+{
+  "$schema": "https://www.schemastore.org/claude-code-marketplace.json",
+  "name": "credo-ai",
+  "version": "1.0.0",
+  "description": "Credo AI plugin marketplace for Claude Code — brand, marketing, and governance workflow automation.",
+  "owner": {
+    "name": "Credo AI",
+    "url": "https://www.credo.ai"
+  },
+  "plugins": [
+    {
+      "name": "credo-doc-design",
+      "version": "1.0.0",
+      "description": "Generate brand-compliant Credo AI .docx files with official logo, swirl decorations, and design system.",
+      "author": {
+        "name": "Credo AI",
+        "url": "https://www.credo.ai"
+      },
+      "homepage": "https://github.com/credo-ai/credoai-plugins/tree/main/plugins/credo-doc-design"
+    }
+  ]
+}

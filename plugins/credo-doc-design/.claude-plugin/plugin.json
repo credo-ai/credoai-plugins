@@ -1,0 +1,14 @@
+{
+  "$schema": "https://www.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "credo-doc-design",
+  "version": "1.0.0",
+  "description": "Generate brand-compliant Credo AI documents (.docx) with the official logo, swirl decorations, Plus Jakarta Sans typography, and correct brand colors. Outputs a ready-to-publish file for Word or Google Docs.",
+  "author": {
+    "name": "Credo AI",
+    "url": "https://www.credo.ai"
+  },
+  "homepage": "https://github.com/credo-ai/credoai-plugins/tree/main/plugins/credo-doc-design",
+  "repository": "https://github.com/credo-ai/credoai-plugins",
+  "license": "MIT",
+  "keywords": ["credo-ai", "document", "branding", "docx", "marketing"]
+}
