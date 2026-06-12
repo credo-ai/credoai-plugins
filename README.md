@@ -1,8 +1,8 @@
 # credoai-plugins
 
-Claude Code plugin marketplace for [Credo AI](https://www.credo.ai) — the AI Governance, Risk, and Compliance platform. This repo is a curated catalog of plugins (slash commands, agents, skills, and MCP bundles) that automate governance workflows inside Claude Code.
+The public Claude Code plugin marketplace for the [Credo AI](https://www.credo.ai) ecosystem — the AI Governance, Risk, and Compliance platform. This repository is the curated catalog of plugins (slash commands, agents, skills, and MCP bundles) that Credo AI publishes to automate governance workflows across its products inside Claude Code.
 
-> **⚠️ Important:** Make sure you trust a plugin before installing, updating, or using it. Anthropic does not control what MCP servers, files, or other software are included in plugins and cannot verify that they will work as intended or that they won't change. See each plugin's homepage for more information.
+> **⚠️ Important:** Make sure you trust a plugin before installing, updating, or using it. These plugins are published and maintained by Credo AI; some bundle MCP servers that connect to Credo AI services and may require access credentials. Credo AI cannot guarantee that third-party software referenced by a plugin will work as intended or that it won't change. See each plugin's homepage for more information.
 
 ## Installation
 

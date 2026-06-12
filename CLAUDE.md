@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Overview
 
-This is the **CredoAI plugin marketplace** for [Claude Code](https://code.claude.com/docs/en/plugins). It is a public, curated catalog of plugins — slash commands, agents, skills, and MCP server bundles — published by [Credo AI](https://www.credo.ai) for use by customers and the broader Claude Code community. The repository layout and contribution model are modeled after [`anthropics/claude-plugins-official`](https://github.com/anthropics/claude-plugins-official).
+This is the **CredoAI plugin marketplace** for [Claude Code](https://code.claude.com/docs/en/plugins). It is a public, curated catalog of plugins — slash commands, agents, skills, and MCP server bundles — published by [Credo AI](https://www.credo.ai) for use by customers and the broader Claude Code community.
 
 The repo is intentionally **content-only**: nearly every file is Markdown or JSON. There is no application code to build, no service to run, no container to ship.
 
