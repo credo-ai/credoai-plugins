@@ -10,6 +10,8 @@ internal-docs/
 
 node_modules/
 
+# Local-only beans issue tracker (data dir + config)
 .beans
+.beans.yml
 
 .secrets.baseline.bak
