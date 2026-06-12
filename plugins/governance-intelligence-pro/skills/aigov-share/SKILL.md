@@ -1,18 +1,19 @@
 ---
 name: aigov-share
-description: Publish, update, or remove governance artifact HTML dashboards (plans or audits) on the Governance Hub. Use when the user says "share this", "publish this", "make this shareable", "/share", "update shared", "/update", "unshare", or "remove shared".
+description: Publish, update, or remove governance artifact HTML dashboards (plans, audits, or maturity assessments) on the Governance Hub. Use when the user says "share this", "publish this", "make this shareable", "/share", "update shared", "/update", "unshare", or "remove shared".
 allowed-tools: Read, Bash, Glob, Write
 ---
 
-Publish a governance artifact HTML visualization (plan or audit) to the Governance Insights Hub so it's accessible via a permanent shareable URL associated with your account. Requires a Governance Hub account (govportal.lab.credoai.net).
+Publish a governance artifact HTML visualization (plan, audit, or maturity assessment) to the Governance Insights Hub so it's accessible via a permanent shareable URL associated with your account. Requires a Governance Hub account (govportal.lab.credoai.net).
 
 The skill auto-detects the artifact type from the source directory of the HTML file:
 
 - File under `aigov_plan_viz/` → `artifactType = "plan"`
 - File under `aigov_audit_viz/` → `artifactType = "audit"`
+- File under `aigov_maturity_viz/` → `artifactType = "maturity"`
 - Anything else → `artifactType = "plan"` (back-compat default)
 
-It also parses `systemName` from the filename slug and `artifactDate` (today's date for plans; from filename or current date for audits) and sends them as metadata so the Governance Hub can list and filter artifacts by type, system, and date.
+It also parses `systemName` from the filename slug (for maturity assessments this is the organization name) and `artifactDate` (today's date for plans; from filename or current date for audits; the assessment date for maturity) and sends them as metadata so the Governance Hub can list and filter artifacts by type, system, and date.
 
 ---
 
@@ -46,9 +47,9 @@ For every share/update, derive metadata from the source path before calling the 
 
 | Field          | How to derive                                                                                                                                                                                                                                                                                                   |
 | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `artifactType` | `"audit"` if the file path includes `/aigov_audit_viz/`; otherwise `"plan"` (covers `aigov_plan_viz/` and any other directory by default)                                                                                                                                                                       |
-| `systemName`   | Strip the trailing `-aigov-plan.html` or `-aigov-audit.html` suffix from the filename, replace hyphens with spaces, and Title Case the result. E.g. `retailassist-aigov-audit.html` → `"Retailassist"`. If the user provided a system name in the conversation, prefer that — it's more accurate than the slug. |
-| `artifactDate` | Today's date in `YYYY-MM-DD` (use `date +%Y-%m-%d`). For audits, prefer the audit date in the source markdown if available, but today's date is a safe fallback.                                                                                                                                                |
+| `artifactType` | `"audit"` if the file path includes `/aigov_audit_viz/`; `"maturity"` if it includes `/aigov_maturity_viz/`; otherwise `"plan"` (covers `aigov_plan_viz/` and any other directory by default)                                                                                                                   |
+| `systemName`   | Strip the trailing `-aigov-plan.html`, `-aigov-audit.html`, or `-aigov-maturity.html` suffix from the filename, replace hyphens with spaces, and Title Case the result. E.g. `retailassist-aigov-audit.html` → `"Retailassist"`. For maturity artifacts this is the organization name. If the user provided a name in the conversation, prefer that — it's more accurate than the slug. |
+| `artifactDate` | Today's date in `YYYY-MM-DD` (use `date +%Y-%m-%d`). For audits and maturity assessments, prefer the date in the source markdown if available, but today's date is a safe fallback.                                                                                                                             |
 
 These three fields go in the JSON body alongside `html` and `email`. Send them on both POST (publish) and PUT (update). The backend treats every field as optional and defaults `artifactType` to `"plan"` server-side if omitted, but always send them for clarity.
 
@@ -63,9 +64,10 @@ Use when the user wants to publish a governance artifact visualization.
 1. **Find the HTML file:**
    - If the user provided a path in `$ARGUMENTS`, use that file.
    - Otherwise, prefer most-recently-modified `.html` files in this order:
-     1. `./docs/credoai/aigov_audit_viz/`
-     2. `./docs/credoai/aigov_plan_viz/`
-     3. Current directory + common output locations (`out/`, `dist/`, `build/`, `output/`)
+     1. `./docs/credoai/aigov_maturity_viz/`
+     2. `./docs/credoai/aigov_audit_viz/`
+     3. `./docs/credoai/aigov_plan_viz/`
+     4. Current directory + common output locations (`out/`, `dist/`, `build/`, `output/`)
    - If multiple files found and none specified, list them and ask which to share.
 
 2. **Check if already shared in this conversation:**
@@ -100,9 +102,9 @@ Use when the user wants to publish a governance artifact visualization.
    > Published! Your shareable link:
    > https://frontend-development-3133.up.railway.app/view/ID
    >
-   > Delete key: `DELETEKEY` — save this if you want to update or remove the {{plan / audit}}.
+   > Delete key: `DELETEKEY` — save this if you want to update or remove the {{plan / audit / maturity assessment}}.
    >
-   > This {{plan / audit}} is linked to your Governance Hub account at EMAIL.
+   > This {{plan / audit / maturity assessment}} is linked to your Governance Hub account at EMAIL.
 
 **If the request returns 403:**
 
@@ -191,6 +193,6 @@ Use when the user wants to remove a previously shared artifact.
 
 **Empty-string metadata.** Don't send `""` — omit the field from the jq object instead. An empty string is meaningfully different from `null`.
 
-**Hardcoding artifactType.** Detect from source path (`aigov_audit_viz/` vs `aigov_plan_viz/`). Don't assume "plan" by default if the file came from `aigov_audit_viz/`.
+**Hardcoding artifactType.** Detect from source path (`aigov_maturity_viz/` vs `aigov_audit_viz/` vs `aigov_plan_viz/`). Don't assume "plan" by default if the file came from a typed directory.
 
 **Reusing a stale systemName.** If the user re-runs an audit on the same system but renames it (e.g. "HireAssist" → "HireAssist v2"), use the current name from the latest filename or conversation context, not a memory from earlier.
