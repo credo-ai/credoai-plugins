@@ -78,29 +78,29 @@
   /* "Chin Black" – Credo AI's signature near-black */
   --credo-chin-black: #161616;
   --credo-true-white: #ffffff;
-  --credo-ghost-white: #fbf9ff;       /* very pale lavender white, used for soft backdrops */
-  --credo-white-parakeet: #f4f2f3;    /* warm off-white for "light theme" surfaces */
-  --credo-deep-black: #0a0a0f;        /* hero/dark sections, ~Black */
+  --credo-ghost-white: #fbf9ff; /* very pale lavender white, used for soft backdrops */
+  --credo-white-parakeet: #f4f2f3; /* warm off-white for "light theme" surfaces */
+  --credo-deep-black: #0a0a0f; /* hero/dark sections, ~Black */
 
   /* ---------- Secondary palette ---------- */
-  --credo-soft-blue: #c9b6ff;         /* primary; lavender-wash start */
-  --credo-mimi-pink: #ffd5e5;         /* primary; lavender-wash end + logo gradient end */
-  --credo-pale-lavender: #f2deff;     /* secondary accent */
-  --credo-lavender: #c9b6ff;          /* secondary accent — alias of Soft Blue */
-  --credo-mimi-blush: #fff2f4;        /* secondary accent — light pink tint */
-  --credo-soft-violet: #e9e2ff;       /* light tint seen on cards */
-  --credo-french-violet: #7b04ca;     /* LOGO ONLY — never use outside the C symbol */
-  --credo-space-black: #0a0a0f;       /* primary; alias of deep-black for legacy */
+  --credo-soft-blue: #c9b6ff; /* primary; lavender-wash start */
+  --credo-mimi-pink: #ffd5e5; /* primary; lavender-wash end + logo gradient end */
+  --credo-pale-lavender: #f2deff; /* secondary accent */
+  --credo-lavender: #c9b6ff; /* secondary accent — alias of Soft Blue */
+  --credo-mimi-blush: #fff2f4; /* secondary accent — light pink tint */
+  --credo-soft-violet: #e9e2ff; /* light tint seen on cards */
+  --credo-french-violet: #7b04ca; /* LOGO ONLY — never use outside the C symbol */
+  --credo-space-black: #0a0a0f; /* primary; alias of deep-black for legacy */
   --credo-violet-deep: #260838;
 
   /* Neutral text & strokes */
   --credo-neutral-900: #161616;
   --credo-neutral-700: #444444;
   --credo-neutral-500: #858485;
-  --credo-neutral-400: #bdbbbc;       /* Chin Black 25% */
+  --credo-neutral-400: #bdbbbc; /* Chin Black 25% */
   --credo-neutral-300: #c6c6c6;
   --credo-neutral-200: #f4f4f4;
-  --credo-neutral-100: #f4f2f3;       /* White Parakeet */
+  --credo-neutral-100: #f4f2f3; /* White Parakeet */
 
   /* Status accents (used very sparingly) */
   --credo-success: #5dd373;
@@ -130,17 +130,19 @@
   --fg-muted: var(--credo-neutral-700);
   --fg-subtle: var(--credo-neutral-500);
   --fg-on-inverse: var(--credo-true-white);
-  --fg-on-inverse-muted: rgba(255,255,255,0.7);
-  --fg-on-inverse-subtle: rgba(255,255,255,0.5);
+  --fg-on-inverse-muted: rgba(255, 255, 255, 0.7);
+  --fg-on-inverse-subtle: rgba(255, 255, 255, 0.5);
 
-  --border: rgba(0,0,0,0.15);
-  --border-strong: rgba(0,0,0,0.6);
-  --border-on-inverse: rgba(255,255,255,0.1);
-  --border-on-inverse-strong: rgba(255,255,255,0.25);
+  --border: rgba(0, 0, 0, 0.15);
+  --border-strong: rgba(0, 0, 0, 0.6);
+  --border-on-inverse: rgba(255, 255, 255, 0.1);
+  --border-on-inverse-strong: rgba(255, 255, 255, 0.25);
 
   --link: var(--credo-chin-black);
   --link-hover: var(--credo-chin-black);
-  --accent: var(--credo-gradient-wash);   /* Lavender wash: Mimi Pink → Soft Blue (use as background-image) */
+  --accent: var(
+    --credo-gradient-wash
+  ); /* Lavender wash: Mimi Pink → Soft Blue (use as background-image) */
   --accent-soft: var(--credo-pale-lavender);
 
   /* ---------- Radii ----------
@@ -185,14 +187,15 @@
   /* ---------- Elevation ----------
      Credo uses NO drop shadows. To highlight an object, apply one of the
      three border treatments below — never a shadow. */
-  --highlight-gradient: 1px solid transparent;   /* paired with background-image: lavender wash, see .hl-gradient */
+  --highlight-gradient: 1px solid transparent; /* paired with background-image: lavender wash, see .hl-gradient */
   --highlight-soft-blue: 1px solid var(--credo-soft-blue);
-  --highlight-chin-wash: 1px solid rgba(22,22,22,0.10);
+  --highlight-chin-wash: 1px solid rgba(22, 22, 22, 0.1);
   /* legacy shadow tokens are intentionally omitted; do not reintroduce */
 
   /* ---------- Type system ---------- */
-  --font-sans: "Instrument Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
-    Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-sans:
+    "Instrument Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
   /* Display face used in print/branded headers; Integral CF appears 4× in figma —
      fallback to Instrument Sans 700 with tighter tracking. Real font is licensed. */
   --font-display: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
@@ -236,7 +239,8 @@
    Use these directly; or copy them into your own components.
    ===================================================================== */
 
-html, body {
+html,
+body {
   font-family: var(--font-sans);
   color: var(--fg);
   background: var(--bg);
@@ -253,7 +257,8 @@ html, body {
   line-height: var(--lh-display);
   letter-spacing: var(--tracking-display);
 }
-h1, .t-h1 {
+h1,
+.t-h1 {
   font-family: var(--font-sans);
   font-weight: 500;
   font-size: var(--fs-h1);
@@ -261,7 +266,8 @@ h1, .t-h1 {
   letter-spacing: var(--tracking-display);
   margin: 0;
 }
-h2, .t-h2 {
+h2,
+.t-h2 {
   font-family: var(--font-sans);
   font-weight: 500;
   font-size: var(--fs-h2);
@@ -269,7 +275,8 @@ h2, .t-h2 {
   letter-spacing: var(--tracking-display);
   margin: 0;
 }
-h3, .t-h3 {
+h3,
+.t-h3 {
   font-family: var(--font-sans);
   font-weight: 500;
   font-size: var(--fs-h3);
@@ -277,7 +284,8 @@ h3, .t-h3 {
   letter-spacing: var(--tracking-tight);
   margin: 0;
 }
-h4, .t-h4 {
+h4,
+.t-h4 {
   font-family: var(--font-sans);
   font-weight: 500;
   font-size: var(--fs-h4);
@@ -285,14 +293,16 @@ h4, .t-h4 {
   letter-spacing: var(--tracking-tight);
   margin: 0;
 }
-h5, .t-h5 {
+h5,
+.t-h5 {
   font-family: var(--font-sans);
   font-weight: 500;
   font-size: var(--fs-h5);
   line-height: 1.4;
   margin: 0;
 }
-p, .t-body {
+p,
+.t-body {
   font-size: var(--fs-body);
   line-height: var(--lh-body);
   margin: 0;
@@ -301,7 +311,8 @@ p, .t-body {
   font-size: var(--fs-body-lg);
   line-height: 1.55;
 }
-.t-body-sm, small {
+.t-body-sm,
+small {
   font-size: var(--fs-body-sm);
   line-height: 1.45;
 }
@@ -341,15 +352,17 @@ p, .t-body {
   border: 0;
 }
 .t-eyebrow.on-dark {
-  background: rgba(255,255,255,0.06);
+  background: rgba(255, 255, 255, 0.06);
   color: var(--credo-true-white);
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 a {
   color: var(--link);
   text-decoration: none;
-  transition: color var(--t-base) var(--ease-out), background var(--t-base) var(--ease-out);
+  transition:
+    color var(--t-base) var(--ease-out),
+    background var(--t-base) var(--ease-out);
 }
 a:hover {
   color: var(--link-hover);

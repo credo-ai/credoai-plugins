@@ -7,12 +7,12 @@ everything here; skill files carry only report-specific structure.
 
 ## Provenance & sync — two token sources, two canonical upstreams
 
-| Asset | Register | Canonical upstream | Refresh |
-| --- | --- | --- | --- |
-| `skills/aigov-plan-viz/assets/credo-design-tokens.css` | Product dashboard | Credo product Figma foundations ("Foundations CSS v2") | Manual, with design team |
-| `design/credo-marketing-tokens.css` | Executive/workshop | claude.ai/design project `019de2a0-ba19-7e91-b64d-b9e0ec242835` ("Credo AI Marketing Design System", owner: Lucy), file `colors_and_type.css` | DesignSync `get_file` / `/design-sync` — replace the synced copy verbatim, keeping only the provenance header comment |
+| Asset                                                  | Register           | Canonical upstream                                                                                                                            | Refresh                                                                                                               |
+| ------------------------------------------------------ | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `skills/aigov-plan-viz/assets/credo-design-tokens.css` | Product dashboard  | Credo product Figma foundations ("Foundations CSS v2")                                                                                        | Manual, with design team                                                                                              |
+| `design/credo-marketing-tokens.css`                    | Executive/workshop | claude.ai/design project `019de2a0-ba19-7e91-b64d-b9e0ec242835` ("Credo AI Marketing Design System", owner: Lucy), file `colors_and_type.css` | DesignSync `get_file` / `/design-sync` — replace the synced copy verbatim, keeping only the provenance header comment |
 
-Never hand-edit token *values* in either file. If a value looks wrong, fix it
+Never hand-edit token _values_ in either file. If a value looks wrong, fix it
 upstream and re-sync. The two systems are intentionally different — do not
 "reconcile" them:
 

@@ -115,7 +115,7 @@ demonstrate.
 
 Two or three substantive documents are enough for a rapid assessment. Zero
 documents → explain that there is nothing to score and offer to proceed as a
-*provisional* interview-based assessment, clearly labeled as such on every
+_provisional_ interview-based assessment, clearly labeled as such on every
 score.
 
 ## Step 4 — Score the six domains
@@ -220,7 +220,7 @@ Empty response → no benchmarks section. No exceptions.
 caps at 3.0.
 
 **Treating a populated framework as a populated register.** A register
-*schema* with required fields defined is criterion 2; rows in it with review
+_schema_ with required fields defined is criterion 2; rows in it with review
 timestamps is criterion 3.
 
 **Flattering the score.** The assessment's value is calibration. "2.5 and
