@@ -11,7 +11,7 @@
   "plugins": [
     {
       "name": "governance-intelligence-pro",
-      "description": "AI governance skills: guided intake, risk-scored governance plans, and interactive HTML dashboards. Works standalone; full catalog analysis requires the Governance Intelligence Pro MCP.",
+      "description": "AI governance skills: guided intake, risk-scored governance plans, evidence collection, audits, rapid maturity assessments, and interactive HTML dashboards. Most skills work standalone; catalog analysis and the maturity framework require the Governance Intelligence Pro MCP.",
       "source": "./plugins/governance-intelligence-pro"
     }
   ]

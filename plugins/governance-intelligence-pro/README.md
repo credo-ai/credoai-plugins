@@ -52,12 +52,13 @@ Branded with Credo AI visual identity. Works for any governance brief, with or w
 
 ### `aigov-share`
 
-Publishes a governance plan HTML visualization to the Governance Insights Hub and returns a permanent shareable URL.
+Publishes a governance artifact HTML visualization (plan, audit, or maturity assessment) to the Governance Insights Hub and returns a permanent shareable URL.
 
 - Requires a Governance Hub account at govportal.lab.credoai.net
 - Reads your email from `~/.claude/credoai/email.md` (or legacy `~/.claude/governance-hub-email.md`); prompts once if neither exists
 - Supports update and unshare flows via a delete key shown at publish time
-- Run as `/share` after `aigov-plan-viz` produces an HTML file
+- Detects the artifact type from the source directory and labels the Hub listing accordingly (`plan` / `audit` / `maturity`)
+- Run as `/share` after any viz skill produces an HTML file
 
 ### `aigov-evidence`
 
@@ -93,6 +94,21 @@ Renders an audit as an interactive HTML dashboard for executives, regulators, or
 - **PDF export** for static board / regulator deliverables
 
 Same brand as `aigov-plan-viz`, single self-contained HTML file. Output saved to `./docs/credoai/aigov_audit_viz/`. Publishable via `aigov-share`.
+
+### `aigov-maturity`
+
+Rapid Maturity Assessment (RMA) of your **organization's AI governance program** — distinct from the system-level plan/audit track. Documentation-review-driven scoring against the Credo AI maturity framework served live from the MCP: five bands (Exploring → Speed & Scale), six domains (Risk & Governance, Use Case Inventory, Policy & Compliance, Executive Sponsorship, Technical Controls, Vendor & Third-Party AI), four-criteria ladders per domain, and the "operation, not design" scoring discipline.
+
+- Sourced industry benchmarks via `get_benchmarks` — only vetted, attributed claims; never invented statistics
+- Regulatory grounding from the live catalog, scoped to your industry and jurisdiction
+- Optional **workshop mode**: timed agenda + structured dialogue prompts for running the assessment as a leadership session
+- Re-runnable with per-domain trend tracking and framework-version drift detection
+
+**Requires the Governance Intelligence Pro MCP** — the framework and benchmarks are the gated substance, so this skill refuses to run without it (no degraded fallback). Output saved to `./docs/credoai/aigov_maturity/`.
+
+### `aigov-maturity-viz`
+
+Renders a maturity assessment as a board- and workshop-grade HTML deliverable in the Credo AI marketing design language (Instrument Sans, lavender wash, no shadows): hero cover with score, methodology with band legend, how-to-read panel, per-domain score cards with evidentiary rationale, present-vs-missing matrix, sourced benchmark cards, findings, strengths, 90-day roadmap, and (in workshop mode) agenda + dialogue prompts. Single self-contained file, PDF-export friendly. Output saved to `./docs/credoai/aigov_maturity_viz/`. Publishable via `aigov-share`.
 
 ## MCP setup
 

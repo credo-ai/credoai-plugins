@@ -1,7 +1,7 @@
 {
   "name": "governance-intelligence-pro",
-  "description": "AI governance skills: guided intake interview, risk-scored governance plan, and interactive HTML dashboard with Executive Overview, Risk View, Compliance View, and Action View. Works standalone; full catalog analysis and taxonomy-grounded risk/control mapping requires the Governance Intelligence Pro MCP.",
-  "version": "2.2.0",
+  "description": "AI governance skills: guided intake interview, risk-scored governance plans, evidence collection, audits, rapid maturity assessments, and interactive HTML dashboards/deliverables. Most skills work standalone; catalog analysis and the maturity framework require the Governance Intelligence Pro MCP.",
+  "version": "2.3.0",
   "author": {
     "name": "Credo AI",
     "email": "engineering@credo.ai"
