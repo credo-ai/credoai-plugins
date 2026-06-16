@@ -54,6 +54,7 @@ digraph maturity {
     "Gather source documents" [shape=box];
     "Score six domains vs criteria" [shape=box];
     "get_benchmarks(industry)" [shape=box];
+    "Peer comparison (optional)" [shape=box];
     "Regulatory grounding via catalog" [shape=box];
     "Prior assessment exists?" [shape=diamond];
     "Compute per-domain deltas" [shape=box];
@@ -66,7 +67,8 @@ digraph maturity {
     "Report or workshop mode?" -> "Gather source documents";
     "Gather source documents" -> "Score six domains vs criteria";
     "Score six domains vs criteria" -> "get_benchmarks(industry)";
-    "get_benchmarks(industry)" -> "Regulatory grounding via catalog";
+    "get_benchmarks(industry)" -> "Peer comparison (optional)";
+    "Peer comparison (optional)" -> "Regulatory grounding via catalog";
     "Regulatory grounding via catalog" -> "Prior assessment exists?";
     "Prior assessment exists?" -> "Compute per-domain deltas" [label="yes"];
     "Prior assessment exists?" -> "Write assessment markdown" [label="no"];
@@ -149,7 +151,33 @@ Call `get_benchmarks({ industry })`. Follow the response `guidance` exactly:
   assessment with no benchmarks section is credible; one with invented
   numbers is poison.
 
-## Step 6 — Regulatory grounding
+## Step 6 — Peer comparison (optional)
+
+The framework's `peer_comparison` section is **optional** and **off by default**.
+Documentation review is still the spine of the assessment — peer context is the
+one place this skill reaches outside the provided materials, and only when the
+user asks for it (e.g. "how do we compare to peers", "add a peer table") or the
+engagement is a board read-out where peer context lands.
+
+If you do it, hold the same evidentiary bar as everywhere else:
+
+1. Identify 4–5 real named peers in the org's actual industry (not the
+   reference industry baked into any template).
+2. Research each via web search. Use **only real, dated public sources** —
+   disclosures, filings, responsible-AI reports, regulatory submissions, press.
+   Cite the source and date in every peer cell.
+3. Where a peer has **no public AI governance disclosure, say so explicitly** —
+   do not infer or guess a posture from its size or sector.
+4. Peer maturity is an **estimate from public signals**, labeled as such. It is
+   NOT scored against the documentation-review rubric used for the subject org —
+   never present an estimated peer band as a rubric score.
+5. Highlight the subject org's own row; place it at the top of the table.
+
+If you cannot find real sourced data for at least 3 peers, **omit the section
+entirely** — a thin or speculative peer table is worse than none. Never
+fabricate peer data.
+
+## Step 7 — Regulatory grounding
 
 Query the catalog for the frameworks that actually apply:
 
@@ -163,7 +191,7 @@ Query the catalog for the frameworks that actually apply:
 
 Use exact catalog names — never paraphrase regulation titles.
 
-## Step 7 — Write the assessment
+## Step 8 — Write the assessment
 
 Output to `./docs/credoai/aigov_maturity/YYYY-MM-DD-<org-slug>.md`
 (lowercase, spaces→hyphens). Follow `framework.reportStructure` — every
