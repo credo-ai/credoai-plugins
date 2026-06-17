@@ -81,65 +81,101 @@ dialogue-prompts sections; report mode does not.
 <title>{Organization} — Maturity Assessment | Credo AI</title>
 ```
 
-## Required sections
+## Pages
 
-Mirror the assessment's structure (it followed the framework's canonical
-report structure), rendered with the foundation's idioms:
+This report is a **multi-page document**, not one long scroll: each section
+below is its own `.page` (one idea per screenful), switched via the sticky top
+nav. Mirror the assessment's structure (it followed the framework's canonical
+report structure), rendered with the foundation's idioms. Page 1 is the dark
+Hero cover (`.page--cover`); the rest are light content pages in order.
 
-1. **Hero cover** — dark full-bleed (`--bg-inverse`): eyebrow pill
-   ("Credo AI · Rapid Maturity Assessment"), organization name as the display
-   moment, date, one-sentence framing, headline stat tiles (overall score +
-   band, domains assessed, source documents, notable counts). Logo per
-   foundation rules.
-2. **Sticky slim navigation** — jump links to each section.
-3. **Executive overview** — what this is / what this is not / why now / the
+The nav is **built from the DOM** — each `.page` carries a `data-title`
+attribute, and the script reads those titles to render the button strip, the
+`<select>` jump menu, and the "N / M" counter. An omitted page (see the
+optional/omit rules below) is simply not emitted, and the DOM-built nav,
+counter, and prev/next bounds adjust to it automatically — there is no
+separate nav list to edit.
+
+1. **Hero cover** _(`.page--cover`)_ — dark full-bleed (`--bg-inverse`):
+   eyebrow pill ("Credo AI · Rapid Maturity Assessment"), organization name as
+   the display moment, date, one-sentence framing, headline stat tiles
+   (overall score + band, domains assessed, source documents, notable counts).
+   Logo per foundation rules.
+2. **Executive overview** — what this is / what this is not / why now / the
    core message, as four cards.
-4. **Workshop agenda** _(workshop mode only)_ — timed vertical rail.
-5. **Methodology** — band legend (all five bands with ranges and
+3. **Workshop agenda** _(workshop mode only)_ — timed vertical rail.
+4. **Methodology** — band legend (all five bands with ranges and
    descriptions), the four scoring criteria, source documents reviewed with
    version/status/date.
-6. **Regulatory grounding** — framework cards with why-it-matters paragraphs.
-7. **Domain coverage table** — six domains × what it covers / why it matters
+5. **Regulatory grounding** — framework cards with why-it-matters paragraphs.
+6. **Domain coverage table** — six domains × what it covers / why it matters
    here / score with band.
-8. **How to read this** — numbered interpretive cards.
-9. **Maturity profile** — overall score as the centerpiece (large numeral +
+7. **How to read this** — numbered interpretive cards.
+8. **Maturity profile** — overall score as the centerpiece (large numeral +
    band + one-line position statement), then per-domain score cards: name,
    score, band, horizontal score bar on the 1–5 scale with band thresholds
    marked, and the evidentiary rationale. Render score bars with the lavender
    wash for fill and neutral track; status accents only to mark
    below/at/above-band states, sparingly.
-10. **Present vs. missing matrix** — elements × designed/documented/
-    operational/evidenced, with Feather check/minus icons (status accents
-    sparingly).
-11. **Industry benchmarks** — stat cards with claim, context, and explicit
+9. **Present vs. missing matrix** — elements × designed/documented/
+   operational/evidenced, with Feather check/minus icons (status accents
+   sparingly).
+10. **Industry benchmarks** — stat cards with claim, context, and explicit
     source line. **Only if the assessment has a benchmarks section** — if it
-    was omitted there, omit it here. Never re-add from memory.
-12. **Peer comparison** — table of named industry peers with the subject org's
+    was omitted there, omit the page here. Never re-add from memory.
+11. **Peer comparison** — table of named industry peers with the subject org's
     row highlighted at the top; columns for AI strategy signal, public
     governance evidence, regulatory posture, and estimated maturity band. Each
     peer cell carries its public source line; render the org's own band as a
     rubric score and peer bands visibly as estimates (e.g. a "~" prefix or
     "est." tag) so the two are never conflated. **Only if the assessment has a
-    peer comparison section** — omit entirely otherwise. Never re-add from
-    memory.
-13. **Priority findings** — numbered cards grouped by horizon (immediate /
+    peer comparison section** — omit the page entirely otherwise. Never re-add
+    from memory.
+12. **Priority findings** — numbered cards grouped by horizon (immediate /
     near-term / forward-looking), each with evidence, regulatory context, and
     action path. Preserve the grouping the assessment used; the forward-looking
     group (e.g. agentic AI exposure) reads as get-ahead-of, not a present gap.
-14. **Strengths** — cards for genuine differentiators.
-15. **90-day roadmap** — three phase lanes with owners and outcomes, each lane
+13. **Strengths** — cards for genuine differentiators.
+14. **90-day roadmap** — three phase lanes with owners and outcomes, each lane
     showing its single measurable output (the KPI / evidence artifact that
     proves the phase landed) as a distinct element.
-16. **Dialogue prompts** _(workshop mode only)_ — per-domain discussion cards.
-17. **Next steps** — commitments and the re-assessment trigger.
-18. **Footer** — "Generated by Credo AI Governance Hub · [ISO date] ·
-    Framework v{version}"; append " · Prepared for [Organization]" when org
-    config exists. Include "Confidential · Not for distribution" when the
-    assessment is workshop mode.
+15. **Dialogue prompts** _(workshop mode only)_ — per-domain discussion cards.
+16. **Next steps** — commitments and the re-assessment trigger.
 
-Interactive behavior: smooth-scroll nav, expandable evidentiary rationale
-(open by default in print via `@media print`), and a print/PDF button. Keep
-JS vanilla and minimal — this artifact's job is reading, not exploring.
+The **footer** sits below the pages (not a page itself): "Generated by Credo
+AI Governance Hub · [ISO date] · Framework v{version}"; append " · Prepared
+for [Organization]" when org config exists. Include "Confidential · Not for
+distribution" when the assessment is workshop mode.
+
+### Navigation and print
+
+Use the paged nav and behavior from the shared foundation rather than a
+smooth-scroll page. Copy the markup and script wholesale from the canonical
+scaffold `design/paged-report-shell.html` — do not re-derive the JS:
+
+- A sticky top nav (`.report-nav`) with a button per page
+  (`.report-nav__item`, `data-page`), the "N / M" counter
+  (`.report-nav__counter`), and a responsive `<select>` jump menu below 640px.
+- `goToPage(id, opts)` drives all navigation: hash deep-linking, prev/next at
+  each page foot, and Left/Right arrow paging (ignored while focus is in a form
+  field). See REPORT_DESIGN.md § "Paged layout (multi-page navigation)" for the
+  full contract.
+- Keep the expandable evidentiary rationale (force-open in print) and a
+  print/PDF button. JS stays vanilla and minimal — this artifact's job is
+  reading, not exploring.
+
+The foundation's `@media print` block un-hides every page with a break
+between, so the artifact exports a **complete multi-page PDF** — one report
+section per printed page — not the single-page CoAction failure mode.
+
+### Copy quality
+
+Every word the artifact renders is generated copy. Hold it to the foundation's
+**"## Copy quality bar"** (REPORT_DESIGN.md): active voice, second person,
+sentence case, no exclamation points, headlines that state the takeaway,
+framework names verbatim, scores to one decimal, one date format, and every
+evidentiary or benchmark claim citing a specific dated source. Run the
+pre-delivery copy checklist before considering the artifact done.
 
 ## Fidelity rules
 
