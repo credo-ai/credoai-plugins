@@ -23,10 +23,18 @@ The audit is grounded in three sources:
 
 ## Inputs
 
-This skill requires both a governance plan and an evidence register. It looks for them in this order:
+This skill requires both a governance plan and an evidence register. **Resolve both
+by `system_id`, never by "most recent file"** — the audit's residual risk and
+compliance posture are wrong if the plan and evidence belong to different systems.
 
-1. **Plan**: most recent in `./docs/credoai/aigov_plans/`
-2. **Evidence**: most recent in `./docs/credoai/aigov_evidence/` matching the same system
+1. Read `./docs/credoai/registry.md`. If more than one system is registered, ask
+   the user which system this audit is for; take its `system_id`.
+2. **Plan**: the `./docs/credoai/aigov_plans/` file whose frontmatter `system_id`
+   matches.
+3. **Evidence**: the `./docs/credoai/aigov_evidence/` register whose frontmatter
+   `system_id` matches the same value.
+
+The plan and evidence MUST carry the same `system_id` — never pair across systems.
 
 If either is missing, pause and suggest the missing prior step:
 
@@ -78,13 +86,15 @@ digraph audit {
 Read the plan, the evidence register, and onboarding config. **Local-first, global-fallback** for config:
 
 ```bash
-ls -t ./docs/credoai/aigov_plans/*.md 2>/dev/null | head -1
-ls -t ./docs/credoai/aigov_evidence/*.md 2>/dev/null | head -1
+# Resolve plan + evidence by system_id (from the registry), not "most recent"
+cat ./docs/credoai/registry.md 2>/dev/null || cat ~/.claude/credoai/registry.md 2>/dev/null
+grep -l "system_id: <SYSTEM_ID>" ./docs/credoai/aigov_plans/*.md 2>/dev/null | head -1
+grep -l "system_id: <SYSTEM_ID>" ./docs/credoai/aigov_evidence/*.md 2>/dev/null | head -1
 cat ./docs/credoai/posture.md 2>/dev/null || cat ~/.claude/credoai/posture.md 2>/dev/null
 cat ./docs/credoai/tools.md 2>/dev/null || cat ~/.claude/credoai/tools.md 2>/dev/null
 ```
 
-Confirm the evidence register matches the same system as the plan. If they're for different systems (different system names), pause and ask the user which is correct.
+Confirm the plan and evidence register carry the **same `system_id`**. If they differ, pause and ask the user which is correct — never audit a plan against another system's evidence.
 
 ## Step 2 — Re-query MCP for canonical detail
 
@@ -203,6 +213,18 @@ Save to:
 ```
 
 Slug: lowercase system name from the plan, spaces → hyphens, strip special chars. Create the directory if needed.
+
+**Stamp the report's frontmatter** with the `system_id` carried from the plan and
+evidence, so the registry derives the audit stage by identity:
+
+```markdown
+---
+system_id: sys_<slug>_<hex>
+system_name: <Name>
+artifact_type: audit
+date: <YYYY-MM-DD>
+---
+```
 
 ## Output Format
 

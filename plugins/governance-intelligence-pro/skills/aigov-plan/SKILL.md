@@ -121,6 +121,22 @@ Slug: lowercase system name, spaces → hyphens, strip special chars. Use today'
 
 Create the directory if it doesn't exist.
 
+**Stamp the plan's frontmatter** so the registry and downstream skills can
+resolve it by identity. Carry the `system_id` forward from the intake brief's
+frontmatter (if the brief has none — e.g. plan run standalone — read the
+`system_id` for this system from `./docs/credoai/registry.md`, or mint
+`sys_<slug>_<6-hex>` and add the roster row, matching `aigov-intake`). Write at
+the top of the plan file:
+
+```markdown
+---
+system_id: sys_<slug>_<hex>
+system_name: <Name>
+artifact_type: plan
+date: <YYYY-MM-DD>
+---
+```
+
 ## Conversation output
 
 After saving, **do not print the full brief to the conversation.** Keep the chat response short:

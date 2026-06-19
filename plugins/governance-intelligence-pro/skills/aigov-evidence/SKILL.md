@@ -18,13 +18,20 @@ Rigor is calibrated upfront — the user picks how skeptical Claude should be wh
 
 ## Inputs
 
-This skill requires a governance plan as input. It will look for one in this order:
+This skill requires a governance plan as input. **Resolve it by `system_id`, never
+by "most recent file"** — picking the newest file silently pairs the wrong system
+once more than one exists. Resolve in this order:
 
-1. The most recent file in `./docs/credoai/aigov_plans/` (created by `aigov-plan`)
-2. A path the user provides directly
-3. A plan pasted into the conversation
+1. Read `./docs/credoai/registry.md`. If more than one system is registered, ask
+   the user which system this is for; take its `system_id`. Then select the
+   `./docs/credoai/aigov_plans/` file whose frontmatter `system_id` matches.
+2. A path the user provides directly.
+3. A plan pasted into the conversation.
 
-If none of those exist, pause and suggest running `aigov-intake` and `aigov-plan` first.
+Only one system registered → use it without asking. Never evaluate a plan and an
+evidence register that carry different `system_id`s.
+
+If no plan exists, pause and suggest running `aigov-intake` and `aigov-plan` first.
 
 ## Workflow
 
@@ -56,8 +63,10 @@ digraph evidence {
 Read the governance plan and onboarding config. Use **local-first, global-fallback precedence**:
 
 ```bash
-# governance plan
-ls -t ./docs/credoai/aigov_plans/*.md 2>/dev/null | head -1
+# governance plan — resolve by system_id from the registry, not "most recent"
+cat ./docs/credoai/registry.md 2>/dev/null || cat ~/.claude/credoai/registry.md 2>/dev/null
+# then grep the matching plan: the aigov_plans/ file whose frontmatter system_id matches
+grep -l "system_id: <SYSTEM_ID>" ./docs/credoai/aigov_plans/*.md 2>/dev/null | head -1
 
 # posture (drives default rigor calibration)
 cat ./docs/credoai/posture.md 2>/dev/null || cat ~/.claude/credoai/posture.md 2>/dev/null
@@ -201,6 +210,18 @@ Save to:
 Slug: lowercase system name from the governance plan, spaces → hyphens, strip special chars.
 
 Create the directory if needed.
+
+**Stamp the register's frontmatter** with the `system_id` carried from the plan,
+so `aigov-audit` and the registry resolve it by identity:
+
+```markdown
+---
+system_id: sys_<slug>_<hex>
+system_name: <Name>
+artifact_type: evidence
+date: <YYYY-MM-DD>
+---
+```
 
 ## Output Format
 

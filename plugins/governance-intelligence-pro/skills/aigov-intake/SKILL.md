@@ -148,6 +148,36 @@ Slug: lowercase system name, spaces → hyphens, strip special chars. Use today'
 
 Create the directory if it doesn't exist. Tell the user the path.
 
+### Register the system and stamp its identity
+
+Every system gets a stable `system_id` so downstream skills resolve artifacts by
+identity (never by "most recent file"), and so it appears in the registry.
+
+1. **Mint or reuse the `system_id`.** Read `./docs/credoai/registry.md` (global
+   fallback `~/.claude/credoai/registry.md`). If a row already exists for this
+   system's slug, **reuse its `system_id`** — do not mint a second row. Otherwise
+   mint `sys_<slug>_<6-hex>` and append a roster row (creating `registry.md` with
+   `schema_version: 1` frontmatter if absent):
+
+   ```markdown
+   | sys_<slug>_<hex> | <Name> | <Domain> | <advisory|semi|fully autonomous> | full plan | <YYYY-MM-DD> |
+   ```
+
+2. **Stamp the brief's frontmatter.** Write this block at the very top of the
+   intake file:
+
+   ```markdown
+   ---
+   system_id: sys_<slug>_<hex>
+   system_name: <Name>
+   artifact_type: intake
+   date: <YYYY-MM-DD>
+   ---
+   ```
+
+The roster never stores lifecycle state — `aigov-registry` derives it from which
+artifacts exist. See `aigov-registry` for the registry format and portfolio view.
+
 ## Handoff
 
 Once confirmed and saved, say:
