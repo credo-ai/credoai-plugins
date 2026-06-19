@@ -92,7 +92,29 @@ Resolve the publishing email exactly as `aigov-share` does:
 cat ~/.claude/credoai/email.md 2>/dev/null || cat ~/.claude/governance-hub-email.md 2>/dev/null
 ```
 
+**The `deleteKey` is the per-system bearer token.** The first sync of a system
+returns a `deleteKey`; the server then **requires that same key to update
+(re-sync) or unsync** the entry — the body email alone is unauthenticated, so
+without the key anyone who knew an account email + `system_id` could overwrite
+another account's roster. So you must **persist each system's key and resend it
+on every later sync.**
+
+Persist keys in a local, non-committed sidecar keyed by `system_id` — never in
+`registry.md` (that roster is human-readable and may be committed; keys must not
+leak into git):
+
 ```bash
+# docs/credoai/.registry-sync.json  (add to .gitignore)
+# { "sys_hireassist_a1b2": "<deleteKey>", ... }
+```
+
+On **first sync** of a system, omit `deleteKey`; on **re-sync**, read the saved
+key for that `system_id` and include it:
+
+```bash
+# look up a previously saved key (empty on first sync)
+KEY=$(jq -r --arg id "sys_hireassist_a1b2" '.[$id] // empty' docs/credoai/.registry-sync.json 2>/dev/null)
+
 curl -sL -X POST https://backend-development-736b.up.railway.app/api/registry \
   -H "Content-Type: application/json" \
   -d "$(jq -n \
@@ -101,13 +123,17 @@ curl -sL -X POST https://backend-development-736b.up.railway.app/api/registry \
     --arg systemName "HireAssist" \
     --arg domain "HR & hiring" \
     --arg triage "full plan" \
+    --arg key "$KEY" \
     --argjson state '{"intake":true,"plan":true,"evidence":"complete","audit":true,"lastActivity":"2026-06-12"}' \
-    '{email:$email, systemId:$systemId, systemName:$systemName, domain:$domain, triage:$triage, state:$state}')"
+    '{email:$email, systemId:$systemId, systemName:$systemName, domain:$domain, triage:$triage, state:$state}
+       + (if $key == "" then {} else {deleteKey:$key} end)')"
 ```
 
-The response returns a `deleteKey` per system — present it and retain it for
-unsync. A 403 means the email has no Governance Hub account → point the user to
-govportal.lab.credoai.net.
+The response returns the `deleteKey`. On first sync, **save it** to the sidecar
+above so future re-syncs and unsync can authenticate. A 403 with "already
+synced" means you re-synced without the saved key — recover it from the sidecar
+(or unsync and re-create). A 403 with "no account" means the email has no
+Governance Hub account → point the user to govportal.lab.credoai.net.
 
 Unsync one system:
 
@@ -136,3 +162,7 @@ for a system already in the roster.
 
 **Showing maturity as a per-system stage.** Maturity is an org-level assessment;
 keep it out of the per-system lifecycle.
+
+**Losing the `deleteKey`.** Re-syncing a system without its saved key is a 403.
+Persist every key to the local sidecar on first sync and resend it on update;
+never write keys into the committed `registry.md`.

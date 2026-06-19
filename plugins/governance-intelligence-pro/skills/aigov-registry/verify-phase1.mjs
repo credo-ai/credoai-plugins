@@ -105,6 +105,16 @@ check(
   "aigov-registry must make sync explicit and roster-only",
 );
 
+// Phase-1 deleteKey contract — registry persists + resends the per-system key
+check(
+  "AC-KEY",
+  has(registry, /deleteKey/) &&
+    has(registry, /persist|saved? to the sidecar|save it/i) &&
+    has(registry, /resend|re-?sync/i) &&
+    has(registry, /never .*(commit|registry\.md)/i),
+  "aigov-registry must persist each deleteKey locally and resend it on re-sync, never committing keys",
+);
+
 // AC1.8 — intake reuses an existing system_id (no duplicate row)
 check(
   "AC1.8",
