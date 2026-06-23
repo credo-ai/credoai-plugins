@@ -1,20 +1,30 @@
-name: Validate Marketplace JSON
+name: Validate Plugins
 
 on:
   pull_request:
     paths:
-    - '.claude-plugin/marketplace.json'
+    - ".claude-plugin/**"
+    - "plugins/**"
+  push:
+    branches: [main]
+    paths:
+    - ".claude-plugin/**"
+    - "plugins/**"
+
+permissions:
+  contents: read
 
 jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
 
-    - uses: oven-sh/setup-bun@v2
-
-    - name: Validate marketplace.json
-      run: bun .github/scripts/validate-marketplace.ts .claude-plugin/marketplace.json
-
-    - name: Check plugins sorted
-      run: bun .github/scripts/check-marketplace-sorted.ts
+    # Canonical marketplace + plugin validation, maintained by Anthropic.
+    # SHA-pinned to the tip of main on 2026-05-13. Bump with care.
+    - uses: anthropics/claude-plugins-community/.github/actions/validate-plugins@2ec490ecef43f7c55320f2a01d12badffba46a05
+      with:
+        marketplace-path: .claude-plugin/marketplace.json
+        claude-cli-version: latest

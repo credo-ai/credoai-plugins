@@ -1,0 +1,694 @@
+<!doctype html>
+<!--
+  Credo AI — Paged Report Shell (canonical scaffold)
+  ===================================================
+  Executive/workshop register reference implementation of the multi-page
+  report layout described in REPORT_DESIGN.md → "Paged layout (multi-page
+  navigation)". Skills copy this markup + script wholesale; only the page
+  CONTENT and (for the product register) the token values change.
+
+  Demonstrates:
+    - sticky top nav with active state + page counter ("N / M")
+    - goToPage(id, opts) with hash deep-linking + hashchange/load handler
+    - prev/next foot controls, Left/Right arrow paging (ignored in inputs)
+    - cross-section goToPage(id, { focus }) with a highlight pulse
+    - full @media print stylesheet (every page prints, page breaks between)
+
+  Vanilla JS + inline CSS only. No build step. Marketing tokens inlined.
+  Opens cleanly with no console errors; prints to a complete multi-page PDF.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Acme — Paged Report Shell | Credo AI</title>
+    <!-- Instrument Sans (executive register uses it for everything) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ============================================================
+         Marketing tokens (inlined subset — see credo-marketing-tokens.css).
+         French Violet is LOGO-ONLY; working accent is the lavender wash.
+         No drop shadows — highlight with borders.
+         ============================================================ */
+      :root {
+        --credo-chin-black: #161616;
+        --credo-true-white: #ffffff;
+        --credo-ghost-white: #fbf9ff;
+        --credo-deep-black: #0a0a0f;
+        --credo-soft-blue: #c9b6ff;
+        --credo-mimi-pink: #ffd5e5;
+        --credo-pale-lavender: #f2deff;
+        --credo-soft-violet: #e9e2ff;
+        --credo-mimi-blush: #fff2f4;
+        --credo-success: #5dd373;
+        --credo-warning: #ff8a8a;
+        --credo-danger: #ff6265;
+        --credo-gradient-wash: linear-gradient(180deg, #c9b6ff 0%, #ffd5e5 100%);
+        --credo-gradient-wash-h: linear-gradient(90deg, #c9b6ff 0%, #ffd5e5 100%);
+
+        --bg: var(--credo-true-white);
+        --bg-soft: var(--credo-ghost-white);
+        --bg-inverse: var(--credo-deep-black);
+        --fg: var(--credo-chin-black);
+        --fg-muted: #444444;
+        --fg-subtle: #858485;
+        --fg-on-inverse: var(--credo-true-white);
+        --fg-on-inverse-muted: rgba(255, 255, 255, 0.7);
+        --border: rgba(0, 0, 0, 0.15);
+        --border-on-inverse: rgba(255, 255, 255, 0.12);
+
+        --radius-card: 12px;
+        --radius-button: 4px;
+        --radius-pill: 100px;
+
+        --space-2: 8px;
+        --space-3: 12px;
+        --space-4: 16px;
+        --space-6: 24px;
+        --space-8: 32px;
+        --space-12: 48px;
+        --space-16: 64px;
+
+        --highlight-soft-blue: 1px solid var(--credo-soft-blue);
+
+        --font-sans:
+          "Instrument Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+
+        --t-base: 200ms;
+        --ease-out: cubic-bezier(0.2, 0.7, 0.1, 1);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        font-family: var(--font-sans);
+        color: var(--fg);
+        background: var(--bg);
+        font-size: 14px;
+        line-height: 1.4;
+        -webkit-font-smoothing: antialiased;
+      }
+      h1,
+      h2,
+      h3 {
+        margin: 0;
+        font-weight: 500;
+        letter-spacing: -0.01em;
+        line-height: 1.2;
+      }
+      h1 {
+        font-size: 50px;
+      }
+      h2 {
+        font-size: 36px;
+      }
+      h3 {
+        font-size: 22px;
+      }
+      p {
+        margin: 0;
+      }
+
+      /* ---------- Sticky top nav ---------- */
+      .report-nav {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+        padding: var(--space-3) var(--space-6);
+        background: var(--credo-true-white);
+        border-bottom: 1px solid var(--border);
+      }
+      .report-nav__brand {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+        font-weight: 600;
+        white-space: nowrap;
+      }
+      .report-nav__brand-mark {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: var(--credo-gradient-wash); /* stands in for the C symbol */
+      }
+      .report-nav__items {
+        display: flex;
+        gap: var(--space-2);
+        overflow-x: auto; /* responsive: horizontal scroll strip */
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+        flex: 1;
+        scrollbar-width: thin;
+      }
+      .report-nav__item {
+        appearance: none;
+        border: 1px solid transparent;
+        background: transparent;
+        color: var(--fg-muted);
+        font: inherit;
+        font-size: 13px;
+        padding: 6px 12px;
+        border-radius: var(--radius-pill);
+        cursor: pointer;
+        transition: color var(--t-base) var(--ease-out);
+      }
+      .report-nav__item:hover {
+        color: var(--fg);
+      }
+      /* Active nav item — border highlight, no shadow (executive register) */
+      .report-nav__item.is-active {
+        color: var(--fg);
+        border: var(--highlight-soft-blue);
+        background: var(--credo-ghost-white);
+      }
+      .report-nav__counter {
+        font-size: 13px;
+        color: var(--fg-subtle);
+        white-space: nowrap;
+        font-variant-numeric: tabular-nums;
+      }
+      /* Responsive jump menu — shown below 640px instead of the strip */
+      .report-nav__select {
+        display: none;
+        font: inherit;
+        font-size: 13px;
+        padding: 6px 10px;
+        border-radius: var(--radius-button);
+        border: 1px solid var(--border);
+        background: var(--credo-true-white);
+        flex: 1;
+      }
+      @media (max-width: 640px) {
+        .report-nav__items {
+          display: none;
+        }
+        .report-nav__select {
+          display: block;
+        }
+      }
+
+      /* ---------- Page containers ---------- */
+      .page {
+        display: none;
+        max-width: 960px;
+        margin: 0 auto;
+        padding: var(--space-16) var(--space-6) var(--space-12);
+      }
+      .page.is-active {
+        display: block;
+      }
+
+      /* Dark full-bleed cover (page 1, executive register) */
+      .page--cover {
+        max-width: none;
+        background: var(--bg-inverse);
+        color: var(--fg-on-inverse);
+        min-height: 70vh;
+        display: none;
+        padding: var(--space-16) var(--space-12);
+      }
+      .page--cover.is-active {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .page--cover .lead {
+        color: var(--fg-on-inverse-muted);
+        max-width: 640px;
+        font-size: 18px;
+        margin-top: var(--space-4);
+      }
+      .stat-row {
+        display: flex;
+        gap: var(--space-6);
+        margin-top: var(--space-12);
+        flex-wrap: wrap;
+      }
+      .stat {
+        border: 1px solid var(--border-on-inverse);
+        border-radius: var(--radius-card);
+        padding: var(--space-6);
+        min-width: 160px;
+      }
+      .stat__num {
+        font-size: 36px;
+        font-weight: 500;
+      }
+      .stat__label {
+        color: var(--fg-on-inverse-muted);
+        font-size: 13px;
+        margin-top: var(--space-2);
+      }
+
+      /* Eyebrow pill */
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-2);
+        font-size: 13px;
+        padding: 6px 12px;
+        border-radius: var(--radius-pill);
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--fg-on-inverse);
+        border: 1px solid var(--border-on-inverse);
+      }
+      .eyebrow--light {
+        background: var(--credo-true-white);
+        color: var(--fg);
+        border: 1px solid var(--border);
+      }
+
+      /* Cards */
+      .card {
+        border: 1px solid var(--border);
+        border-radius: var(--radius-card);
+        padding: var(--space-6);
+        background: var(--bg);
+      }
+      .card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: var(--space-4);
+        margin-top: var(--space-8);
+      }
+      .card h3 {
+        margin-bottom: var(--space-2);
+      }
+      .card p {
+        color: var(--fg-muted);
+      }
+      .section-head {
+        margin-bottom: var(--space-4);
+      }
+      .section-head .eyebrow {
+        margin-bottom: var(--space-4);
+      }
+
+      /* Chips that jump to another page + focus an element */
+      .chip {
+        appearance: none;
+        font: inherit;
+        font-size: 13px;
+        padding: 6px 12px;
+        border-radius: var(--radius-pill);
+        border: 1px solid var(--border);
+        background: var(--credo-ghost-white);
+        color: var(--fg);
+        cursor: pointer;
+      }
+      .chip:hover {
+        border: var(--highlight-soft-blue);
+      }
+
+      /* Table */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: var(--space-8);
+        font-size: 14px;
+      }
+      th,
+      td {
+        text-align: left;
+        padding: var(--space-3) var(--space-4);
+        border-bottom: 1px solid var(--border);
+      }
+      th {
+        color: var(--fg-subtle);
+        font-weight: 600;
+        font-size: 13px;
+      }
+
+      /* Highlight pulse for cross-section focus targets */
+      .is-flash {
+        animation: flash 1.5s var(--ease-out);
+        border-radius: var(--radius-button);
+      }
+      @keyframes flash {
+        0% {
+          background: var(--credo-pale-lavender);
+        }
+        100% {
+          background: transparent;
+        }
+      }
+
+      /* ---------- Foot prev/next controls ---------- */
+      .page-nav {
+        display: flex;
+        justify-content: space-between;
+        gap: var(--space-4);
+        margin-top: var(--space-16);
+        padding-top: var(--space-6);
+        border-top: 1px solid var(--border);
+      }
+      .page--cover .page-nav {
+        border-top: 1px solid var(--border-on-inverse);
+      }
+      .page-nav__btn {
+        appearance: none;
+        font: inherit;
+        font-size: 14px;
+        padding: 10px 18px;
+        border-radius: var(--radius-button);
+        border: 1px solid var(--border);
+        background: var(--credo-true-white);
+        color: var(--fg);
+        cursor: pointer;
+      }
+      .page--cover .page-nav__btn {
+        background: transparent;
+        color: var(--fg-on-inverse);
+        border: 1px solid var(--border-on-inverse);
+      }
+      .page-nav__btn[hidden] {
+        visibility: hidden;
+      }
+      .page-nav__btn:hover {
+        border: var(--highlight-soft-blue);
+      }
+
+      footer {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: var(--space-12) var(--space-6);
+        color: var(--fg-subtle);
+        font-size: 13px;
+        border-top: 1px solid var(--border);
+      }
+
+      /* ============================================================
+         PRINT / PDF — the reference (CoAction) omitted this and PDFs
+         to a single page. Un-hide every page, break between them, and
+         strip the interactive chrome. This is the contract.
+         ============================================================ */
+      @media print {
+        .page,
+        .page--cover {
+          display: block !important;
+          page-break-before: always;
+        }
+        .page:first-of-type,
+        .page--cover:first-of-type {
+          page-break-before: avoid;
+        }
+        .report-nav,
+        .page-nav,
+        .report-nav__counter,
+        .print-button {
+          display: none !important;
+        }
+        /* force-open any collapsibles so no content is hidden in the PDF */
+        details,
+        details[open] {
+          display: block !important;
+        }
+        details > summary {
+          display: none !important;
+        }
+        .is-collapsed {
+          display: block !important;
+          max-height: none !important;
+        }
+        /* keep the dark cover legible on paper */
+        .page--cover {
+          background: var(--bg-inverse) !important;
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ============================ NAV ============================ -->
+    <nav class="report-nav" aria-label="Report sections">
+      <span class="report-nav__brand">
+        <span class="report-nav__brand-mark" aria-hidden="true"></span>
+        Acme governance
+      </span>
+      <!-- Button strip (wide screens). data-page links each button to a page. -->
+      <div class="report-nav__items" id="navItems" role="tablist"></div>
+      <!-- Jump menu (narrow screens) -->
+      <select class="report-nav__select" id="navSelect" aria-label="Jump to section"></select>
+      <span class="report-nav__counter" id="navCounter" aria-live="polite"></span>
+    </nav>
+
+    <!-- ============================ PAGES ============================ -->
+
+    <!-- Page 1: dark full-bleed cover -->
+    <section class="page--cover is-active" id="cover" data-title="Cover">
+      <span class="eyebrow">Maturity assessment</span>
+      <h1 style="margin-top: var(--space-6)">Acme AI governance</h1>
+      <p class="lead">
+        A read on where your governance program operates today, what would raise it, and the next
+        ninety days of work.
+      </p>
+      <div class="stat-row">
+        <div class="stat">
+          <div class="stat__num">3.2</div>
+          <div class="stat__label">Overall maturity (of 5.0)</div>
+        </div>
+        <div class="stat">
+          <div class="stat__num">6</div>
+          <div class="stat__label">Domains assessed</div>
+        </div>
+        <div class="stat">
+          <div class="stat__num">4</div>
+          <div class="stat__label">Priority findings</div>
+        </div>
+      </div>
+      <div class="page-nav">
+        <button class="page-nav__btn" data-prev hidden>Previous</button>
+        <button class="page-nav__btn" data-next>Next: How to read this</button>
+      </div>
+    </section>
+
+    <!-- Page 2: "How to read this" card page -->
+    <section class="page" id="htr" data-title="How to read this">
+      <div class="section-head">
+        <span class="eyebrow eyebrow--light">Orientation</span>
+        <h2>How to read this assessment</h2>
+      </div>
+      <div class="card-grid">
+        <div class="card">
+          <h3>Scores measure operation</h3>
+          <p>A score reflects what runs today, not what is designed on paper or planned.</p>
+        </div>
+        <div class="card">
+          <h3>A mid-band score is not failing</h3>
+          <p>
+            Band three means controls operate consistently; it is a credible position to build on.
+          </p>
+        </div>
+        <div class="card">
+          <h3>The next band up</h3>
+          <p>Moving up means evidencing outcomes, not adding more documents.</p>
+        </div>
+        <div class="card">
+          <h3>Domains interact</h3>
+          <p>
+            A weak monitoring domain caps what strong policy can achieve. Jump to
+            <button class="chip" data-goto="scores" data-focus="domain-monitoring" type="button">
+              Monitoring in the profile
+            </button>
+            to see how.
+          </p>
+        </div>
+      </div>
+      <div class="page-nav">
+        <button class="page-nav__btn" data-prev>Previous</button>
+        <button class="page-nav__btn" data-next>Next: Maturity profile</button>
+      </div>
+    </section>
+
+    <!-- Page 3: score-profile page (cross-section focus target lives here) -->
+    <section class="page" id="scores" data-title="Maturity profile">
+      <div class="section-head">
+        <span class="eyebrow eyebrow--light">Profile</span>
+        <h2>Maturity profile by domain</h2>
+      </div>
+      <div class="card-grid">
+        <div class="card">
+          <h3>Policy — 3.8</h3>
+          <p>Documented and approved; refreshed against the 2026 AI policy update.</p>
+        </div>
+        <div class="card" id="domain-monitoring">
+          <h3>Monitoring — 2.4</h3>
+          <p>Designed but not yet operational; alerts route to a shared inbox without ownership.</p>
+        </div>
+        <div class="card">
+          <h3>Procurement — 3.1</h3>
+          <p>Vendor reviews run consistently; outcomes are not yet tracked to closure.</p>
+        </div>
+      </div>
+      <div class="page-nav">
+        <button class="page-nav__btn" data-prev>Previous</button>
+        <button class="page-nav__btn" data-next>Next: Priority findings</button>
+      </div>
+    </section>
+
+    <!-- Page 4: table page -->
+    <section class="page" id="findings" data-title="Priority findings">
+      <div class="section-head">
+        <span class="eyebrow eyebrow--light">Findings</span>
+        <h2>Four findings, sequenced by leverage</h2>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Finding</th>
+            <th>Domain</th>
+            <th>Horizon</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Monitoring alerts have no named owner</td>
+            <td>Monitoring</td>
+            <td>Immediate</td>
+          </tr>
+          <tr>
+            <td>Vendor reviews are not tracked to closure</td>
+            <td>Procurement</td>
+            <td>Near-term</td>
+          </tr>
+          <tr>
+            <td>No inventory of agentic systems</td>
+            <td>Inventory</td>
+            <td>Forward-looking</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="page-nav">
+        <button class="page-nav__btn" data-prev>Previous</button>
+        <button class="page-nav__btn" data-next hidden>Next</button>
+      </div>
+    </section>
+
+    <footer>Generated by Credo AI Governance Hub · 2026-06-17 · Prepared for Acme</footer>
+
+    <script>
+      // =========================================================
+      // Paged navigation. The list of page ids is the source of
+      // truth for nav, counter, prev/next, and bounds checks.
+      // =========================================================
+      const pages = Array.from(document.querySelectorAll(".page, .page--cover"));
+      const ids = pages.map((p) => p.id);
+      const navItems = document.getElementById("navItems");
+      const navSelect = document.getElementById("navSelect");
+      const navCounter = document.getElementById("navCounter");
+
+      // Build the nav strip + jump menu from the pages in the DOM.
+      pages.forEach((page) => {
+        const title = page.dataset.title || page.id;
+
+        const btn = document.createElement("button");
+        btn.className = "report-nav__item";
+        btn.type = "button";
+        btn.dataset.page = page.id;
+        btn.textContent = title;
+        btn.addEventListener("click", () => goToPage(page.id));
+        navItems.appendChild(btn);
+
+        const opt = document.createElement("option");
+        opt.value = page.id;
+        opt.textContent = title;
+        navSelect.appendChild(opt);
+      });
+      navSelect.addEventListener("change", () => goToPage(navSelect.value));
+
+      /**
+       * Switch the visible page.
+       * @param {string} id   target page element id
+       * @param {{focus?: string, push?: boolean}} [opts]
+       *   focus — element id inside the target page to scroll to + pulse
+       *   push  — default true; false when called from hashchange (avoids
+       *           double history entries)
+       */
+      function goToPage(id, opts = {}) {
+        if (!ids.includes(id)) id = ids[0]; // unknown/empty hash → first page
+        const index = ids.indexOf(id);
+
+        pages.forEach((p) => p.classList.toggle("is-active", p.id === id));
+        navItems.querySelectorAll(".report-nav__item").forEach((b) => {
+          b.classList.toggle("is-active", b.dataset.page === id);
+        });
+        navSelect.value = id;
+
+        // Bring the active nav button into view inside the scroll strip.
+        const activeBtn = navItems.querySelector(".report-nav__item.is-active");
+        if (activeBtn) activeBtn.scrollIntoView({ inline: "center", block: "nearest" });
+
+        // Prev/next labels + visibility for the active page only.
+        updatePageNav(id, index);
+
+        navCounter.textContent = index + 1 + " / " + pages.length;
+        window.scrollTo(0, 0);
+
+        if (opts.push !== false) location.hash = "#" + id;
+
+        // Cross-section focus: page is active now, so the target is laid out.
+        if (opts.focus) {
+          const target = document.getElementById(opts.focus);
+          if (target) {
+            target.scrollIntoView({ behavior: "smooth", block: "center" });
+            target.classList.add("is-flash");
+            setTimeout(() => target.classList.remove("is-flash"), 1500);
+          }
+        }
+      }
+
+      // Wire prev/next buttons on the active page to the adjacent pages.
+      function updatePageNav(id, index) {
+        const page = document.getElementById(id);
+        const prev = page.querySelector("[data-prev]");
+        const next = page.querySelector("[data-next]");
+        if (prev) prev.hidden = index === 0;
+        if (next) next.hidden = index === pages.length - 1;
+        if (prev && index > 0) prev.onclick = () => goToPage(ids[index - 1]);
+        if (next && index < pages.length - 1) next.onclick = () => goToPage(ids[index + 1]);
+      }
+
+      // Cross-section chips: switch page first, then focus the element.
+      document.querySelectorAll("[data-goto]").forEach((el) => {
+        el.addEventListener("click", () => {
+          goToPage(el.dataset.goto, { focus: el.dataset.focus });
+        });
+      });
+
+      // Keyboard paging — ignored when typing in a form field.
+      document.addEventListener("keydown", (e) => {
+        const t = e.target;
+        const typing = t && (t.matches("input, select, textarea") || t.isContentEditable);
+        if (typing) return;
+        const index = ids.indexOf(currentPageId());
+        if (e.key === "ArrowRight" && index < pages.length - 1) goToPage(ids[index + 1]);
+        if (e.key === "ArrowLeft" && index > 0) goToPage(ids[index - 1]);
+      });
+
+      function currentPageId() {
+        const active = pages.find((p) => p.classList.contains("is-active"));
+        return active ? active.id : ids[0];
+      }
+
+      // Deep-linking: hashchange + initial load route through the same handler.
+      function fromHash() {
+        const id = location.hash.replace(/^#/, "");
+        goToPage(id, { push: false });
+      }
+      window.addEventListener("hashchange", fromHash);
+      fromHash(); // run on load so a refresh/deep-link lands correctly
+    </script>
+  </body>
+</html>
