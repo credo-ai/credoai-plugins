@@ -159,7 +159,7 @@ identity (never by "most recent file"), and so it appears in the registry.
    mint `sys_<slug>_<6-hex>` and append a roster row (creating `registry.md` with
    `schema_version: 1` frontmatter if absent):
 
-   ```markdown
+   ```text
    | sys_<slug>_<hex> | <Name> | <Domain> | <advisory|semi|fully autonomous> | full plan | <YYYY-MM-DD> |
    ```
 

@@ -30,10 +30,10 @@ One roster file, local-first (`./docs/credoai/registry.md`), global fallback
 schema_version: 1
 ---
 
-| System ID            | Name        | Domain        | Autonomy   | Triage       | Registered |
-| -------------------- | ----------- | ------------- | ---------- | ------------ | ---------- |
-| sys_hireassist_a1b2  | HireAssist  | HR & hiring   | advisory   | full plan    | 2026-06-18 |
-| sys_supportbot_g7h8  | SupportBot  | General       | advisory   | light screen | 2026-06-18 |
+| System ID           | Name       | Domain      | Autonomy | Triage       | Registered |
+| ------------------- | ---------- | ----------- | -------- | ------------ | ---------- |
+| sys_hireassist_a1b2 | HireAssist | HR & hiring | advisory | full plan    | 2026-06-18 |
+| sys_supportbot_g7h8 | SupportBot | General     | advisory | light screen | 2026-06-18 |
 ```
 
 `Triage` is one of: `full plan` / `light screen` / `out-of-scope`.
@@ -60,12 +60,12 @@ ls ./docs/credoai/aigov_intake/ ./docs/credoai/aigov_plans/ \
 For each roster row, match artifacts by their frontmatter `system_id` (fall back
 to slug match for pre-existing files written before IDs existed):
 
-| Stage     | Complete when…                                                            |
-| --------- | ------------------------------------------------------------------------- |
-| Intake    | an `aigov_intake/` file matches the `system_id`                           |
-| Plan      | an `aigov_plans/` file matches                                            |
-| Evidence  | an `aigov_evidence/` register matches; read its Adequate/Partial/Missing summary — all evaluated → `complete`, some still Partial/Missing → `in_progress` |
-| Audit     | an `aigov_audits/` file matches                                           |
+| Stage    | Complete when…                                                                                                                                            |
+| -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Intake   | an `aigov_intake/` file matches the `system_id`                                                                                                           |
+| Plan     | an `aigov_plans/` file matches                                                                                                                            |
+| Evidence | an `aigov_evidence/` register matches; read its Adequate/Partial/Missing summary — all evaluated → `complete`, some still Partial/Missing → `in_progress` |
+| Audit    | an `aigov_audits/` file matches                                                                                                                           |
 
 Last activity = newest matching artifact date. **Maturity is org-level — never
 shown as a per-system stage.** Render a compact table: Name · `system_id` ·
