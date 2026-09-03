@@ -22,7 +22,7 @@ Or browse interactively with `/plugin > Discover`.
 
 ## Available plugins
 
-### [`governance-intelligence-pro`](./plugins/governance-intelligence-pro)
+### [`governance-intelligence`](./plugins/governance-intelligence)
 
 End-to-end AI governance pipeline powered by Credo AI Governance Intelligence — guided intake, risk-scored governance plans, evidence collection, formal audits, and interactive HTML dashboards.
 
@@ -37,9 +37,9 @@ End-to-end AI governance pipeline powered by Credo AI Governance Intelligence �
 | `aigov-audit-viz`  | Executive/regulator-ready HTML dashboard for the audit (initial vs residual matrices, compliance scoreboard) | No                                      |
 | `aigov-share`      | Publishes any plan or audit dashboard to the Governance Insights Hub and returns a shareable URL             | No                                      |
 
-Skills work standalone; `aigov-plan` and `aigov-audit` produce their richest output when the **Governance Intelligence Pro MCP** is connected, which grounds risk and control mapping in the live Credo AI catalog. Contact [engineering@credo.ai](mailto:engineering@credo.ai) for MCP access.
+Skills work standalone; `aigov-plan` and `aigov-audit` produce their richest output when the **Governance Intelligence MCP** is connected, which grounds risk and control mapping in the live Credo AI catalog. Connecting it is free — sign in at [govportal.lab.credoai.net](https://govportal.lab.credoai.net); see [MCP setup](./plugins/governance-intelligence/README.md#mcp-setup) for the one-line command.
 
-See the [plugin README](./plugins/governance-intelligence-pro/README.md) for full per-skill detail and the [plugin CLAUDE.md](./plugins/governance-intelligence-pro/CLAUDE.md) for design constraints and conventions.
+See the [plugin README](./plugins/governance-intelligence/README.md) for full per-skill detail and the [plugin CLAUDE.md](./plugins/governance-intelligence/CLAUDE.md) for design constraints and conventions.
 
 ## Contributing
 

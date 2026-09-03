@@ -83,25 +83,21 @@ Downstream skills read these files at start and continue gracefully if they're m
 - `governance_query(query_text)` — semantic/keyword search for risks, controls, policy requirements
 - `get_entities(result_ids)` — fetch full records for top matches (required before scoring — truncated descriptions produce wrong scores)
 
-`aigov-maturity` additionally requires (hard gate — Pro-entitled, metered, behind the backend's `enableMaturityAssessment` flag):
+`aigov-maturity` additionally requires (hard gate — Full-access entitled, metered, behind the backend's `enableMaturityAssessment` flag):
 
 - `get_maturity_framework()` — the versioned Credo maturity framework: five bands, six domains with four-criteria ladders, scoring rules, and the canonical report structure. Record `framework.version` in every assessment.
 - `get_benchmarks({industry})` — vetted, sourced benchmark claims by industry segment. An empty response means OMIT the benchmarks section — never invent statistics.
 
-**MCP config** (Claude Code `settings.json`):
+**MCP config** — `governance-hub` is a remote HTTP server, not an npm package:
 
-```json
-{
-  "mcpServers": {
-    "governance-hub": {
-      "command": "npx",
-      "args": ["-y", "@credoai/governance-hub-mcp"]
-    }
-  }
-}
+```bash
+claude mcp add --transport http governance-hub https://gov-mcp.lab.credoai.net/mcp
 ```
 
-Contact engineering@credo.ai for access credentials.
+The first tool call triggers the sign-in and consent flow in the browser; there are
+no credentials to configure by hand. Sign-in is free at govportal.lab.credoai.net.
+The maturity tools additionally require Full access, which Credo AI grants at
+credo.ai/get-started.
 
 ## Key Design Constraints
 
@@ -152,7 +148,7 @@ Contact engineering@credo.ai for access credentials.
 
 ### Maturity (aigov-maturity + aigov-maturity-viz)
 
-- **Hard gate**: `get_maturity_framework` is called FIRST; MCP missing / `feature_disabled` / `entitlement_required` → refuse with the GIP signup pointer. No generic fallback assessment — ever.
+- **Hard gate**: `get_maturity_framework` is called FIRST; MCP missing / `feature_disabled` / `entitlement_required` → refuse with the MCP-setup / Full-access pointer. No generic fallback assessment — ever.
 - Documentation review is the method; scores reflect **operation, not design**. A domain needs affirmative evidence of all four criteria (exists / documented / operational / improving) to score above 3.0. Overall = arithmetic mean of six domain scores.
 - Benchmarks come ONLY from `get_benchmarks`, rendered with verbatim source attribution; empty response → omit the section. This is the anti-hallucination contract.
 - Every assessment records `framework.version`, config scope, and the exact source materials reviewed. Re-runs produce a per-domain trend table and flag framework-version drift.

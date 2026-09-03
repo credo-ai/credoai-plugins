@@ -36,7 +36,7 @@ Takes a governance context brief and produces a full governance plan:
 - Key compliance obligations
 - Governance gaps
 
-When the **Governance Intelligence Pro MCP** is connected, risks and controls are drawn from the live Credo AI Governance Intelligence catalog using exact taxonomy names — then contextualized to the specific system. Without the MCP, the skill falls back to LLM reasoning from general AI governance knowledge.
+When the **Governance Intelligence MCP** is connected, risks and controls are drawn from the live Credo AI Governance Intelligence catalog using exact taxonomy names — then contextualized to the specific system. Without the MCP, the skill falls back to LLM reasoning from general AI governance knowledge.
 
 ### `aigov-plan-viz`
 
@@ -104,7 +104,7 @@ Rapid Maturity Assessment (RMA) of your **organization's AI governance program**
 - Optional **workshop mode**: timed agenda + structured dialogue prompts for running the assessment as a leadership session
 - Re-runnable with per-domain trend tracking and framework-version drift detection
 
-**Requires the Governance Intelligence Pro MCP** — the framework and benchmarks are the gated substance, so this skill refuses to run without it (no degraded fallback). Output saved to `./docs/credoai/aigov_maturity/`.
+**Requires the Governance Intelligence MCP with Full access** — the framework and benchmarks are the gated substance, so this skill refuses to run without it (no degraded fallback). Output saved to `./docs/credoai/aigov_maturity/`.
 
 ### `aigov-maturity-viz`
 
@@ -112,17 +112,12 @@ Renders a maturity assessment as a board- and workshop-grade HTML deliverable in
 
 ## MCP setup
 
-For full catalog-grounded analysis, configure the Governance Intelligence Pro MCP in your Claude Code settings:
+For full catalog-grounded analysis, connect the Governance Intelligence MCP — a remote HTTP server:
 
-```json
-{
-  "mcpServers": {
-    "governance-hub": {
-      "command": "npx",
-      "args": ["-y", "@credoai/governance-hub-mcp"]
-    }
-  }
-}
+```bash
+claude mcp add --transport http governance-hub https://gov-mcp.lab.credoai.net/mcp
 ```
 
-Contact [engineering@credo.ai](mailto:engineering@credo.ai) for access credentials.
+The first tool call triggers the sign-in and consent flow in your browser — there are no credentials to paste. Signing in is free at [govportal.lab.credoai.net](https://govportal.lab.credoai.net).
+
+`aigov-maturity` additionally requires **Full access**, which Credo AI grants — request it at [credo.ai/get-started](https://credo.ai/get-started).

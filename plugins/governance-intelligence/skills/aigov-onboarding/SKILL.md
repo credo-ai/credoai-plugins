@@ -148,7 +148,7 @@ Use `AskUserQuestion` for each. Carry the chosen scope through the rest of the f
 
 Show this only when the Step 1 scan finds **nothing in either scope**. The brief intro at Step 0 has already identified the skill, so this welcome can skip the "hi, I'm aigov-onboarding" framing and go deeper on context — what the broader pipeline does, what to expect from this session.
 
-> # Welcome to Credo AI's Governance Intelligence Pro
+> # Welcome to Credo AI's Governance Intelligence
 >
 > Since we're starting fresh, here's the bigger picture. You're setting up a governance toolkit designed to help you build AI systems people can actually trust. Seven skills work together as a pipeline — each one builds on the last:
 >

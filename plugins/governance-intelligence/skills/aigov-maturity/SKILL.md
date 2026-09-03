@@ -1,6 +1,6 @@
 ---
 name: aigov-maturity
-description: Use when the user wants a maturity assessment of their AI governance program — phrases like "maturity assessment", "rapid maturity assessment", "RMA", "how mature is our governance", "governance baseline", "assess our governance program", "/maturity". Documentation-review-driven scoring against the Credo AI maturity framework. REQUIRES the Governance Intelligence Pro MCP — refuses without it.
+description: Use when the user wants a maturity assessment of their AI governance program — phrases like "maturity assessment", "rapid maturity assessment", "RMA", "how mature is our governance", "governance baseline", "assess our governance program", "/maturity". Documentation-review-driven scoring against the Credo AI maturity framework. REQUIRES the Governance Intelligence MCP — refuses without it.
 ---
 
 # Rapid Maturity Assessment
@@ -27,12 +27,31 @@ methodology rules, and the required report structure — is served from the
 live catalog and is the canonical substance of this assessment.
 
 If the MCP is not configured, the call errors, or it returns
-`feature_disabled` / `entitlement_required`, **STOP** and tell the user:
+`feature_disabled` / `entitlement_required`, **STOP** and tell the user. The
+two failure modes have different remedies — use the matching one.
 
-> A maturity assessment requires the Governance Intelligence Pro MCP — the
-> Credo maturity framework, scoring rubric, and vetted industry benchmarks
-> are served from the live catalog. Sign up at govportal.lab.credoai.net or
-> contact engineering@credo.ai for access.
+**MCP missing, or the call errors** — it just needs connecting:
+
+> A maturity assessment requires the Governance Intelligence MCP — the Credo
+> maturity framework, scoring rubric, and vetted industry benchmarks are served
+> from the live catalog. Connect it with:
+>
+> ```
+> claude mcp add --transport http governance-hub https://gov-mcp.lab.credoai.net/mcp
+> ```
+>
+> The first tool call walks you through sign-in and consent. Signing in is free
+> at govportal.lab.credoai.net.
+
+**`entitlement_required` / `feature_disabled`** — connected and signed in, but
+the account doesn't have Full access, which is the tier that serves the
+framework:
+
+> Your Governance Intelligence account doesn't have Full access yet — that's the
+> tier serving the maturity framework and benchmarks. Credo AI grants it:
+> request access at credo.ai/get-started.
+
+Never present sign-in itself as the paid step — it is free.
 
 Do NOT produce a generic fallback assessment from general knowledge. A
 knockoff scored against an improvised rubric dilutes the deliverable and
@@ -48,7 +67,7 @@ and enables drift detection between assessments.
 digraph maturity {
     "Call get_maturity_framework" [shape=box];
     "Available + entitled?" [shape=diamond];
-    "STOP: point to GIP signup" [shape=doublecircle];
+    "STOP: point to MCP setup or Full access" [shape=doublecircle];
     "Read onboarding config" [shape=box];
     "Report or workshop mode?" [shape=box];
     "Gather source documents" [shape=box];
@@ -61,7 +80,7 @@ digraph maturity {
     "Write assessment markdown" [shape=doublecircle];
 
     "Call get_maturity_framework" -> "Available + entitled?";
-    "Available + entitled?" -> "STOP: point to GIP signup" [label="no"];
+    "Available + entitled?" -> "STOP: point to MCP setup or Full access" [label="no"];
     "Available + entitled?" -> "Read onboarding config" [label="yes"];
     "Read onboarding config" -> "Report or workshop mode?";
     "Report or workshop mode?" -> "Gather source documents";
