@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Plugin Overview
 
-`governance-intelligence-pro` is a skill pipeline for AI governance analysis powered by Credo AI Governance Intelligence. Most skills work standalone; `aigov-plan` gains catalog-grounded risk/control mapping when the Governance Hub MCP is configured. `aigov-maturity` is the exception: it is **hard-gated** on the MCP (the maturity framework is served from it) and refuses to run without it.
+`governance-intelligence` is a skill pipeline for AI governance analysis powered by Credo AI Governance Intelligence. Most skills work standalone; `aigov-plan` gains catalog-grounded risk/control mapping when the Governance Hub MCP is configured. `aigov-maturity` is the exception: it is **hard-gated** on the MCP (the maturity framework is served from it) and refuses to run without it.
 
 ## Skill Pipeline
 

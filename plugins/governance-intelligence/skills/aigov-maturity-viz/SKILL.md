@@ -21,9 +21,9 @@ plugin's shared report design foundation. Read both files before generating:
 import glob, os
 def find(rel):
     for pat in [
-        os.path.expanduser(f"~/.claude/plugins/cache/credoai-plugins/governance-intelligence-pro/*/{rel}"),
-        os.path.expanduser(f"~/.claude/plugins/cache/*/governance-intelligence-pro/*/{rel}"),
-        f"plugins/governance-intelligence-pro/{rel}",  # repo checkout fallback
+        os.path.expanduser(f"~/.claude/plugins/cache/credoai-plugins/governance-intelligence/*/{rel}"),
+        os.path.expanduser(f"~/.claude/plugins/cache/*/governance-intelligence/*/{rel}"),
+        f"plugins/governance-intelligence/{rel}",  # repo checkout fallback
     ]:
         m = glob.glob(pat)
         if m:

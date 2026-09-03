@@ -1,13 +1,13 @@
 ---
 name: aigov-onboarding
-description: Use on first use of governance-intelligence-pro, or when the user wants to review/update their governance context. Captures organizational identity, tool inventory, and governance posture into persistent config — globally at ~/.claude/credoai/ or locally at <cwd>/docs/credoai/. Resumable — picks up where the user left off if interrupted.
+description: Use on first use of governance-intelligence, or when the user wants to review/update their governance context. Captures organizational identity, tool inventory, and governance posture into persistent config — globally at ~/.claude/credoai/ or locally at <cwd>/docs/credoai/. Resumable — picks up where the user left off if interrupted.
 ---
 
 # Governance Onboarding
 
 ## Overview
 
-Capture once, reuse everywhere. This skill establishes persistent governance context for the governance-intelligence-pro pipeline — so every downstream skill (intake, plan, plan-viz, evidence, audit, audit-viz, share) can skip questions the user has already answered and tailor its output to the user's actual tools and principles.
+Capture once, reuse everywhere. This skill establishes persistent governance context for the governance-intelligence pipeline — so every downstream skill (intake, plan, plan-viz, evidence, audit, audit-viz, share) can skip questions the user has already answered and tailor its output to the user's actual tools and principles.
 
 The captured config lives in two possible scopes:
 

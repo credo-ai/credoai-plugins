@@ -1,4 +1,4 @@
-# governance-intelligence-pro
+# governance-intelligence
 
 AI governance skills for Claude Code. Guides users through intake, risk scoring, and visualization of AI governance plans powered by Credo AI Governance Intelligence.
 
