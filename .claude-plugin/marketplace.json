@@ -10,9 +10,9 @@
   },
   "plugins": [
     {
-      "name": "governance-intelligence",
-      "description": "AI governance skills: guided intake, risk-scored governance plans, evidence collection, audits, rapid maturity assessments, and interactive HTML dashboards. Most skills work standalone; catalog analysis and the maturity framework require the Governance Intelligence MCP.",
-      "source": "./plugins/governance-intelligence"
+      "name": "governance-insights",
+      "description": "AI governance skills: guided intake, risk-scored governance plans, evidence collection, audits, rapid maturity assessments, and interactive HTML dashboards. Most skills work standalone; catalog analysis and the maturity framework require the Governance Insights MCP.",
+      "source": "./plugins/governance-insights"
     }
   ]
 }

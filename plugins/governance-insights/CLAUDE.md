@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Plugin Overview
 
-`governance-intelligence` is a skill pipeline for AI governance analysis powered by Credo AI Governance Intelligence. Most skills work standalone; `aigov-plan` gains catalog-grounded risk/control mapping when the Governance Hub MCP is configured. `aigov-maturity` is the exception: it is **hard-gated** on the MCP (the maturity framework is served from it) and refuses to run without it.
+`governance-insights` is a skill pipeline for AI governance analysis powered by Credo AI Governance Insights. Most skills work standalone; `aigov-plan` gains catalog-grounded risk/control mapping when the Governance Hub MCP is configured. `aigov-maturity` is the exception: it is **hard-gated** on the MCP (the maturity framework is served from it) and refuses to run without it.
 
 ## Skill Pipeline
 
@@ -106,7 +106,7 @@ credo.ai/get-started.
 - Severity × Likelihood (each 1–5), score = product; tiers: Critical 20–25, High 12–19, Medium 6–11, Low 1–5
 - Scores are context-specific — same risk scores differently in different deployments
 - Never use semantic match scores as severity scores
-- Always use exact catalog names from Credo AI Governance Intelligence; never paraphrase
+- Always use exact catalog names from Credo AI Governance Insights; never paraphrase
 
 ### HTML Output (aigov-plan-viz, aigov-audit-viz, aigov-maturity-viz)
 

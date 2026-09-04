@@ -1,13 +1,13 @@
 ---
 name: aigov-onboarding
-description: Use on first use of governance-intelligence, or when the user wants to review/update their governance context. Captures organizational identity, tool inventory, and governance posture into persistent config — globally at ~/.claude/credoai/ or locally at <cwd>/docs/credoai/. Resumable — picks up where the user left off if interrupted.
+description: Use on first use of governance-insights, or when the user wants to review/update their governance context. Captures organizational identity, tool inventory, and governance posture into persistent config — globally at ~/.claude/credoai/ or locally at <cwd>/docs/credoai/. Resumable — picks up where the user left off if interrupted.
 ---
 
 # Governance Onboarding
 
 ## Overview
 
-Capture once, reuse everywhere. This skill establishes persistent governance context for the governance-intelligence pipeline — so every downstream skill (intake, plan, plan-viz, evidence, audit, audit-viz, share) can skip questions the user has already answered and tailor its output to the user's actual tools and principles.
+Capture once, reuse everywhere. This skill establishes persistent governance context for the governance-insights pipeline — so every downstream skill (intake, plan, plan-viz, evidence, audit, audit-viz, share) can skip questions the user has already answered and tailor its output to the user's actual tools and principles.
 
 The captured config lives in two possible scopes:
 
@@ -148,7 +148,7 @@ Use `AskUserQuestion` for each. Carry the chosen scope through the rest of the f
 
 Show this only when the Step 1 scan finds **nothing in either scope**. The brief intro at Step 0 has already identified the skill, so this welcome can skip the "hi, I'm aigov-onboarding" framing and go deeper on context — what the broader pipeline does, what to expect from this session.
 
-> # Welcome to Credo AI's Governance Intelligence
+> # Welcome to Credo AI's Governance Insights
 >
 > Since we're starting fresh, here's the bigger picture. You're setting up a governance toolkit designed to help you build AI systems people can actually trust. Seven skills work together as a pipeline — each one builds on the last:
 >
@@ -160,7 +160,7 @@ Show this only when the Step 1 scan finds **nothing in either scope**. The brief
 > 6. **`aigov-audit-viz`** — renders the audit as an HTML dashboard for executives, regulators, or board reviews (initial vs. residual risk, compliance scoreboard, drift callouts)
 > 7. **`aigov-share`** — the final showcase step: publish either your plan or your audit dashboard to the Credo AI Governance Hub so stakeholders can view it via a shareable link
 >
-> All of them are backed by **Credo AI Governance Intelligence** — a living catalog of AI risks, mitigation controls, and policy requirements curated by our governance team and grounded in regulations like the EU AI Act, NIST AI RMF, ISO 42001, and industry standards. Instead of reinventing governance for every system you ship, you map to an expert-maintained taxonomy and get context-specific risk scoring, prioritized controls, and actionable compliance obligations for _your_ deployment.
+> All of them are backed by **Credo AI Governance Insights** — a living catalog of AI risks, mitigation controls, and policy requirements curated by our governance team and grounded in regulations like the EU AI Act, NIST AI RMF, ISO 42001, and industry standards. Instead of reinventing governance for every system you ship, you map to an expert-maintained taxonomy and get context-specific risk scoring, prioritized controls, and actionable compliance obligations for _your_ deployment.
 >
 > ---
 >

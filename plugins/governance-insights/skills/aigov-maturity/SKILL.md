@@ -1,6 +1,6 @@
 ---
 name: aigov-maturity
-description: Use when the user wants a maturity assessment of their AI governance program — phrases like "maturity assessment", "rapid maturity assessment", "RMA", "how mature is our governance", "governance baseline", "assess our governance program", "/maturity". Documentation-review-driven scoring against the Credo AI maturity framework. REQUIRES the Governance Intelligence MCP — refuses without it.
+description: Use when the user wants a maturity assessment of their AI governance program — phrases like "maturity assessment", "rapid maturity assessment", "RMA", "how mature is our governance", "governance baseline", "assess our governance program", "/maturity". Documentation-review-driven scoring against the Credo AI maturity framework. REQUIRES the Governance Insights MCP — refuses without it.
 ---
 
 # Rapid Maturity Assessment
@@ -32,7 +32,7 @@ two failure modes have different remedies — use the matching one.
 
 **MCP missing, or the call errors** — it just needs connecting:
 
-> A maturity assessment requires the Governance Intelligence MCP — the Credo
+> A maturity assessment requires the Governance Insights MCP — the Credo
 > maturity framework, scoring rubric, and vetted industry benchmarks are served
 > from the live catalog. Connect it with:
 >
@@ -47,7 +47,7 @@ two failure modes have different remedies — use the matching one.
 the account doesn't have Full access, which is the tier that serves the
 framework:
 
-> Your Governance Intelligence account doesn't have Full access yet — that's the
+> Your Governance Insights account doesn't have Full access yet — that's the
 > tier serving the maturity framework and benchmarks. Credo AI grants it:
 > request access at credo.ai/get-started.
 

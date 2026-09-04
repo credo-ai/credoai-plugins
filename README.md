@@ -22,9 +22,9 @@ Or browse interactively with `/plugin > Discover`.
 
 ## Available plugins
 
-### [`governance-intelligence`](./plugins/governance-intelligence)
+### [`governance-insights`](./plugins/governance-insights)
 
-End-to-end AI governance pipeline powered by Credo AI Governance Intelligence — guided intake, risk-scored governance plans, evidence collection, formal audits, and interactive HTML dashboards.
+End-to-end AI governance pipeline powered by Credo AI Governance Insights — guided intake, risk-scored governance plans, evidence collection, formal audits, and interactive HTML dashboards.
 
 | Skill              | What it does                                                                                                 | Requires MCP?                           |
 | ------------------ | ------------------------------------------------------------------------------------------------------------ | --------------------------------------- |
@@ -37,9 +37,9 @@ End-to-end AI governance pipeline powered by Credo AI Governance Intelligence �
 | `aigov-audit-viz`  | Executive/regulator-ready HTML dashboard for the audit (initial vs residual matrices, compliance scoreboard) | No                                      |
 | `aigov-share`      | Publishes any plan or audit dashboard to the Governance Insights Hub and returns a shareable URL             | No                                      |
 
-Skills work standalone; `aigov-plan` and `aigov-audit` produce their richest output when the **Governance Intelligence MCP** is connected, which grounds risk and control mapping in the live Credo AI catalog. Connecting it is free — sign in at [govportal.lab.credoai.net](https://govportal.lab.credoai.net); see [MCP setup](./plugins/governance-intelligence/README.md#mcp-setup) for the one-line command.
+Skills work standalone; `aigov-plan` and `aigov-audit` produce their richest output when the **Governance Insights MCP** is connected, which grounds risk and control mapping in the live Credo AI catalog. Connecting it is free — sign in at [govportal.lab.credoai.net](https://govportal.lab.credoai.net); see [MCP setup](./plugins/governance-insights/README.md#mcp-setup) for the one-line command.
 
-See the [plugin README](./plugins/governance-intelligence/README.md) for full per-skill detail and the [plugin CLAUDE.md](./plugins/governance-intelligence/CLAUDE.md) for design constraints and conventions.
+See the [plugin README](./plugins/governance-insights/README.md) for full per-skill detail and the [plugin CLAUDE.md](./plugins/governance-insights/CLAUDE.md) for design constraints and conventions.
 
 ## Contributing
 

@@ -73,7 +73,7 @@ pacing, generous whitespace, one idea per screenful. Rules:
   (`https://unpkg.com/feather-icons`) — never emoji, never Unicode
   triangles/arrows, never hand-rolled SVG.
 - **Logo:** embed as base64 data URL; fall back to an SVG wordmark. Glob:
-  `~/.claude/plugins/cache/*/governance-intelligence/*/skills/aigov-plan-viz/assets/logo-dark.png`
+  `~/.claude/plugins/cache/*/governance-insights/*/skills/aigov-plan-viz/assets/logo-dark.png`
 - **Voice:** clear, confident, visionary. "We" / "you". Sentence case. No
   emoji. No exclamation points.
 - **Titles:** `<title>{Name} — {Artifact} | Credo AI</title>` — the

@@ -1,6 +1,6 @@
-# governance-intelligence
+# governance-insights
 
-AI governance skills for Claude Code. Guides users through intake, risk scoring, and visualization of AI governance plans powered by Credo AI Governance Intelligence.
+AI governance skills for Claude Code. Guides users through intake, risk scoring, and visualization of AI governance plans powered by Credo AI Governance Insights.
 
 ## Skills
 
@@ -36,7 +36,7 @@ Takes a governance context brief and produces a full governance plan:
 - Key compliance obligations
 - Governance gaps
 
-When the **Governance Intelligence MCP** is connected, risks and controls are drawn from the live Credo AI Governance Intelligence catalog using exact taxonomy names — then contextualized to the specific system. Without the MCP, the skill falls back to LLM reasoning from general AI governance knowledge.
+When the **Governance Insights MCP** is connected, risks and controls are drawn from the live Credo AI Governance Insights catalog using exact taxonomy names — then contextualized to the specific system. Without the MCP, the skill falls back to LLM reasoning from general AI governance knowledge.
 
 ### `aigov-plan-viz`
 
@@ -104,7 +104,7 @@ Rapid Maturity Assessment (RMA) of your **organization's AI governance program**
 - Optional **workshop mode**: timed agenda + structured dialogue prompts for running the assessment as a leadership session
 - Re-runnable with per-domain trend tracking and framework-version drift detection
 
-**Requires the Governance Intelligence MCP with Full access** — the framework and benchmarks are the gated substance, so this skill refuses to run without it (no degraded fallback). Output saved to `./docs/credoai/aigov_maturity/`.
+**Requires the Governance Insights MCP with Full access** — the framework and benchmarks are the gated substance, so this skill refuses to run without it (no degraded fallback). Output saved to `./docs/credoai/aigov_maturity/`.
 
 ### `aigov-maturity-viz`
 
@@ -112,7 +112,7 @@ Renders a maturity assessment as a board- and workshop-grade HTML deliverable in
 
 ## MCP setup
 
-For full catalog-grounded analysis, connect the Governance Intelligence MCP — a remote HTTP server:
+For full catalog-grounded analysis, connect the Governance Insights MCP — a remote HTTP server:
 
 ```bash
 claude mcp add --transport http governance-hub https://gov-mcp.lab.credoai.net/mcp

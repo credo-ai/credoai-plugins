@@ -143,7 +143,7 @@ curl -sL -X DELETE https://backend-development-736b.up.railway.app/api/registry/
   -d "$(jq -n --arg email "EMAIL" --arg key "DELETEKEY" '{email:$email, deleteKey:$key}')"
 ```
 
-The synced systems appear in the Governance Intelligence client (name ·
+The synced systems appear in the Governance Insights client (name ·
 `system_id` · derived state · last activity).
 
 ## Common mistakes
