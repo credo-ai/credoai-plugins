@@ -16,9 +16,9 @@ This skill renders in the **product dashboard register** defined in the plugin's
 ```python
 import glob, os
 patterns = [
-    os.path.expanduser("~/.claude/plugins/cache/credoai-plugins/governance-intelligence-pro/*/design/REPORT_DESIGN.md"),
-    os.path.expanduser("~/.claude/plugins/cache/*/governance-intelligence-pro/*/design/REPORT_DESIGN.md"),
-    "plugins/governance-intelligence-pro/design/REPORT_DESIGN.md",  # repo checkout fallback
+    os.path.expanduser("~/.claude/plugins/cache/credoai-plugins/governance-insights/*/design/REPORT_DESIGN.md"),
+    os.path.expanduser("~/.claude/plugins/cache/*/governance-insights/*/design/REPORT_DESIGN.md"),
+    "plugins/governance-insights/design/REPORT_DESIGN.md",  # repo checkout fallback
 ]
 ```
 
@@ -80,8 +80,8 @@ The Credo AI design system ships a single CSS variables file (`credo-design-toke
 ```python
 import glob, os
 patterns = [
-    os.path.expanduser("~/.claude/plugins/cache/credoai-plugins/governance-intelligence-pro/*/skills/aigov-plan-viz/assets/credo-design-tokens.css"),
-    os.path.expanduser("~/.claude/plugins/cache/*/governance-intelligence-pro/*/skills/aigov-plan-viz/assets/credo-design-tokens.css"),
+    os.path.expanduser("~/.claude/plugins/cache/credoai-plugins/governance-insights/*/skills/aigov-plan-viz/assets/credo-design-tokens.css"),
+    os.path.expanduser("~/.claude/plugins/cache/*/governance-insights/*/skills/aigov-plan-viz/assets/credo-design-tokens.css"),
 ]
 tokens_css = ""
 for pattern in patterns:
@@ -198,8 +198,8 @@ import glob, base64, os
 
 # Find the logo in the installed plugin assets
 patterns = [
-    os.path.expanduser("~/.claude/plugins/cache/credoai-plugins/governance-intelligence-pro/*/skills/aigov-plan-viz/assets/logo-dark.png"),
-    os.path.expanduser("~/.claude/plugins/cache/*/governance-intelligence-pro/*/skills/aigov-plan-viz/assets/logo-dark.png"),
+    os.path.expanduser("~/.claude/plugins/cache/credoai-plugins/governance-insights/*/skills/aigov-plan-viz/assets/logo-dark.png"),
+    os.path.expanduser("~/.claude/plugins/cache/*/governance-insights/*/skills/aigov-plan-viz/assets/logo-dark.png"),
 ]
 logo_b64 = ""
 for pattern in patterns:
